@@ -1,0 +1,168 @@
+part of '../pagination_feature.dart';
+
+/// Base interface for pagination cubits that provides common functionality
+/// for both SmartPagination and DualPagination cubits.
+///
+/// [R] is the concrete [PaginationRequest] type (or subclass).
+/// It defaults to the base [PaginationRequest] bound so that existing code
+/// without custom request types continues to compile unchanged.
+abstract class IPaginationCubit<T, StateType extends IPaginationState<T>,
+    R extends PaginationRequest> extends Cubit<StateType> {
+  IPaginationCubit(super.initialState);
+
+  /// Initial request configuration used when the pagination starts.
+  R get initialRequest;
+
+  /// Filters the paginated list based on the provided search term.
+  void filterPaginatedList(WhereChecker<T>? searchTerm);
+
+  /// Refreshes the paginated list, starting from the beginning.
+  void refreshPaginatedList({R? requestOverride, int? limit});
+
+  /// Fetches the next page of the paginated list.
+  void fetchPaginatedList({R? requestOverride, int? limit});
+
+  /// Cancels any inflight work.
+  void cancelOngoingRequest();
+
+  /// Disposes the cubit and its resources.
+  void dispose() {
+    cancelOngoingRequest();
+  }
+}
+
+/// Base interface for pagination cubits with list building capabilities.
+abstract class IPaginationListCubit<T, StateType extends IPaginationState<T>,
+    R extends PaginationRequest> extends IPaginationCubit<T, StateType, R> {
+  IPaginationListCubit(super.initialState);
+
+  /// Whether the cubit has fetched data at least once.
+  bool get didFetch;
+
+  /// Optional hook to transform or sort items before emitting.
+  ListBuilder<T>? get listBuilder;
+
+  /// Returns the current list of items, or empty list if not loaded.
+  List<T> get currentItems;
+
+  /// Inserts an item at the specified index.
+  /// Returns true if the item was successfully inserted.
+  Future<bool> insertEmit(T item, {int index = 0});
+
+  /// Inserts multiple items at the specified index.
+  /// Returns true if the items were successfully inserted.
+  Future<bool> insertAllEmit(List<T> items, {int index = 0});
+
+  /// Adds or updates an item in the list.
+  /// Returns true if the operation was successful.
+  Future<bool> addOrUpdateEmit(T item, {int index = 0});
+
+  /// Removes an item from the list.
+  /// Returns true if the item was found and removed.
+  Future<bool> removeItemEmit(T item);
+
+  /// Removes an item at the specified index.
+  /// Returns true if the item was found and removed.
+  Future<bool> removeAtEmit(int index);
+
+  /// Removes all items that match the predicate.
+  /// Returns true if any items were removed.
+  Future<bool> removeWhereEmit(bool Function(T item) test);
+
+  /// Updates an item in the list using a matcher and updater function.
+  /// Returns true if an item was found and updated.
+  Future<bool> updateItemEmit(
+      bool Function(T item) matcher, T Function(T item) updater);
+
+  /// Updates all items that match the predicate.
+  /// Returns true if any items were updated.
+  Future<bool> updateWhereEmit(
+      bool Function(T item) matcher, T Function(T item) updater);
+
+  /// Clears all items from the list.
+  /// Returns true if the operation was successful.
+  Future<bool> clearItems();
+
+  /// Reloads the list from the beginning (alias for refreshPaginatedList).
+  void reload();
+
+  /// Sets the list to a completely new set of items.
+  /// Returns true if the operation was successful.
+  Future<bool> setItems(List<T> items);
+
+  /// Refreshes a specific item by re-fetching it from the server.
+  ///
+  /// [matcher] identifies which item to refresh.
+  /// [refresher] is a callback that fetches the updated item from the server.
+  ///
+  /// Returns true if the item was found and refreshed, false otherwise.
+  Future<bool> refreshItem(
+    bool Function(T item) matcher,
+    Future<T> Function(T currentItem) refresher,
+  );
+
+  /// Updates the first item matching [matcher] using [updater].
+  /// Returns true if a matching item was found and updated.
+  Future<bool> updateFirstWhereEmit(
+    bool Function(T item) matcher,
+    T Function(T item) updater,
+  );
+
+  /// Updates the last item matching [matcher] using [updater].
+  /// Returns true if a matching item was found and updated.
+  Future<bool> updateLastWhereEmit(
+    bool Function(T item) matcher,
+    T Function(T item) updater,
+  );
+
+  /// Updates the item at [index] using [updater].
+  /// Returns true if the index is valid and the item was updated.
+  Future<bool> updateAtEmit(int index, T Function(T item) updater);
+
+  /// Replaces the first item matching [matcher] with [replacement].
+  /// Returns true if a matching item was found and replaced.
+  Future<bool> replaceFirstWhereEmit(
+    bool Function(T item) matcher,
+    T replacement,
+  );
+
+  /// Replaces the last item matching [matcher] with [replacement].
+  /// Returns true if a matching item was found and replaced.
+  Future<bool> replaceLastWhereEmit(
+    bool Function(T item) matcher,
+    T replacement,
+  );
+
+  /// Replaces the item at [index] with [replacement].
+  /// Returns true if the index is valid and the item was replaced.
+  Future<bool> replaceAtEmit(int index, T replacement);
+
+  /// Refreshes the first item matching [matcher] by re-fetching it from the server.
+  /// Returns true if the item was found and refreshed.
+  Future<bool> refreshFirstWhereEmit(
+    bool Function(T item) matcher,
+    Future<T> Function(T currentItem) refresher,
+  );
+
+  /// Refreshes the last item matching [matcher] by re-fetching it from the server.
+  /// Returns true if the item was found and refreshed.
+  Future<bool> refreshLastWhereEmit(
+    bool Function(T item) matcher,
+    Future<T> Function(T currentItem) refresher,
+  );
+
+  /// Refreshes the item at [index] by re-fetching it from the server.
+  /// Returns true if the index is valid and the item was refreshed.
+  Future<bool> refreshAtEmit(
+    int index,
+    Future<T> Function(T currentItem) refresher,
+  );
+
+  /// Removes the first item matching [test].
+  /// Returns true if a matching item was found and removed.
+  Future<bool> removeFirstWhereEmit(bool Function(T item) test);
+
+  /// Removes the last item matching [test].
+  /// Returns true if a matching item was found and removed.
+  Future<bool> removeLastWhereEmit(bool Function(T item) test);
+}

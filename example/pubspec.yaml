@@ -31,6 +31,7 @@ dependencies:
 
   # URL launcher for opening links
   url_launcher: ^6.2.5
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:

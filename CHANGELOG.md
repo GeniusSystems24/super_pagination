@@ -1090,7 +1090,7 @@ SuperSearchTheme(
   searchBoxTextColor: Colors.black87,
   searchBoxFocusedBorderColor: Colors.blue,
   overlayBackgroundColor: Colors.white,
-  itemFocusedColor: Colors.blue.withOpacity(0.1),
+  itemFocusedColor: Colors.blue.withValues(alpha:0.1),
   itemHoverColor: Colors.grey[200],
   loadingIndicatorColor: Colors.blue,
   // ... more properties

@@ -5,7 +5,6 @@
 > available as compatibility aliases, while new code can use
 > `SuperPagination*`.
 
-
 [![pub package](https://img.shields.io/pub/v/super_pagination.svg)](https://pub.dev/packages/super_pagination)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.9+-02569B?logo=flutter)](https://flutter.dev)
@@ -184,7 +183,7 @@ SuperPaginationListView.withCubit(
 ## Widget Classes
 
 | Widget | Layout | Use Case |
-|--------|--------|----------|
+|--------|--------|----------|-|
 | `SuperPaginationListView` | Vertical/horizontal list | Feeds, messages |
 | `SuperPaginationGridView` | Multi-column grid | Catalogs, galleries |
 | `SuperPaginationColumn` | Non-scrollable column | Embedded in ScrollView |
@@ -194,6 +193,7 @@ SuperPaginationListView.withCubit(
 | `SuperPaginationReorderableListView` | Drag-and-drop | Task lists |
 
 Each widget has two constructors:
+
 - `.withProvider(...)` - Creates cubit internally
 - `.withCubit(...)` - Uses external cubit
 
@@ -267,14 +267,14 @@ SuperSearchMultiDropdown<Product, int>.withProvider(
 ```
 
 | Display Mode | Description |
-|--------------|-------------|
+|--------------|-------------|-|
 | `SearchDisplayMode.overlay` | Default dropdown overlay |
 | `SearchDisplayMode.bottomSheet` | Fullscreen bottom sheet |
 
 ### Components
 
 | Component | Description |
-|-----------|-------------|
+|-----------|-------------|-|
 | `SuperSearchDropdown<T, K>` | Single-selection search dropdown |
 | `SuperSearchMultiDropdown<T, K>` | Multi-selection with chips |
 | `SuperSearchController<T, K>` | Controller for programmatic control |
@@ -305,8 +305,8 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Core Parameters
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `request` | `SuperPaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
+|-----------|------|----------|---------|-------------|-|
+| `request` | `SuperPaginationRequest` | Yes*| - | Pagination config (for `.withProvider`) |
 | `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
 | `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
 | `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
@@ -315,14 +315,14 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Selection Callback
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `onSelected` | `void Function(T, K)?` | No | `null` | Called with item and key when selected |
 | `onChanged` | `ValueChanged<String>?` | No | `null` | Called when text changes |
 
 #### Key-Based Selection
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `keyExtractor` | `K Function(T)?` | No | `null` | Extracts unique key from item |
 | `selectedKey` | `K?` | No | `null` | Currently selected key |
 | `selectedKeyLabelBuilder` | `String Function(K)?` | No | `null` | Label for pending key |
@@ -331,7 +331,7 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Show Selected Mode
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `showSelected` | `bool` | No | `false` | Show selected item instead of search box |
 | `initialSelectedValue` | `T?` | No | `null` | Pre-selected item on load |
 | `selectedItemBuilder` | `Widget Function(BuildContext, T, VoidCallback)?` | No | `null` | Custom selected item widget |
@@ -339,7 +339,7 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Search Box Appearance
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `decoration` | `InputDecoration?` | No | `null` | TextField decoration |
 | `style` | `TextStyle?` | No | `null` | Text style |
 | `prefixIcon` | `Widget?` | No | `null` | Leading icon |
@@ -350,7 +350,7 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Input Configuration
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `textInputAction` | `TextInputAction` | No | `search` | Keyboard action button |
 | `textCapitalization` | `TextCapitalization` | No | `none` | Text capitalization |
 | `keyboardType` | `TextInputType` | No | `text` | Keyboard type |
@@ -360,14 +360,14 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Validation
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `validator` | `String? Function(String?)?` | No | `null` | Validation function |
 | `autovalidateMode` | `AutovalidateMode?` | No | `null` | When to validate |
 
 #### Overlay State Builders
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `loadingBuilder` | `WidgetBuilder?` | No | `null` | Loading state widget |
 | `emptyBuilder` | `WidgetBuilder?` | No | `null` | Empty results widget |
 | `errorBuilder` | `Widget Function(BuildContext, Exception)?` | No | `null` | Error state widget |
@@ -379,14 +379,14 @@ SuperSearchDropdown<Product, int>.withProvider(
 #### Configuration Objects
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
 | `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
 
 #### Cubit Options (`.withProvider` only)
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `listBuilder` | `List<T> Function(List<T>)?` | No | `null` | Transform items |
 | `onInsertionCallback` | `void Function(List<T>)?` | No | `null` | Called on data load |
 | `maxPagesInMemory` | `int` | No | `5` | Max cached pages |
@@ -399,54 +399,54 @@ SuperSearchDropdown<Product, int>.withProvider(
 
 ### SuperSearchMultiDropdown Parameters
 
-#### Core Parameters
+#### Multi Core Parameters
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `request` | `SuperPaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
+|-----------|------|----------|---------|-------------|-|
+| `request` | `SuperPaginationRequest` | Yes*| - | Pagination config (for `.withProvider`) |
 | `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
 | `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
 | `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
 | `itemBuilder` | `Widget Function(BuildContext, T)` | Yes | - | Builds each result item |
 
-#### Selection Callback
+#### Multi Selection Callback
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `onSelected` | `void Function(List<T>, List<K>)?` | No | `null` | Called with items and keys when selection changes |
 | `onChanged` | `ValueChanged<String>?` | No | `null` | Called when text changes |
 | `maxSelections` | `int?` | No | `null` | Maximum items to select |
 
-#### Key-Based Selection
+#### Multi Key-Based Selection
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `keyExtractor` | `K Function(T)?` | No | `null` | Extracts unique key from item |
 | `selectedKeys` | `List<K>?` | No | `null` | Currently selected keys |
 | `selectedKeyLabelBuilder` | `String Function(K)?` | No | `null` | Label for pending keys |
 | `selectedKeyBuilder` | `Widget Function(BuildContext, K, VoidCallback)?` | No | `null` | Custom pending key chip |
 
-#### Show Selected Mode
+#### Multi Show Selected Mode
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `showSelected` | `bool` | No | `true` | Show selected chips below search |
 | `initialSelectedValues` | `List<T>?` | No | `null` | Pre-selected items on load |
 | `selectedItemBuilder` | `Widget Function(BuildContext, T, VoidCallback)?` | No | `null` | Custom selected chip |
 
-#### Selected Items Layout
+#### Multi Selected Items Layout
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `selectedItemsWrap` | `bool` | No | `true` | Wrap chips or scroll horizontally |
 | `selectedItemsSpacing` | `double` | No | `8.0` | Horizontal spacing between chips |
 | `selectedItemsRunSpacing` | `double` | No | `8.0` | Vertical spacing when wrapped |
 | `selectedItemsPadding` | `EdgeInsets` | No | `EdgeInsets.only(top: 12)` | Padding around chips container |
 
-#### Search Box Appearance
+#### Multi Search Box Appearance
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `decoration` | `InputDecoration?` | No | `null` | TextField decoration |
 | `style` | `TextStyle?` | No | `null` | Text style |
 | `prefixIcon` | `Widget?` | No | `null` | Leading icon |
@@ -454,27 +454,27 @@ SuperSearchDropdown<Product, int>.withProvider(
 | `showClearButton` | `bool` | No | `true` | Show clear button |
 | `borderRadius` | `BorderRadius?` | No | `null` | Border radius |
 
-#### Input Configuration
+#### Multi Input Configuration
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `textInputAction` | `TextInputAction` | No | `search` | Keyboard action button |
 | `textCapitalization` | `TextCapitalization` | No | `none` | Text capitalization |
 | `keyboardType` | `TextInputType` | No | `text` | Keyboard type |
 | `inputFormatters` | `List<TextInputFormatter>?` | No | `null` | Input formatters |
 | `maxLength` | `int?` | No | `null` | Max input length |
 
-#### Validation
+#### Multi Validation
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `validator` | `String? Function(String?)?` | No | `null` | Validation function |
 | `autovalidateMode` | `AutovalidateMode?` | No | `null` | When to validate |
 
-#### Overlay State Builders
+#### Multi Overlay State Builders
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `loadingBuilder` | `WidgetBuilder?` | No | `null` | Loading state widget |
 | `emptyBuilder` | `WidgetBuilder?` | No | `null` | Empty results widget |
 | `errorBuilder` | `Widget Function(BuildContext, Exception)?` | No | `null` | Error state widget |
@@ -483,17 +483,17 @@ SuperSearchDropdown<Product, int>.withProvider(
 | `separatorBuilder` | `IndexedWidgetBuilder?` | No | `null` | Item separator |
 | `overlayDecoration` | `BoxDecoration?` | No | `null` | Overlay container decoration |
 
-#### Configuration Objects
+#### Multi Configuration Objects
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
 | `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
 
-#### Cubit Options (`.withProvider` only)
+#### Multi Cubit Options (`.withProvider` only)
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|-----------|------|----------|---------|-------------|-|
 | `listBuilder` | `List<T> Function(List<T>)?` | No | `null` | Transform items |
 | `onInsertionCallback` | `void Function(List<T>)?` | No | `null` | Called on data load |
 | `maxPagesInMemory` | `int` | No | `5` | Max cached pages |
@@ -528,7 +528,7 @@ SuperPaginationListView.withProvider(
 ### Pre-Built Styles
 
 | Style | Best For |
-|-------|----------|
+|-------|----------|-|
 | `CustomErrorBuilder.material()` | First page errors |
 | `CustomErrorBuilder.compact()` | Load more errors |
 | `CustomErrorBuilder.card()` | Card-based UIs |
@@ -761,7 +761,7 @@ BlocBuilder<SuperPaginationCubit<Product, ProductRequest>, SuperPaginationState<
 ## Common Parameters
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
+|-----------|------|-------------|-|
 | `request` | `SuperPaginationRequest` | Page number and size |
 | `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Data source |
 | `itemBuilder` | `Widget Function(context, items, index)` | Item widget builder |
@@ -790,7 +790,7 @@ SuperPaginationListView.withProvider(
 ### State Builders
 
 | Parameter | Description |
-|-----------|-------------|
+|-----------|-------------|-|
 | `firstPageLoadingBuilder` | Initial loading widget |
 | `firstPageErrorBuilder` | Initial error widget |
 | `firstPageEmptyBuilder` | Empty state widget |
@@ -836,7 +836,7 @@ cubit.reload();
 ### Insert
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `insertEmit(item, {index})` | Insert single item |
 | `insertAllEmit(items, {index})` | Insert multiple items |
 | `addOrUpdateEmit(item, {index})` | Add if new, update if exists |
@@ -844,7 +844,7 @@ cubit.reload();
 ### Remove
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `removeItemEmit(item)` | Remove by value |
 | `removeAtEmit(index)` | Remove at index |
 | `removeWhereEmit(test)` | Remove all matching |
@@ -854,7 +854,7 @@ cubit.reload();
 ### Update
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `updateItemEmit(matcher, updater)` | Update first matching item |
 | `updateWhereEmit(matcher, updater)` | Update all matching items |
 | `updateFirstWhereEmit(matcher, updater)` | Update first matching item (explicit) |
@@ -864,7 +864,7 @@ cubit.reload();
 ### Replace
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `replaceFirstWhereEmit(matcher, item)` | Replace first matching item |
 | `replaceLastWhereEmit(matcher, item)` | Replace last matching item |
 | `replaceAtEmit(index, item)` | Replace item at index |
@@ -872,7 +872,7 @@ cubit.reload();
 ### Refresh (async, re-fetches from server)
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `refreshItem(matcher, refresher)` | Refresh first matching item |
 | `refreshFirstWhereEmit(matcher, refresher)` | Refresh first matching item (explicit) |
 | `refreshLastWhereEmit(matcher, refresher)` | Refresh last matching item |
@@ -881,7 +881,7 @@ cubit.reload();
 ### Bulk
 
 | Method | Description |
-|--------|-------------|
+|--------|-------------|-|
 | `setItems(items)` | Replace entire list |
 | `clearItems()` | Remove all items |
 
@@ -937,7 +937,7 @@ SuperSearchTheme(
   overlayBackgroundColor: Colors.white,
   overlayElevation: 8,
   itemHoverColor: Colors.grey[100],
-  itemFocusedColor: Colors.blue.withOpacity(0.1),
+  itemFocusedColor: Colors.blue.withValues(alpha:0.1),
 )
 ```
 

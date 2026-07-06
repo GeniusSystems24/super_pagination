@@ -100,7 +100,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
               gradient: LinearGradient(
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withOpacity(0.8),
+                  theme.colorScheme.primary.withValues(alpha:0.8),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -112,7 +112,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha:0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
@@ -136,7 +136,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
                       Text(
                         'Find products in your store',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha:0.8),
                         ),
                       ),
                     ],
@@ -180,7 +180,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
               hintText: 'Search for products...',
               prefixIcon: const Icon(Icons.search),
               filled: true,
-              fillColor: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+              fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha:0.5),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -206,7 +206,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
             headerBuilder: (context) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha:0.5),
                 border: Border(
                   bottom: BorderSide(color: theme.dividerColor),
                 ),
@@ -435,10 +435,10 @@ class _SelectedProductCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+        color: theme.colorScheme.primaryContainer.withValues(alpha:0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.primary.withOpacity(0.3),
+          color: theme.colorScheme.primary.withValues(alpha:0.3),
         ),
       ),
       child: Row(
@@ -614,7 +614,7 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -904,7 +904,7 @@ class _UserListTile extends StatelessWidget {
           ? Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withValues(alpha:0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Text(
@@ -1392,7 +1392,7 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha:0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
@@ -1457,7 +1457,7 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
               hintText: 'Search tags...',
               prefixIcon: const Icon(Icons.tag),
               filled: true,
-              fillColor: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+              fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha:0.5),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -1512,7 +1512,7 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
                 ),
                 label: Text(tag.name),
                 backgroundColor:
-                    isSelected ? Color(tag.color) : Color(tag.color).withOpacity(0.1),
+                    isSelected ? Color(tag.color) : Color(tag.color).withValues(alpha:0.1),
                 labelStyle: TextStyle(
                   color: isSelected ? Colors.white : Color(tag.color),
                   fontWeight: FontWeight.w500,
@@ -1573,7 +1573,7 @@ class _TagListTile extends StatelessWidget {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: Color(tag.color).withOpacity(0.15),
+          color: Color(tag.color).withValues(alpha:0.15),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
@@ -1589,7 +1589,7 @@ class _TagListTile extends StatelessWidget {
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withValues(alpha:0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
@@ -1619,7 +1619,7 @@ class _TagChip extends StatelessWidget {
         color: Color(tag.color),
       ),
       label: Text(tag.name),
-      backgroundColor: Color(tag.color).withOpacity(0.1),
+      backgroundColor: Color(tag.color).withValues(alpha:0.1),
       labelStyle: TextStyle(
         color: Color(tag.color),
         fontWeight: FontWeight.w500,
@@ -1661,7 +1661,7 @@ class _EmployeeDirectoryExampleState extends State<_EmployeeDirectoryExample> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha:0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -1960,7 +1960,7 @@ class _EmployeeListTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: _getColor(user.department).withOpacity(0.1),
+              color: _getColor(user.department).withValues(alpha:0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -2013,10 +2013,10 @@ class _SelectedEmployeeTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+        color: theme.colorScheme.primaryContainer.withValues(alpha:0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.primary.withOpacity(0.3),
+          color: theme.colorScheme.primary.withValues(alpha:0.3),
         ),
       ),
       child: Row(
@@ -2085,7 +2085,7 @@ class _EmployeeProfileCard extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   _getColor(employee.department),
-                  _getColor(employee.department).withOpacity(0.7),
+                  _getColor(employee.department).withValues(alpha:0.7),
                 ],
               ),
               borderRadius: const BorderRadius.vertical(
@@ -2319,7 +2319,7 @@ class _QuickAccessCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha:0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(icon, color: color, size: 20),

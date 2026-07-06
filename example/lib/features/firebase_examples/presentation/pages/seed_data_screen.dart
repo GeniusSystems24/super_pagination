@@ -40,10 +40,7 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
   ) async {
     final result = await operation();
     if (!mounted) return;
-    _showSnackBar(
-      result.message,
-      result.isSuccess ? Colors.green : Colors.red,
-    );
+    _showSnackBar(result.message, result.isSuccess ? Colors.green : Colors.red);
   }
 
   Future<void> _seedAllData() => _runOperation(_controller.seedAllData);
@@ -289,7 +286,7 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 28),
@@ -339,8 +336,8 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
       avatar: Icon(icon, size: 18, color: color),
       label: Text(label),
       onPressed: onPressed,
-      backgroundColor: color.withOpacity(0.1),
-      side: BorderSide(color: color.withOpacity(0.3)),
+      backgroundColor: color.withValues(alpha: 0.1),
+      side: BorderSide(color: color.withValues(alpha: 0.3)),
     );
   }
 

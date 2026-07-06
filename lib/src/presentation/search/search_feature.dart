@@ -10,18 +10,15 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:super_pagination/data/data.dart';
 
 import '../../application/contracts/pagination_provider.dart';
 import '../../application/contracts/retry_config.dart';
-import '../../domain/models/pagination_request.dart';
 import '../pagination/pagination_feature.dart';
 
 part 'models/search_config.dart';

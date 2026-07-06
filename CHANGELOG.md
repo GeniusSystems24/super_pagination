@@ -4,7 +4,7 @@
   `SuperPagination*` API aliases.
 - Reorganized the implementation into Domain, Application, and Presentation
   modules with MVC-oriented controllers and views.
-- Preserved the former `SmartPagination*` symbols and the `pagination.dart`
+- Preserved the former `SuperPagination*` symbols and the `pagination.dart`
   entry point for source compatibility.
 - Refactored the example application into feature-first Clean Architecture
   modules with MVC controllers, application contracts, a composition root, and
@@ -30,8 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   An internal suppression flag drops further automatic load-more triggers
   until the user initiates a new drag-scroll gesture.
 - **`preserveScrollAnchorOnAppend` parameter** on every public wrapper
-  (`SmartPaginationListView`, `SmartPaginationGridView`,
-  `SmartPaginationStaggeredGridView`, …) and on `PaginateApiView`.
+  (`SuperPaginationListView`, `SuperPaginationGridView`,
+  `SuperPaginationStaggeredGridView`, …) and on `PaginateApiView`.
   Defaults to `true`; setting it to `false` reverts to pre-3.5.0
   framework default ("stick to the bottom" via maintainExtent) — capture,
   restore, and the suppression flag are all disabled.
@@ -71,11 +71,11 @@ package never disposes a controller it did not allocate. The new
 
 ### Added
 
-- **Optional `identityKey` parameter on `SmartPaginationCubit`** for opt-in cross-page item deduplication. When configured, the cubit drops items whose identity-key already appears in an earlier accumulated page before they are appended to the merged list. Default behaviour is unchanged — without `identityKey`, items are appended exactly as the provider returned them.
+- **Optional `identityKey` parameter on `SuperPaginationCubit`** for opt-in cross-page item deduplication. When configured, the cubit drops items whose identity-key already appears in an earlier accumulated page before they are appended to the merged list. Default behaviour is unchanged — without `identityKey`, items are appended exactly as the provider returned them.
   ```dart
-  SmartPaginationCubit<Product, PaginationRequest>(
-    request: PaginationRequest(page: 1, pageSize: 20),
-    provider: PaginationProvider.future(api.fetchProducts),
+  SuperPaginationCubit<Product, SuperPaginationRequest>(
+    request: SuperPaginationRequest(page: 1, pageSize: 20),
+    provider: SuperPaginationProvider.future(api.fetchProducts),
     identityKey: (product) => product.id,
   );
   ```
@@ -84,7 +84,7 @@ package never disposes a controller it did not allocate. The new
 
 ### Fixed
 
-- **Rapid scroll could trigger duplicate concurrent load-more requests.** `SmartPaginationCubit._isFetching` is now set in `fetchPaginatedList` **before** `emit(isLoadingMore: true)` (previously inside `_fetch`, after a synchronous gap). Combined with the new `_activeLoadMoreKey` guard, ten rapid `fetchPaginatedList()` calls now produce exactly one provider call.
+- **Rapid scroll could trigger duplicate concurrent load-more requests.** `SuperPaginationCubit._isFetching` is now set in `fetchPaginatedList` **before** `emit(isLoadingMore: true)` (previously inside `_fetch`, after a synchronous gap). Combined with the new `_activeLoadMoreKey` guard, ten rapid `fetchPaginatedList()` calls now produce exactly one provider call.
 - **Stream providers double-called the factory function per page load.** `_fetch` now captures the stream instance once and reuses it for both the `.first` snapshot and the persistent `_attachStream` subscription when the stream is broadcast. Single-subscription streams still receive a second factory call (backwards-compatible fallback).
 - **`_attachStream` could double-register the same page in the same generation.** A new generation-aware guard at the top of `_attachStream` skips re-registration when an entry for the page already exists at the current generation.
 - **Empty load-more responses appended an empty page before end-of-list detection.** `_fetch` now early-returns on `pageItems.isEmpty` for load-more, sets `hasReachedEnd: true`, and does not append.
@@ -100,13 +100,13 @@ package never disposes a controller it did not allocate. The new
 
 ### Added
 
-- **Stream pagination now accumulates page subscriptions within a scope.** `PaginationProvider.stream(...)` and `PaginationProvider.mergeStreams(...)` register a new per-page subscription on every `loadMore()` instead of overwriting the previous one. Emissions on any active page update only that page's slice; the merged list reflects `page1 ∪ page2 ∪ … ∪ pageN` in page order.
-- **Per-page error annotation on `SmartPaginationLoaded.pageErrors`.** When a stream provider's page errors, only that page's subscription is cancelled and the error is recorded at `state.pageErrors[page]`. Sibling pages keep emitting, and the failing page's last good slice remains visible in the merged view. `pageErrors` is `const <int, Object>{}` by default — additive and backward-compatible.
+- **Stream pagination now accumulates page subscriptions within a scope.** `SuperPaginationProvider.stream(...)` and `SuperPaginationProvider.mergeStreams(...)` register a new per-page subscription on every `loadMore()` instead of overwriting the previous one. Emissions on any active page update only that page's slice; the merged list reflects `page1 ∪ page2 ∪ … ∪ pageN` in page order.
+- **Per-page error annotation on `SuperPaginationLoaded.pageErrors`.** When a stream provider's page errors, only that page's subscription is cancelled and the error is recorded at `state.pageErrors[page]`. Sibling pages keep emitting, and the failing page's last good slice remains visible in the merged view. `pageErrors` is `const <int, Object>{}` by default — additive and backward-compatible.
 - **Dynamic end-of-pagination derivation.** A page whose latest emission has fewer items than `pageSize` (including `[]`) signals the end of pagination and gates `loadMore()`. Re-evaluated on every emission: a later emission that restores `count == pageSize` re-enables `loadMore()` in the same scope.
 
 ### Fixed
 
-- **`MergedStreamPaginationProvider` single-stream branch leaked subscriptions.** The branch now wraps the underlying stream in a controller, so cancelling the merged subscription cancels the underlying subscription. Symmetric with the multi-stream branch.
+- **`MergedStreamSuperPaginationProvider` single-stream branch leaked subscriptions.** The branch now wraps the underlying stream in a controller, so cancelling the merged subscription cancels the underlying subscription. Symmetric with the multi-stream branch.
 - **Merged streams never closed when all children completed.** The provider now tracks per-child completion and closes the controller after the last child completes (FR-023).
 - **`_fetch` could mutate state after `dispose()`** when a future response arrived post-close. Added an `isClosed` check after the await so late responses are dropped silently (FR-005).
 - **Stale stream emissions could update a new scope's state.** Each registered per-page entry is now tagged with a scope generation; emissions whose generation no longer matches the cubit's current generation are discarded (FR-016).
@@ -159,7 +159,7 @@ await cubit.refreshItem(
 );
 
 // Enable animations with itemKeyBuilder
-SmartPaginationListView.withCubit(
+SuperPaginationListView.withCubit(
   cubit: cubit,
   itemKeyBuilder: (item, index) => item.id,
   itemBuilder: (context, items, index) => ProductTile(product: items[index]),
@@ -173,7 +173,7 @@ SmartPaginationListView.withCubit(
 ### Added
 
 - **Auto-retry on connectivity restored**: Network errors are now automatically retried when internet connection is restored
-  - New `connectivityStream` parameter in `SmartPaginationCubit` constructor for automatic monitoring
+  - New `connectivityStream` parameter in `SuperPaginationCubit` constructor for automatic monitoring
   - New `onConnectivityRestored()` method for manual notification
   - New `isNetworkError` getter to check if last error was network-related
   - Detects common network errors: SocketException, connection refused/reset/timeout, failed host lookup, etc.
@@ -182,7 +182,7 @@ SmartPaginationListView.withCubit(
 
 ```dart
 // Option 1: Using connectivity_plus package with stream
-final cubit = SmartPaginationCubit<Product, PaginationRequest>(
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: request,
   provider: provider,
   connectivityStream: Connectivity().onConnectivityChanged
@@ -220,12 +220,12 @@ Connectivity().onConnectivityChanged.listen((result) {
 
 ### Added
 
-- **SmartSearchConfig**: New `skipDebounceOnEmpty` parameter (default: `true`)
+- **SuperSearchConfig**: New `skipDebounceOnEmpty` parameter (default: `true`)
   - When `true` and `searchOnEmpty` is also `true`, search triggers immediately when text is cleared
   - Skips debounce delay for empty text to show all data instantly
   - Useful for providing immediate feedback when user clears the search field
 
-- **SmartSearchConfig**: New `fetchOnInit` parameter (default: `false`)
+- **SuperSearchConfig**: New `fetchOnInit` parameter (default: `false`)
   - When `true` and `searchOnEmpty` is also `true`, data is fetched immediately when the controller is created
   - Pre-loads data before the overlay is shown for instant display
   - Useful for scenarios where you want data ready before user interaction
@@ -236,23 +236,23 @@ Connectivity().onConnectivityChanged.listen((result) {
 
 ### Added
 
-- **SmartSearchMultiDropdown**: New `displayMode` parameter to switch between `SearchDisplayMode.overlay` (default) and `SearchDisplayMode.bottomSheet`
+- **SuperSearchMultiDropdown**: New `displayMode` parameter to switch between `SearchDisplayMode.overlay` (default) and `SearchDisplayMode.bottomSheet`
 - **SearchDisplayMode**: New enum with `overlay` and `bottomSheet` options
-- **SmartSearchBottomSheetConfig**: New configuration class for bottom sheet appearance with options:
+- **SuperSearchBottomSheetConfig**: New configuration class for bottom sheet appearance with options:
   - `title` / `titleBuilder`: Bottom sheet title
   - `confirmText` / `cancelText`: Button labels
   - `showSelectedCount`: Show selection count in title
   - `showClearAllButton`: Show clear all button
   - `heightFactor`: Bottom sheet height (0.0 to 1.0)
   - `showDragHandle`: Show drag indicator
-- **New parameters for SmartSearchMultiDropdown**:
+- **New parameters for SuperSearchMultiDropdown**:
   - `hintText`: Custom hint text for the trigger button
   - `onMaxSelectionsReached`: Callback when max selections limit is reached
 
 ### Fixed
 
-- **SmartSearchOverlay**: Fixed `onSelected` callback not being called when item is selected. The callback now always fires with nullable key (`K?`) to support cases where `keyExtractor` is not provided.
-- **SmartSearchOverlay**: Fixed overlay positioning when appearing above the search box. The overlay now anchors from the bottom and grows upward, ensuring it always touches the input field.
+- **SuperSearchOverlay**: Fixed `onSelected` callback not being called when item is selected. The callback now always fires with nullable key (`K?`) to support cases where `keyExtractor` is not provided.
+- **SuperSearchOverlay**: Fixed overlay positioning when appearing above the search box. The overlay now anchors from the bottom and grows upward, ensuring it always touches the input field.
 
 ---
 
@@ -264,14 +264,14 @@ Connectivity().onConnectivityChanged.listen((result) {
 
 The selection callbacks have been simplified and unified into a single `onSelected` callback that returns both the item and its key.
 
-**SmartSearchDropdown:**
+**SuperSearchDropdown:**
 
 | Old API | New API |
 |---------|---------|
 | `onItemSelected: (item) => ...` | `onSelected: (item, key) => ...` |
 | `onKeySelected: (key) => ...` | _(merged into onSelected)_ |
 
-**SmartSearchMultiDropdown:**
+**SuperSearchMultiDropdown:**
 
 | Old API | New API |
 |---------|---------|
@@ -282,14 +282,14 @@ The selection callbacks have been simplified and unified into a single `onSelect
 
 ```dart
 // Before (v2.x)
-SmartSearchDropdown<Product, int>.withProvider(
+SuperSearchDropdown<Product, int>.withProvider(
   onItemSelected: (product) => print(product.name),
   onKeySelected: (id) => setState(() => selectedId = id),
   // ...
 )
 
 // After (v3.0)
-SmartSearchDropdown<Product, int>.withProvider(
+SuperSearchDropdown<Product, int>.withProvider(
   keyExtractor: (product) => product.id,
   onSelected: (product, id) {
     print(product.name);
@@ -301,14 +301,14 @@ SmartSearchDropdown<Product, int>.withProvider(
 
 ```dart
 // Before (v2.x)
-SmartSearchMultiDropdown<Product, int>.withProvider(
+SuperSearchMultiDropdown<Product, int>.withProvider(
   onSelectionChanged: (products) => print(products.length),
   onKeysChanged: (ids) => setState(() => selectedIds = ids),
   // ...
 )
 
 // After (v3.0)
-SmartSearchMultiDropdown<Product, int>.withProvider(
+SuperSearchMultiDropdown<Product, int>.withProvider(
   keyExtractor: (product) => product.id,
   onSelected: (products, ids) {
     print(products.length);
@@ -324,11 +324,11 @@ SmartSearchMultiDropdown<Product, int>.withProvider(
 
 ### Added
 
-#### Key-Based Selection for SmartSearchDropdown 🔑
+#### Key-Based Selection for SuperSearchDropdown 🔑
 
 New powerful key-based selection feature that allows selecting items by their unique key/ID instead of by object reference. This is especially useful when working with API data where object instances may differ but the underlying ID is the same.
 
-**New Parameters for SmartSearchDropdown:**
+**New Parameters for SuperSearchDropdown:**
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -337,7 +337,7 @@ New powerful key-based selection feature that allows selecting items by their un
 | `onKeySelected` | `void Function(K key, T item)?` | Called when item is selected with its key |
 | `selectedKeyLabelBuilder` | `String Function(K key)?` | Builds display label from key when item not loaded |
 
-**New Parameters for SmartSearchMultiDropdown:**
+**New Parameters for SuperSearchMultiDropdown:**
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -348,7 +348,7 @@ New powerful key-based selection feature that allows selecting items by their un
 
 **Usage Example - Single Selection:**
 ```dart
-SmartSearchDropdown<Product, int>.withProvider(
+SuperSearchDropdown<Product, int>.withProvider(
   keyExtractor: (product) => product.id,
   selectedKey: selectedProductId, // int
   onKeySelected: (id, product) {
@@ -363,7 +363,7 @@ SmartSearchDropdown<Product, int>.withProvider(
 
 **Usage Example - Multi Selection:**
 ```dart
-SmartSearchMultiDropdown<Product, int>.withProvider(
+SuperSearchMultiDropdown<Product, int>.withProvider(
   keyExtractor: (product) => product.id,
   selectedKeys: selectedProductIds, // Set<int>
   onKeysChanged: (ids, products) {
@@ -387,18 +387,18 @@ SmartSearchMultiDropdown<Product, int>.withProvider(
 
 Enhanced support for pre-populating search dropdowns with initial values, perfect for edit forms and default selections.
 
-**SmartSearchDropdown:**
+**SuperSearchDropdown:**
 - `initialSelectedValue`: Set an initial item object
 - `selectedKey` + `selectedKeyLabelBuilder`: Pre-select by key with placeholder label
 
-**SmartSearchMultiDropdown:**
+**SuperSearchMultiDropdown:**
 - `initialSelectedValues`: Set initial list of item objects
 - `initialSelectedKeys`: Set initial set of keys
 
 **Form Usage Example:**
 ```dart
 // Edit form with pre-selected category
-SmartSearchDropdown<Category, int>.withProvider(
+SuperSearchDropdown<Category, int>.withProvider(
   initialSelectedValue: existingProduct.category,
   // OR use key-based pre-selection
   selectedKey: existingProduct.categoryId,
@@ -432,12 +432,12 @@ Added two comprehensive example screens demonstrating the new features:
 
 ### Fixed
 
-- Fixed type inference issues in `SmartSearchController` where `Object?` couldn't be assigned to generic type `K?`
+- Fixed type inference issues in `SuperSearchController` where `Object?` couldn't be assigned to generic type `K?`
 - Fixed null check operator usage on nullable type parameters in `selectedKeyLabel` getter
 - Renamed scroll mixin and typedefs for consistency:
-  - `SmartPaginationScrollToItem` → `PaginationScrollToItem`
-  - `SmartPaginationScrollToIndex` → `PaginationScrollToIndex`
-  - `SmartPaginationScrollToItemMixin` → `PaginationScrollToItemMixin`
+  - `SuperPaginationScrollToItem` → `PaginationScrollToItem`
+  - `SuperPaginationScrollToIndex` → `PaginationScrollToIndex`
+  - `SuperPaginationScrollToItemMixin` → `PaginationScrollToItemMixin`
 
 ---
 
@@ -447,7 +447,7 @@ Added two comprehensive example screens demonstrating the new features:
 
 #### Scroll Navigation Methods - Programmatic Scrolling 🎯
 
-New scroll navigation methods in `SmartPaginationCubit` using the `scrollview_observer` package. These methods allow you to programmatically scroll to specific items in your list or grid views.
+New scroll navigation methods in `SuperPaginationCubit` using the `scrollview_observer` package. These methods allow you to programmatically scroll to specific items in your list or grid views.
 
 **New Methods:**
 
@@ -507,7 +507,7 @@ await cubit.animateFirstWhere(
 // In your widget, wrap with ListViewObserver
 ListViewObserver(
   controller: observerController,
-  child: SmartPagination<Message, PaginationRequest>.listViewWithCubit(
+  child: SuperPagination<Message, SuperPaginationRequest>.listViewWithCubit(
     cubit: cubit,
     scrollController: scrollController,
     itemBuilder: (context, items, index) => MessageWidget(items[index]),
@@ -580,7 +580,7 @@ Added configurable error retry strategy to prevent infinite retry loops when ser
 
 **Usage:**
 ```dart
-SmartPaginationCubit<Product, PaginationRequest>(
+SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: request,
   provider: provider,
   // Prevent automatic retries on error
@@ -682,9 +682,9 @@ New powerful animation system for overlay show/hide transitions. Choose from 13 
 
 **Usage Example:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
-  overlayConfig: SmartSearchOverlayConfig(
+  overlayConfig: SuperSearchOverlayConfig(
     animationType: OverlayAnimationType.bounceScale,
     animationDuration: Duration(milliseconds: 300),
     animationCurve: Curves.easeOutBack,
@@ -713,9 +713,9 @@ The overlay now tracks the search field position in real-time when the user scro
 
 **Usage Example:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
-  overlayConfig: SmartSearchOverlayConfig(
+  overlayConfig: SuperSearchOverlayConfig(
     followTargetOnScroll: true, // Default: true
   ),
 )
@@ -737,7 +737,7 @@ Enhanced position tracking system for maximum accuracy when the overlay follows 
 - **Ticker-based monitoring**: Continuous position checking every frame for instant updates
 - **Multi-level scroll tracking**: Attaches to all ancestor `ScrollPosition` objects
 - **NotificationListener wrapper**: Catches scroll events from any scrollable in the widget tree
-- **Smart update scheduling**: Uses `addPostFrameCallback` for smooth, non-blocking updates
+- **Super update scheduling**: Uses `addPostFrameCallback` for smooth, non-blocking updates
 - **Optimized rebuilds**: Only triggers overlay rebuild when position actually changes
 
 **How it works:**
@@ -768,7 +768,7 @@ void _onPositionTick(Duration elapsed) {
 
 ### Added
 
-#### SmartSearchMultiDropdown - Multi-Selection Search 🎯
+#### SuperSearchMultiDropdown - Multi-Selection Search 🎯
 
 New widget for selecting multiple items from search results with continuous search capability.
 
@@ -782,10 +782,10 @@ New widget for selecting multiple items from search results with continuous sear
 
 **Basic Usage:**
 ```dart
-SmartSearchMultiDropdown<Product>.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
-  searchRequestBuilder: (query) => PaginationRequest(
+SuperSearchMultiDropdown<Product>.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
+  searchRequestBuilder: (query) => SuperPaginationRequest(
     page: 1,
     pageSize: 20,
     searchQuery: query,
@@ -802,7 +802,7 @@ SmartSearchMultiDropdown<Product>.withProvider(
 
 **With Max Selections:**
 ```dart
-SmartSearchMultiDropdown<Product>.withProvider(
+SuperSearchMultiDropdown<Product>.withProvider(
   // ... other properties
   maxSelections: 5, // Limit to 5 items
   onSelectionChanged: (products) {
@@ -813,7 +813,7 @@ SmartSearchMultiDropdown<Product>.withProvider(
 
 **Custom Selected Item Builder:**
 ```dart
-SmartSearchMultiDropdown<Product>.withProvider(
+SuperSearchMultiDropdown<Product>.withProvider(
   // ... other properties
   selectedItemBuilder: (context, product, onRemove) => Chip(
     label: Text(product.name),
@@ -840,7 +840,7 @@ SmartSearchMultiDropdown<Product>.withProvider(
 
 ```dart
 // Access controller
-final controller = SmartSearchMultiController<Product>(...);
+final controller = SuperSearchMultiController<Product>(...);
 
 // Check selection
 controller.selectedItems; // List of selected items
@@ -870,13 +870,13 @@ Renamed `initialSelectedItem` to `initialSelectedValue` for consistency and clar
 
 ```dart
 // Before (v2.3.0 - v2.3.1)
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   initialSelectedItem: preSelectedProduct,
   // ...
 )
 
 // After (v2.3.2+)
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   initialSelectedValue: preSelectedProduct,
   // ...
 )
@@ -886,25 +886,25 @@ SmartSearchDropdown<Product>.withProvider(
 
 The `initialValue` parameter (added in v2.3.1) has been removed. Use `initialSelectedValue` instead to pre-select an item.
 
-#### SmartSearchTheme Auto-Detection 🎨
+#### SuperSearchTheme Auto-Detection 🎨
 
-`SmartSearchTheme.of(context)` now automatically detects the system theme (light/dark) when no explicit theme extension is provided.
+`SuperSearchTheme.of(context)` now automatically detects the system theme (light/dark) when no explicit theme extension is provided.
 
 **Before (v2.3.1):**
 ```dart
 // Always fell back to light theme
-SmartSearchTheme.of(context); // → SmartSearchTheme.light()
+SuperSearchTheme.of(context); // → SuperSearchTheme.light()
 ```
 
 **After (v2.3.2):**
 ```dart
 // Now respects system brightness
-SmartSearchTheme.of(context);
-// → SmartSearchTheme.dark() if system is in dark mode
-// → SmartSearchTheme.light() if system is in light mode
+SuperSearchTheme.of(context);
+// → SuperSearchTheme.dark() if system is in dark mode
+// → SuperSearchTheme.light() if system is in light mode
 ```
 
-This means SmartSearch widgets will automatically adapt to the system theme without requiring explicit `SmartSearchTheme.dark()` or `SmartSearchTheme.light()` configuration.
+This means SuperSearch widgets will automatically adapt to the system theme without requiring explicit `SuperSearchTheme.dark()` or `SuperSearchTheme.light()` configuration.
 
 ---
 
@@ -912,9 +912,9 @@ This means SmartSearch widgets will automatically adapt to the system theme with
 
 ### Added
 
-#### Enhanced SmartSearchDropdown Form Support 📝
+#### Enhanced SuperSearchDropdown Form Support 📝
 
-New form-related features for SmartSearchDropdown to enable form validation and input formatting.
+New form-related features for SuperSearchDropdown to enable form validation and input formatting.
 
 **New Parameters:**
 | Parameter | Type | Description |
@@ -930,7 +930,7 @@ New form-related features for SmartSearchDropdown to enable form validation and 
 
 **Usage with Validation:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
   validator: (value) {
     if (value == null || value.isEmpty) {
@@ -945,7 +945,7 @@ SmartSearchDropdown<Product>.withProvider(
 
 **Usage with Input Formatters:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
   inputFormatters: [
     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
@@ -962,13 +962,13 @@ SmartSearchDropdown<Product>.withProvider(
 
 ### Added
 
-#### Show Selected Mode for SmartSearchDropdown 🎯
+#### Show Selected Mode for SuperSearchDropdown 🎯
 
 New `showSelected` feature that displays the selected item instead of the search box after selection.
 
 **Basic Usage:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
   showSelected: true,
   onItemSelected: (product) {
@@ -979,7 +979,7 @@ SmartSearchDropdown<Product>.withProvider(
 
 **Custom Selected Item Display:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
   showSelected: true,
   selectedItemBuilder: (context, product, onClear) => Container(
@@ -1002,7 +1002,7 @@ SmartSearchDropdown<Product>.withProvider(
 
 **With Initial Selection:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
   showSelected: true,
   initialSelectedItem: preSelectedProduct,
@@ -1035,7 +1035,7 @@ controller.clearSelection(requestFocus: false); // Don't auto-focus
 **Behavior:**
 - When `showSelected: true` and an item is selected, the search box is replaced with the selected item display
 - Tapping on the selected item (or the clear button) clears the selection and shows the search box again
-- The selected item is automatically styled using `SmartSearchTheme` colors
+- The selected item is automatically styled using `SuperSearchTheme` colors
 - If `selectedItemBuilder` is not provided, a default display using `itemBuilder` is used
 
 ---
@@ -1044,18 +1044,18 @@ controller.clearSelection(requestFocus: false); // Don't auto-focus
 
 ### Added
 
-#### SmartSearchTheme - ThemeExtension Support 🎨
+#### SuperSearchTheme - ThemeExtension Support 🎨
 
-New powerful theming system for SmartSearch widgets using Flutter's ThemeExtension pattern.
+New powerful theming system for SuperSearch widgets using Flutter's ThemeExtension pattern.
 
 **Light & Dark Theme Support:**
 ```dart
 MaterialApp(
   theme: ThemeData.light().copyWith(
-    extensions: [SmartSearchTheme.light()],
+    extensions: [SuperSearchTheme.light()],
   ),
   darkTheme: ThemeData.dark().copyWith(
-    extensions: [SmartSearchTheme.dark()],
+    extensions: [SuperSearchTheme.dark()],
   ),
 )
 ```
@@ -1071,21 +1071,21 @@ MaterialApp(
 | **Scrollbar** | `scrollbarColor`, `scrollbarThickness`, `scrollbarRadius` |
 
 **Factory Constructors:**
-- `SmartSearchTheme.light()` - Modern light theme with Indigo accent colors
-- `SmartSearchTheme.dark()` - Dark theme with purple accent colors
+- `SuperSearchTheme.light()` - Modern light theme with Indigo accent colors
+- `SuperSearchTheme.dark()` - Dark theme with purple accent colors
 
 **Accessing Theme:**
 ```dart
 // Get theme with fallback to light
-final theme = SmartSearchTheme.of(context);
+final theme = SuperSearchTheme.of(context);
 
 // Get theme or null
-final theme = SmartSearchTheme.maybeOf(context);
+final theme = SuperSearchTheme.maybeOf(context);
 ```
 
 **Custom Theme Example:**
 ```dart
-SmartSearchTheme(
+SuperSearchTheme(
   searchBoxBackgroundColor: Colors.grey[100],
   searchBoxTextColor: Colors.black87,
   searchBoxFocusedBorderColor: Colors.blue,
@@ -1103,8 +1103,8 @@ SmartSearchTheme(
 
 ### Changed
 
-- **SmartSearchBox**: Now uses `SmartSearchTheme` for default styling
-- **SmartSearchOverlay**: Uses theme for overlay container, items, and state widgets
+- **SuperSearchBox**: Now uses `SuperSearchTheme` for default styling
+- **SuperSearchOverlay**: Uses theme for overlay container, items, and state widgets
 - **_FocusableItem**: Now supports hover color from theme
 - **Scrollbar**: Added theme-aware scrollbar to results list
 - **Example App**: Added theme toggle button in Search Dropdown screen
@@ -1120,7 +1120,7 @@ SmartSearchTheme(
 
 ### Added
 
-#### Keyboard Navigation for SmartSearchDropdown ⌨️
+#### Keyboard Navigation for SuperSearchDropdown ⌨️
 
 Full keyboard navigation support for the search dropdown with focus state persistence.
 
@@ -1164,9 +1164,9 @@ controller.hasItemFocus;      // Whether an item is focused
 
 **Usage Example:**
 ```dart
-SmartSearchDropdown<Product>.withProvider(
+SuperSearchDropdown<Product>.withProvider(
   // ... other properties
-  searchConfig: SmartSearchConfig(
+  searchConfig: SuperSearchConfig(
     clearOnClose: false, // Keep focus when closing
   ),
 )
@@ -1178,29 +1178,29 @@ SmartSearchDropdown<Product>.withProvider(
 
 ### Added
 
-#### SmartSearchBox - Search with Overlay Dropdown 🔍
+#### SuperSearchBox - Search with Overlay Dropdown 🔍
 
-New powerful search component that connects to SmartPaginationCubit for searching with an auto-positioning overlay dropdown.
+New powerful search component that connects to SuperPaginationCubit for searching with an auto-positioning overlay dropdown.
 
 **New Classes:**
-- `SmartSearchBox<T>` - Search input widget connected to pagination cubit
-- `SmartSearchOverlay<T>` - Combines search box with overlay dropdown
-- `SmartSearchDropdown<T>` - Convenient all-in-one search dropdown widget
-- `SmartSearchController<T>` - Controller for managing search state
-- `SmartSearchConfig` - Configuration for search behavior (debounce, min length, etc.)
-- `SmartSearchOverlayConfig` - Configuration for overlay appearance and positioning
+- `SuperSearchBox<T>` - Search input widget connected to pagination cubit
+- `SuperSearchOverlay<T>` - Combines search box with overlay dropdown
+- `SuperSearchDropdown<T>` - Convenient all-in-one search dropdown widget
+- `SuperSearchController<T>` - Controller for managing search state
+- `SuperSearchConfig` - Configuration for search behavior (debounce, min length, etc.)
+- `SuperSearchOverlayConfig` - Configuration for overlay appearance and positioning
 - `OverlayPosition` - Enum for overlay positioning (auto, top, bottom, left, right)
 - `OverlayPositioner` - Utility for calculating optimal overlay position
 
 **Key Features:**
 - **Auto-Positioning**: Overlay automatically positions itself in the best available space
-- **Cubit Integration**: Directly connected to SmartPaginationCubit for data fetching
+- **Cubit Integration**: Directly connected to SuperPaginationCubit for data fetching
 - **Debounced Search**: Configurable delay to prevent excessive API calls
 - **Flexible Placement**: Position overlay top, bottom, left, right, or auto
 - **Customizable**: Full control over search box and overlay appearance
 - **Animations**: Smooth show/hide animations with configurable duration
 
-**SmartSearchDropdown Constructors:**
+**SuperSearchDropdown Constructors:**
 - `.withProvider()` - Creates internal cubit with data provider
 - `.withCubit()` - Uses externally managed cubit
 
@@ -1208,12 +1208,12 @@ New powerful search component that connects to SmartPaginationCubit for searchin
 
 ```dart
 // Simple search dropdown with provider
-SmartSearchDropdown<Product>.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future((request) async {
+SuperSearchDropdown<Product>.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future((request) async {
     return await api.searchProducts(request.searchQuery ?? '');
   }),
-  searchRequestBuilder: (query) => PaginationRequest(
+  searchRequestBuilder: (query) => SuperPaginationRequest(
     page: 1,
     pageSize: 20,
     searchQuery: query,
@@ -1228,14 +1228,14 @@ SmartSearchDropdown<Product>.withProvider(
 )
 
 // With external cubit
-final searchCubit = SmartPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(searchProducts),
+final searchCubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(searchProducts),
 );
 
-SmartSearchDropdown<Product>.withCubit(
+SuperSearchDropdown<Product>.withCubit(
   cubit: searchCubit,
-  searchRequestBuilder: (query) => PaginationRequest(
+  searchRequestBuilder: (query) => SuperPaginationRequest(
     page: 1,
     pageSize: 20,
     searchQuery: query,
@@ -1244,7 +1244,7 @@ SmartSearchDropdown<Product>.withCubit(
     title: Text(product.name),
   ),
   onItemSelected: (product) => print('Selected: ${product.name}'),
-  overlayConfig: SmartSearchOverlayConfig(
+  overlayConfig: SuperSearchOverlayConfig(
     position: OverlayPosition.bottom, // Force bottom position
     maxHeight: 400,
     borderRadius: 12,
@@ -1252,15 +1252,15 @@ SmartSearchDropdown<Product>.withCubit(
   ),
 )
 
-// Using SmartSearchBox and SmartSearchOverlay separately
-final controller = SmartSearchController<Product>(
+// Using SuperSearchBox and SuperSearchOverlay separately
+final controller = SuperSearchController<Product>(
   cubit: productsCubit,
-  searchRequestBuilder: (query) => PaginationRequest(
+  searchRequestBuilder: (query) => SuperPaginationRequest(
     page: 1,
     pageSize: 20,
     searchQuery: query,
   ),
-  config: SmartSearchConfig(
+  config: SuperSearchConfig(
     debounceDelay: Duration(milliseconds: 500),
     minSearchLength: 2,
   ),
@@ -1268,14 +1268,14 @@ final controller = SmartSearchController<Product>(
 
 // Place search box in app bar
 AppBar(
-  title: SmartSearchBox<Product>(
+  title: SuperSearchBox<Product>(
     controller: controller,
     decoration: InputDecoration(hintText: 'Search...'),
   ),
 )
 
 // Place overlay anywhere in your layout
-SmartSearchOverlay<Product>(
+SuperSearchOverlay<Product>(
   controller: controller,
   itemBuilder: (context, product) => ProductTile(product),
   onItemSelected: selectProduct,
@@ -1333,7 +1333,7 @@ Item insertion methods now respect the active sort order by inserting items dire
 - `availableOrders` - Get list of all available sort orders
 
 **State Updates:**
-- `SmartPaginationLoaded.activeOrderId` - Track current sort order in state
+- `SuperPaginationLoaded.activeOrderId` - Track current sort order in state
 
 ### Usage Examples
 
@@ -1369,9 +1369,9 @@ final orders = SortOrderCollection<Product>(
 );
 
 // Create cubit with orders
-final cubit = SmartPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   orders: orders,
 );
 
@@ -1393,7 +1393,7 @@ cubit.addSortOrder(SortOrder.byField(
 cubit.sortBy((a, b) => a.stock.compareTo(b.stock));
 
 // Access current order in state
-if (state is SmartPaginationLoaded<Product>) {
+if (state is SuperPaginationLoaded<Product>) {
   print('Current sort: ${state.activeOrderId}');
 }
 ```
@@ -1409,13 +1409,13 @@ if (state is SmartPaginationLoaded<Product>) {
 New dedicated widget classes for each view type, providing cleaner and more intuitive API:
 
 **New Widget Classes:**
-- `SmartPaginationListView` - Paginated ListView widget
-- `SmartPaginationGridView` - Paginated GridView widget
-- `SmartPaginationColumn` - Paginated non-scrollable Column layout
-- `SmartPaginationRow` - Paginated non-scrollable Row layout
-- `SmartPaginationPageView` - Paginated PageView widget
-- `SmartPaginationStaggeredGridView` - Paginated Pinterest-style masonry layout
-- `SmartPaginationReorderableListView` - Paginated drag-and-drop reorderable list
+- `SuperPaginationListView` - Paginated ListView widget
+- `SuperPaginationGridView` - Paginated GridView widget
+- `SuperPaginationColumn` - Paginated non-scrollable Column layout
+- `SuperPaginationRow` - Paginated non-scrollable Row layout
+- `SuperPaginationPageView` - Paginated PageView widget
+- `SuperPaginationStaggeredGridView` - Paginated Pinterest-style masonry layout
+- `SuperPaginationReorderableListView` - Paginated drag-and-drop reorderable list
 
 **Each widget class provides:**
 - `.withProvider()` constructor - Creates cubit internally with data provider
@@ -1425,41 +1425,41 @@ New dedicated widget classes for each view type, providing cleaner and more intu
 - **Clearer Intent**: Each widget class explicitly states its layout type
 - **Better IDE Support**: Autocomplete shows relevant parameters for each view type
 - **Reduced Confusion**: No need to specify `itemBuilderType` parameter
-- **Same Functionality**: All features from `SmartPagination` are available
+- **Same Functionality**: All features from `SuperPagination` are available
 
 ### Usage Examples
 
 ```dart
-// Before (using SmartPagination with named constructors)
-SmartPagination.listViewWithProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+// Before (using SuperPagination with named constructors)
+SuperPagination.listViewWithProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
 
 // After (using specialized widget class)
-SmartPaginationListView.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+SuperPaginationListView.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
 
 // GridView example
-SmartPaginationGridView.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+SuperPaginationGridView.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
   itemBuilder: (context, items, index) => ProductCard(items[index]),
 )
 
 // External cubit example
-final cubit = SmartPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   dataAge: Duration(minutes: 5),
 );
 
-SmartPaginationListView.withCubit(
+SuperPaginationListView.withCubit(
   cubit: cubit,
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
@@ -1467,7 +1467,7 @@ SmartPaginationListView.withCubit(
 
 ### Note
 
-The original `SmartPagination` class with named constructors remains available for backward compatibility. Both approaches work identically - choose the style that best fits your preferences.
+The original `SuperPagination` class with named constructors remains available for backward compatibility. Both approaches work identically - choose the style that best fits your preferences.
 
 ---
 
@@ -1482,13 +1482,13 @@ New feature for automatic data invalidation and refresh when using cubit as a gl
 **New Parameters:**
 - `dataAge: Duration?` - Configure how long data remains valid after fetching
 
-**New Properties on SmartPaginationCubit:**
+**New Properties on SuperPaginationCubit:**
 - `dataAge` - Get the configured data age duration
 - `lastFetchTime` - Get the timestamp of the last successful data fetch
 - `isDataExpired` - Check if data has expired based on the configured dataAge
 - `checkAndResetIfExpired()` - Check expiration and reset if expired (returns `true` if reset)
 
-**New Properties on SmartPaginationLoaded State:**
+**New Properties on SuperPaginationLoaded State:**
 - `fetchedAt: DateTime?` - Timestamp when data was initially fetched
 - `dataExpiredAt: DateTime?` - Timestamp when data will expire (null if no expiration)
 
@@ -1503,9 +1503,9 @@ New feature for automatic data invalidation and refresh when using cubit as a gl
 
 ```dart
 // Create a global cubit with 5-minute data age
-final productsCubit = SmartPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+final productsCubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   dataAge: Duration(minutes: 5), // Data expires after 5 minutes
 );
 
@@ -1516,7 +1516,7 @@ if (productsCubit.isDataExpired) {
 }
 
 // Access expiration info from state
-if (state is SmartPaginationLoaded<Product>) {
+if (state is SuperPaginationLoaded<Product>) {
   print('Data fetched at: ${state.fetchedAt}');
   print('Data expires at: ${state.dataExpiredAt}');
 }
@@ -1561,7 +1561,7 @@ New programmatic data operations accessible from anywhere in your app via the cu
 
 ```dart
 // Get the cubit reference
-final cubit = SmartPaginationCubit<Product, PaginationRequest>(...);
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(...);
 
 // Insert operations
 cubit.insertEmit(newProduct);
@@ -1599,7 +1599,7 @@ print('Total items: ${items.length}');
 
 ### Added
 
-- **New Constructor**: `SmartPagination.column` and `SmartPagination.columnWithCubit` for non-scrollable column layouts.
+- **New Constructor**: `SuperPagination.column` and `SuperPagination.columnWithCubit` for non-scrollable column layouts.
 - **External Cubit Support**: Added `...WithCubit` named constructors for all view types (`listViewWithCubit`, `gridViewWithCubit`, `pageViewWithCubit`, `staggeredGridViewWithCubit`, `rowWithCubit`) to easily use externally created Cubits.
 - **Exposed Parameters**: Added missing parameters to all convenience constructors:
   - `scrollController`: For external scroll control.
@@ -1610,8 +1610,8 @@ print('Total items: ${items.length}');
 ### Breaking Changes ⚠️
 
 - **Constructor Renaming**:
-  - `SmartPagination(...)` is now `SmartPagination.withProvider(...)`.
-  - `SmartPagination.cubit(...)` is now `SmartPagination.withCubit(...)`.
+  - `SuperPagination(...)` is now `SuperPagination.withProvider(...)`.
+  - `SuperPagination.cubit(...)` is now `SuperPagination.withCubit(...)`.
   - All named constructors now have explicit suffixes:
     - `listView` -> `listViewWithProvider` / `listViewWithCubit`
     - `gridView` -> `gridViewWithProvider` / `gridViewWithCubit`
@@ -1621,7 +1621,7 @@ print('Total items: ${items.length}');
     - `row` -> `rowWithProvider` / `rowWithCubit`
     - `reorderableListView` -> `reorderableListViewWithProvider` / `reorderableListViewWithCubit`
 
-- **Removed Convenience Widgets**: `SmartPaginatedListView` and `SmartPaginatedGridView` have been removed. Use `SmartPagination` directly.
+- **Removed Convenience Widgets**: `SuperPaginatedListView` and `SuperPaginatedGridView` have been removed. Use `SuperPagination` directly.
 - **API Unification**:
   - `childBuilder` is renamed to `itemBuilder`.
   - `itemBuilder` signature changed from `(context, item, index)` to `(context, items, index)`. You must now access the item using `items[index]`.
@@ -1633,7 +1633,7 @@ print('Total items: ${items.length}');
 
 - Updated all example screens to use the new constructor names.
 - Improved API clarity by explicitly distinguishing between `Provider` (internal Cubit creation) and `Cubit` (external Cubit injection) usage.
-- Updated `SmartPagination` to be the single entry point for all pagination types.
+- Updated `SuperPagination` to be the single entry point for all pagination types.
 - Updated `emptyWidget`, `loadingWidget`, and `bottomLoader` to accept `Widget` directly.
 - Updated `separator` to accept `Widget` directly.
 
@@ -1649,7 +1649,7 @@ print('Total items: ${items.length}');
 ### Changed
 
 - Enhanced README.md for pub.dev with professional presentation
-  - Added "Why Smart Pagination?" section highlighting key benefits
+  - Added "Why Super Pagination?" section highlighting key benefits
   - Added comprehensive Table of Contents
   - Reorganized content with clear visual separators
   - Added detailed documentation for all 28 example screens
@@ -1678,17 +1678,17 @@ print('Total items: ${items.length}');
 
 #### Unified Provider Pattern 🔄
 
-- **PaginationProvider Sealed Class**: Type-safe unified provider pattern
-  - `PaginationProvider.future()` for REST API pagination
-  - `PaginationProvider.stream()` for real-time updates
-  - `PaginationProvider.mergeStreams()` for combining multiple streams
+- **SuperPaginationProvider Sealed Class**: Type-safe unified provider pattern
+  - `SuperPaginationProvider.future()` for REST API pagination
+  - `SuperPaginationProvider.stream()` for real-time updates
+  - `SuperPaginationProvider.mergeStreams()` for combining multiple streams
   - Single provider parameter replaces separate `dataProvider` and `streamProvider`
   - Pattern matching with switch expressions for type safety
   - Legacy typedefs maintained for backward compatibility
 
 #### Merged Streams Support 🔀
 
-- **MergedStreamPaginationProvider**: Merge multiple data streams
+- **MergedStreamSuperPaginationProvider**: Merge multiple data streams
   - Combines streams into a single unified stream
   - Emits data whenever any source stream emits
   - Perfect for aggregating data from multiple sources
@@ -1753,21 +1753,21 @@ print('Total items: ${items.length}');
 
 #### API Improvements
 
-- **SmartPagination**: Updated to unified `PaginationProvider<T>` parameter
+- **SuperPagination**: Updated to unified `SuperPaginationProvider<T>` parameter
   - Removed separate `dataProvider` and `streamProvider`
   - Single `provider` parameter accepts both Future and Stream
   - Added `retryConfig` parameter support
   - Cleaner, more intuitive API
 - **Convenience Widgets**: Updated to unified provider pattern
-  - `SmartPaginatedListView` uses `provider` parameter
-  - `SmartPaginatedGridView` uses `provider` parameter
+  - `SuperPaginatedListView` uses `provider` parameter
+  - `SuperPaginatedGridView` uses `provider` parameter
   - Added error builder parameters (`firstPageErrorBuilder`, `loadMoreErrorBuilder`)
 
 #### Documentation Updates
 
 - Updated README.md for unified provider pattern
 - Added comprehensive error handling documentation
-- Updated all code examples to use `PaginationProvider`
+- Updated all code examples to use `SuperPaginationProvider`
 - Added error handling guide: `docs/ERROR_HANDLING.md`
 
 ### Removed
@@ -1785,14 +1785,14 @@ print('Total items: ${items.length}');
 
 ```dart
 // Before (v0.0.4)
-SmartPagination<Product, PaginationRequest>(
+SuperPagination<Product, SuperPaginationRequest>(
   dataProvider: (request) => apiService.fetchProducts(request),
   ...
 )
 
 // After (v0.0.5)
-SmartPagination<Product, PaginationRequest>(
-  provider: PaginationProvider.future(
+SuperPagination<Product, SuperPaginationRequest>(
+  provider: SuperPaginationProvider.future(
     (request) => apiService.fetchProducts(request),
   ),
   ...
@@ -1803,14 +1803,14 @@ SmartPagination<Product, PaginationRequest>(
 
 ```dart
 // Before
-SmartPagination<Product, PaginationRequest>(
+SuperPagination<Product, SuperPaginationRequest>(
   streamProvider: (request) => apiService.productsStream(request),
   ...
 )
 
 // After
-SmartPagination<Product, PaginationRequest>(
-  provider: PaginationProvider.stream(
+SuperPagination<Product, SuperPaginationRequest>(
+  provider: SuperPaginationProvider.stream(
     (request) => apiService.productsStream(request),
   ),
   ...
@@ -1833,12 +1833,12 @@ SmartPagination<Product, PaginationRequest>(
 
 #### Convenience Widgets 🛠️
 
-- **SmartPaginatedListView**: Simplified ListView pagination widget
+- **SuperPaginatedListView**: Simplified ListView pagination widget
   - Cleaner API with direct `childBuilder`
   - Optional `separatorBuilder`, `emptyBuilder`, `errorBuilder`
   - Built-in retry configuration support
   - 40-60% less boilerplate code
-- **SmartPaginatedGridView**: Simplified GridView pagination widget
+- **SuperPaginatedGridView**: Simplified GridView pagination widget
   - Dedicated `gridDelegate` configuration
   - Direct `childBuilder` for grid items
   - Full pagination features with less code
@@ -1873,19 +1873,19 @@ SmartPagination<Product, PaginationRequest>(
 #### Comprehensive Test Suite 🧪
 
 - **60+ Unit Tests** covering all core functionality
-- **Data Model Tests**: PaginationMeta (12 tests), PaginationRequest (8 tests)
+- **Data Model Tests**: SuperPaginationMeta (12 tests), SuperPaginationRequest (8 tests)
 - **Error Handling Tests**: RetryConfig, RetryHandler, PaginationException
-- **Cubit Tests**: SmartPaginationCubit (14 tests), DualPaginationCubit (12 tests)
+- **Cubit Tests**: SuperPaginationCubit (14 tests), DualPaginationCubit (12 tests)
 - **Test Infrastructure**: Test models, factories, proper organization
 
 ### Testing Coverage
 
-- ✅ PaginationMeta (100%)
-- ✅ PaginationRequest (100%)
+- ✅ SuperPaginationMeta (100%)
+- ✅ SuperPaginationRequest (100%)
 - ✅ RetryConfig (100%)
 - ✅ RetryHandler (95%)
 - ✅ PaginationException classes (100%)
-- ✅ SmartPaginationCubit (85%)
+- ✅ SuperPaginationCubit (85%)
 - ✅ DualPaginationCubit (80%)
 
 ### Dependencies
@@ -1934,8 +1934,8 @@ SmartPagination<Product, PaginationRequest>(
 
 #### Core Features
 
-- Initial release of Smart Pagination library
-- **SmartPagination** widget with multiple layout support:
+- Initial release of Super Pagination library
+- **SuperPagination** widget with multiple layout support:
   - ListView with separators
   - GridView with configurable delegates
   - PageView for swipeable content
@@ -1944,10 +1944,10 @@ SmartPagination<Product, PaginationRequest>(
 
 #### State Management
 
-- **SmartPaginationCubit**: BLoC pattern implementation
+- **SuperPaginationCubit**: BLoC pattern implementation
 - Three state types: `Initial`, `Loaded`, `Error`
-- **PaginationMeta**: Metadata tracking
-- **PaginationRequest**: Pagination configuration
+- **SuperPaginationMeta**: Metadata tracking
+- **SuperPaginationRequest**: Pagination configuration
 
 #### Advanced Features
 
@@ -1960,7 +1960,7 @@ SmartPagination<Product, PaginationRequest>(
 
 #### Controller
 
-- **SmartPaginationController**: Scroll capabilities
+- **SuperPaginationController**: Scroll capabilities
 - Programmatic scrolling: `scrollToIndex()`, `scrollToItem()`
 
 #### UI Components

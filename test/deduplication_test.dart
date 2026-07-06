@@ -15,10 +15,10 @@ class _Item {
 void main() {
   group('Item Deduplication (spec 003)', () {
     test('T20: with identityKey, cross-page duplicates appear once', () async {
-      final cubit = SmartPaginationCubit<_Item, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<_Item, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         identityKey: (item) => item.id,
-        provider: PaginationProvider<_Item, PaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),
@@ -44,7 +44,7 @@ void main() {
       cubit.fetchPaginatedList();
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      final loaded = cubit.state as SmartPaginationLoaded<_Item>;
+      final loaded = cubit.state as SuperPaginationLoaded<_Item>;
       expect(loaded.items.length, 9,
           reason: 'duplicate id=4 from page 2 must be dropped');
       expect(loaded.items.map((i) => i.id).toSet().length, 9);
@@ -55,10 +55,10 @@ void main() {
     });
 
     test('T21: without identityKey, items are appended as-is', () async {
-      final cubit = SmartPaginationCubit<_Item, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<_Item, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         // No identityKey configured.
-        provider: PaginationProvider<_Item, PaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),
@@ -83,7 +83,7 @@ void main() {
       cubit.fetchPaginatedList();
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      final loaded = cubit.state as SmartPaginationLoaded<_Item>;
+      final loaded = cubit.state as SuperPaginationLoaded<_Item>;
       expect(loaded.items.length, 10,
           reason: 'no identityKey ⇒ every server item is appended verbatim');
 
@@ -92,13 +92,13 @@ void main() {
 
     test('T22: deduplication runs before onInsertionCallback', () async {
       final receivedKeys = <List<int>>[];
-      final cubit = SmartPaginationCubit<_Item, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<_Item, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         identityKey: (item) => item.id,
         onInsertionCallback: (items) {
           receivedKeys.add(items.map((i) => i.id).toList());
         },
-        provider: PaginationProvider<_Item, PaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),

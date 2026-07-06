@@ -4,14 +4,14 @@ import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
 /// Example demonstrating smart preloading with invisibleItemsThreshold
-class SmartPreloadingScreen extends StatefulWidget {
-  const SmartPreloadingScreen({super.key});
+class SuperPreloadingScreen extends StatefulWidget {
+  const SuperPreloadingScreen({super.key});
 
   @override
-  State<SmartPreloadingScreen> createState() => _SmartPreloadingScreenState();
+  State<SuperPreloadingScreen> createState() => _SuperPreloadingScreenState();
 }
 
-class _SmartPreloadingScreenState extends State<SmartPreloadingScreen> {
+class _SuperPreloadingScreenState extends State<SuperPreloadingScreen> {
   int _threshold = 3;
   int _loadMoreTriggers = 0;
 
@@ -19,7 +19,7 @@ class _SmartPreloadingScreenState extends State<SmartPreloadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Smart Preloading'),
+        title: const Text('Super Preloading'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Column(
@@ -136,10 +136,10 @@ class _SmartPreloadingScreenState extends State<SmartPreloadingScreen> {
           // Product List
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
+                SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey(_threshold), // Rebuild when threshold changes
-              request: const PaginationRequest(page: 1, pageSize: 15),
-              provider: PaginationProvider.future(
+              request: const SuperPaginationRequest(page: 1, pageSize: 15),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, items, index) {

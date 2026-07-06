@@ -1,9 +1,9 @@
 part of '../pagination_feature.dart';
 
-class SmartPaginationController<T, R extends PaginationRequest>
+class SuperPaginationController<T, R extends SuperPaginationRequest>
     implements IPaginationScrollController<T, R> {
-  SmartPaginationController({
-    required SmartPaginationCubit<T, R> cubit,
+  SuperPaginationController({
+    required SuperPaginationCubit<T, R> cubit,
     this.isPublic = false,
     this.estimatedItemHeight = 60.0,
     this.animationDuration = const Duration(milliseconds: 500),
@@ -14,9 +14,9 @@ class SmartPaginationController<T, R extends PaginationRequest>
     this.orderListeners,
   }) : _cubit = cubit;
 
-  factory SmartPaginationController.of({
+  factory SuperPaginationController.of({
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     ListBuilder<T>? listBuilder,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -29,7 +29,7 @@ class SmartPaginationController<T, R extends PaginationRequest>
     List<IPaginationFilterChangeListener<T>>? filterListeners,
     List<IPaginationOrderChangeListener<T>>? orderListeners,
   }) {
-    final cubit = SmartPaginationCubit<T, R>(
+    final cubit = SuperPaginationCubit<T, R>(
       request: request,
       provider: provider,
       listBuilder: listBuilder,
@@ -37,7 +37,7 @@ class SmartPaginationController<T, R extends PaginationRequest>
       onClear: onClear,
     );
 
-    return SmartPaginationController<T, R>(
+    return SuperPaginationController<T, R>(
       cubit: cubit,
       isPublic: isPublic,
       estimatedItemHeight: estimatedItemHeight,
@@ -50,10 +50,10 @@ class SmartPaginationController<T, R extends PaginationRequest>
     );
   }
 
-  final SmartPaginationCubit<T, R> _cubit;
+  final SuperPaginationCubit<T, R> _cubit;
 
   @override
-  SmartPaginationCubit<T, R> get cubit => _cubit;
+  SuperPaginationCubit<T, R> get cubit => _cubit;
 
   @override
   SliverObserverController? observerController;

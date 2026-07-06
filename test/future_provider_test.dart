@@ -1,6 +1,6 @@
 // US3 acceptance tests for spec 002-stabilize-provider, Phase 5 (T036–T039).
 //
-// Covers `FuturePaginationProvider` behaviour:
+// Covers `FutureSuperPaginationProvider` behaviour:
 // - Successful page fetch (FR-001).
 // - Stale response after refresh (FR-003).
 // - Disposal mid-flight (FR-005).
@@ -14,17 +14,17 @@ import 'package:super_pagination/pagination.dart';
 void main() {
   group('US3: future provider stale-response protection (T036–T039)', () {
     test('T036: successful page fetch produces a Loaded state', () async {
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future(
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
           (req) async => List<int>.generate(5, (i) => req.page * 10 + i),
         ),
       );
 
       cubit.refreshPaginatedList();
-      await cubit.stream.firstWhere((s) => s is SmartPaginationLoaded<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationLoaded<int>);
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items, [10, 11, 12, 13, 14]);
       expect(loaded.meta.page, 1);
 
@@ -36,9 +36,9 @@ void main() {
       // Each call gets its own Completer so the test can resolve them out
       // of order and verify the cubit drops the stale one.
       final completers = <int, Completer<List<int>>>{};
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) {
           final c = Completer<List<int>>();
           // Map each call by attempt order: 1 = first refresh, 2 = second.
           completers[completers.length + 1] = c;
@@ -59,9 +59,9 @@ void main() {
 
       // Resolve attempt 2 (current) — it should land in state.
       completers[2]!.complete(<int>[2, 2, 2, 2, 2]);
-      await cubit.stream.firstWhere((s) => s is SmartPaginationLoaded<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationLoaded<int>);
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items, [2, 2, 2, 2, 2],
           reason: 'stale attempt-1 response must be ignored');
 
@@ -71,9 +71,9 @@ void main() {
     test('T038: in-flight request resolving after close does not throw',
         () async {
       final completer = Completer<List<int>>();
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future(
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
           (req) => completer.future,
         ),
       );
@@ -93,9 +93,9 @@ void main() {
     test('T039: load-more error annotates the existing Loaded state',
         () async {
       var attempt = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
           attempt++;
           if (attempt == 1) return [1, 2, 3, 4, 5];
           throw Exception('load-more failed');
@@ -103,38 +103,38 @@ void main() {
       );
 
       cubit.refreshPaginatedList();
-      await cubit.stream.firstWhere((s) => s is SmartPaginationLoaded<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationLoaded<int>);
 
       cubit.fetchPaginatedList();
       // Wait for the loadMoreError annotation to land.
       await cubit.stream.firstWhere(
-        (s) => s is SmartPaginationLoaded<int> && s.loadMoreError != null,
+        (s) => s is SuperPaginationLoaded<int> && s.loadMoreError != null,
       );
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items, [1, 2, 3, 4, 5],
           reason: 'previously loaded items must remain visible');
       expect(loaded.loadMoreError, isA<Exception>());
       expect(loaded.isLoadingMore, isFalse);
-      expect(cubit.state, isA<SmartPaginationLoaded<int>>(),
-          reason: 'load-more error MUST NOT transition to SmartPaginationError');
+      expect(cubit.state, isA<SuperPaginationLoaded<int>>(),
+          reason: 'load-more error MUST NOT transition to SuperPaginationError');
 
       await cubit.close();
     });
 
-    test('T039b: first-page error transitions to SmartPaginationError',
+    test('T039b: first-page error transitions to SuperPaginationError',
         () async {
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future(
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
           (req) async => throw Exception('first page failed'),
         ),
       );
 
       cubit.refreshPaginatedList();
-      await cubit.stream.firstWhere((s) => s is SmartPaginationError<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationError<int>);
 
-      expect(cubit.state, isA<SmartPaginationError<int>>());
+      expect(cubit.state, isA<SuperPaginationError<int>>());
 
       await cubit.close();
     });

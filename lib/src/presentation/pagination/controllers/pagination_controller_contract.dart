@@ -1,8 +1,8 @@
 part of '../pagination_feature.dart';
 
 /// Base interface for pagination controllers that provides common functionality
-/// for both SmartPagination and DualPagination controllers.
-abstract class IPaginationController<T, R extends PaginationRequest> {
+/// for both SuperPagination and DualPagination controllers.
+abstract class IPaginationController<T, R extends SuperPaginationRequest> {
   /// The cubit exposing the REST-backed pagination state.
   IPaginationCubit<T, IPaginationState<T>, R> get cubit;
 
@@ -38,7 +38,7 @@ abstract class IPaginationController<T, R extends PaginationRequest> {
 }
 
 /// Base interface for pagination controllers with scroll capabilities.
-abstract class IPaginationScrollController<T, R extends PaginationRequest>
+abstract class IPaginationScrollController<T, R extends SuperPaginationRequest>
     extends IPaginationController<T, R> {
   /// Animates to the item at the given [index] with smooth scrolling.
   ///

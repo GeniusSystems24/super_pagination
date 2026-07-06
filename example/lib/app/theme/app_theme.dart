@@ -11,7 +11,7 @@ abstract final class AppTheme {
           brightness: Brightness.light,
         ),
         appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
-        extensions: [SmartSearchTheme.light()],
+        extensions: [SuperSearchTheme.light()],
       );
 
   static ThemeData get dark => ThemeData(
@@ -22,6 +22,6 @@ abstract final class AppTheme {
           brightness: Brightness.dark,
         ),
         appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
-        extensions: [SmartSearchTheme.dark()],
+        extensions: [SuperSearchTheme.dark()],
       );
 }

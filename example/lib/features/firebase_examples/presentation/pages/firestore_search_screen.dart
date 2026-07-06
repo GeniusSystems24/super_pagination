@@ -45,7 +45,7 @@ class FirestoreUser {
   }
 }
 
-/// Demonstrates Firestore search with SmartSearchDropdown
+/// Demonstrates Firestore search with SuperSearchDropdown
 class FirestoreSearchScreen extends StatefulWidget {
   const FirestoreSearchScreen({super.key});
 
@@ -86,7 +86,7 @@ class _FirestoreSearchScreenState extends State<FirestoreSearchScreen> {
   /// - Algolia or Typesense integration
   /// - Firebase Extensions for search
   /// - Client-side filtering (shown here for simplicity)
-  Future<List<FirestoreUser>> searchUsers(PaginationRequest request) async {
+  Future<List<FirestoreUser>> searchUsers(SuperPaginationRequest request) async {
     final firestore = FirebaseFirestore.instance;
     final pageSize = request.pageSize ?? 10;
     final query = request.searchQuery?.toLowerCase() ?? '';
@@ -196,7 +196,7 @@ class _FirestoreSearchScreenState extends State<FirestoreSearchScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Search users from Firestore with SmartSearchDropdown',
+                    'Search users from Firestore with SuperSearchDropdown',
                     style: TextStyle(color: Colors.purple.shade700, fontSize: 13),
                   ),
                 ),
@@ -216,21 +216,21 @@ class _FirestoreSearchScreenState extends State<FirestoreSearchScreen> {
           const SizedBox(height: 8),
 
           // Search dropdown
-          SmartSearchDropdown<FirestoreUser, FirestoreUser>.withProvider(
-            request: const PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(searchUsers),
+          SuperSearchDropdown<FirestoreUser, FirestoreUser>.withProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(searchUsers),
             showClearButton: true,
-            searchRequestBuilder: (query) => PaginationRequest(
+            searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 10,
               searchQuery: query,
             ),
-            searchConfig: const SmartSearchConfig(
+            searchConfig: const SuperSearchConfig(
               debounceDelay: Duration(milliseconds: 300),
               minSearchLength: 0,
               searchOnEmpty: true,
             ),
-            overlayConfig: const SmartSearchOverlayConfig(
+            overlayConfig: const SuperSearchOverlayConfig(
               maxHeight: 300,
             ),
             decoration: const InputDecoration(
@@ -508,7 +508,7 @@ class _FirestoreSearchScreenState extends State<FirestoreSearchScreen> {
           children: [
             Text('This example demonstrates:'),
             SizedBox(height: 12),
-            Text('• SmartSearchDropdown with Firestore'),
+            Text('• SuperSearchDropdown with Firestore'),
             Text('• Prefix-based search (startAt/endAt)'),
             Text('• Client-side filtering for better matching'),
             Text('• User selection and display'),

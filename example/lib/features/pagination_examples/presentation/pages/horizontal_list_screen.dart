@@ -44,9 +44,9 @@ class HorizontalListScreen extends StatelessWidget {
           SizedBox(
             height: 250,
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+                SuperPaginationRequest>.listViewWithProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               scrollDirection: Axis.horizontal,
@@ -239,7 +239,7 @@ class HorizontalListScreen extends StatelessWidget {
                 );
               },
 
-              // Smart preloading: Load when 3 items from the end
+              // Super preloading: Load when 3 items from the end
               invisibleItemsThreshold: 3,
             ),
           ),

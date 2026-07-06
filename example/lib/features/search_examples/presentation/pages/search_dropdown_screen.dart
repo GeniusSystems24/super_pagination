@@ -5,14 +5,14 @@ import 'package:super_pagination_example/app/controllers/app_theme_controller.da
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating the SmartSearchDropdown feature.
+/// Example screen demonstrating the SuperSearchDropdown feature.
 ///
 /// This screen shows how to:
-/// - Use SmartSearchDropdown with auto-positioning overlay
+/// - Use SuperSearchDropdown with auto-positioning overlay
 /// - Configure search behavior (debounce, min length, etc.)
 /// - Customize overlay appearance and position
 /// - Handle item selection
-/// - Use SmartSearchTheme for theming (light/dark)
+/// - Use SuperSearchTheme for theming (light/dark)
 class SearchDropdownScreen extends StatefulWidget {
   const SearchDropdownScreen({super.key});
 
@@ -30,7 +30,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Smart Search Dropdown'),
+        title: const Text('Super Search Dropdown'),
         actions: [
           // Theme toggle button
           IconButton(
@@ -62,7 +62,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Smart Search Dropdown',
+                          'Super Search Dropdown',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -108,22 +108,22 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
-            // The SmartSearchDropdown now uses SmartSearchTheme for styling
+            // The SuperSearchDropdown now uses SuperSearchTheme for styling
             // Toggle the theme using the button in the app bar to see the effect
-            SmartSearchDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(seconds: 1), // Wait 1 second after typing stops
                 minSearchLength: 0, // Search on any input including empty
                 searchOnEmpty: true, // Fetch all data when search is empty
@@ -131,7 +131,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
                 clearOnClose: false,
                 autoFocus: false,
               ),
-              overlayConfig: SmartSearchOverlayConfig(
+              overlayConfig: SuperSearchOverlayConfig(
                 position: _position,
                 maxHeight: 300,
                 maxWidth: null, // Use search box width
@@ -141,7 +141,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
                 barrierDismissible: true,
                 animationDuration: const Duration(milliseconds: 200),
               ),
-              // No explicit decoration - uses SmartSearchTheme automatically
+              // No explicit decoration - uses SuperSearchTheme automatically
               itemBuilder: (context, product) => ListTile(
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -240,26 +240,26 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
               style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
             const SizedBox(height: 8),
-            SmartSearchDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(seconds: 1),
                 minSearchLength: 0,
                 searchOnEmpty: true,
                 clearOnClose: false,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
                 elevation: 8,
@@ -441,7 +441,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
               context,
               Icons.palette,
               'Theme Support',
-              'Uses SmartSearchTheme for light/dark mode styling',
+              'Uses SuperSearchTheme for light/dark mode styling',
             ),
             _buildFeatureItem(
               context,

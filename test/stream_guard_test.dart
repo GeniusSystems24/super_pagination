@@ -19,9 +19,9 @@ void main() {
       // reuses it for both `.first` and the persistent subscription.
       final controllers = <int, StreamController<List<int>>>{};
       var factoryCallCount = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           factoryCallCount++;
           final c = controllers.putIfAbsent(
             req.page,
@@ -57,9 +57,9 @@ void main() {
       // call lands for the target page.
       final pageFactoryCalls = <int, int>{};
       final controllers = <int, StreamController<List<int>>>{};
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           pageFactoryCalls.update(req.page, (v) => v + 1, ifAbsent: () => 1);
           final c = controllers.putIfAbsent(
             req.page,
@@ -92,9 +92,9 @@ void main() {
         () async {
       final controllers = <int, StreamController<List<int>>>{};
       var pageCalls = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           pageCalls++;
           final c = controllers.putIfAbsent(
             req.page,
@@ -115,7 +115,7 @@ void main() {
       await Future<void>.delayed(_settle);
       cubit.fetchPaginatedList();
       await Future<void>.delayed(_settle);
-      expect((cubit.state as SmartPaginationLoaded<int>).hasReachedEnd, isTrue);
+      expect((cubit.state as SuperPaginationLoaded<int>).hasReachedEnd, isTrue);
       final callsAtEnd = pageCalls;
 
       for (var i = 0; i < 3; i++) {
@@ -135,9 +135,9 @@ void main() {
       // Two refreshes — the second creates a fresh generation. Push a value
       // on the OLD generation's controller and assert it is dropped.
       final controllerByCall = <StreamController<List<int>>>[];
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           final c = StreamController<List<int>>.broadcast(sync: true);
           controllerByCall.add(c);
           Future<void>.microtask(() {
@@ -158,7 +158,7 @@ void main() {
       controllerByCall[0].add([99, 99, 99, 99, 99]);
       await Future<void>.delayed(_settle);
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items, [0, 1, 2, 3, 4],
           reason: 'stale-generation emission must not modify state');
 
@@ -171,9 +171,9 @@ void main() {
     test('T18: stream subscriptions are cancelled on refreshPaginatedList',
         () async {
       var cancelCount = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           // Use a non-broadcast controller so onCancel fires when the last
           // subscriber goes away.
           final c = StreamController<List<int>>(
@@ -201,9 +201,9 @@ void main() {
     test('T19: per-page stream error isolates only the failing page',
         () async {
       final controllers = <int, StreamController<List<int>>>{};
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           final c = controllers.putIfAbsent(
             req.page,
             () => StreamController<List<int>>.broadcast(sync: true),
@@ -223,7 +223,7 @@ void main() {
       controllers[2]!.addError('page-2 boom');
       await Future<void>.delayed(_settle);
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.pageErrors[2], 'page-2 boom');
       expect(loaded.items.length, 10,
           reason: 'siblings keep contributing their last good slice');
@@ -231,7 +231,7 @@ void main() {
       controllers[1]!.add([100, 101, 102, 103, 104]);
       await Future<void>.delayed(_settle);
 
-      expect((cubit.state as SmartPaginationLoaded<int>).items, contains(100));
+      expect((cubit.state as SuperPaginationLoaded<int>).items, contains(100));
 
       for (final c in controllers.values) {
         await c.close();

@@ -24,7 +24,7 @@ class MockApiService {
   // Sample product names
   static const _productNames = [
     'Wireless Headphones',
-    'Smart Watch',
+    'Super Watch',
     'Laptop',
     'Running Shoes',
     'Coffee Maker',
@@ -37,7 +37,7 @@ class MockApiService {
 
   /// Fetch products with guaranteed error (for testing error handling)
   Future<List<Product>> fetchProductsWithError(
-    PaginationRequest request,
+    SuperPaginationRequest request,
   ) async {
     await Future.delayed(_networkDelay);
     throw Exception('Network error: Unable to connect to server');
@@ -45,7 +45,7 @@ class MockApiService {
 
   /// Fetch products with pagination
   static Future<List<Product>> fetchProducts(
-    PaginationRequest request, {
+    SuperPaginationRequest request, {
     bool simulateError = false,
   }) async {
     await Future.delayed(_networkDelay);
@@ -87,7 +87,7 @@ class MockApiService {
 
   /// Fetch messages with pagination
   static Future<List<Message>> fetchMessages(
-    PaginationRequest request,
+    SuperPaginationRequest request,
   ) async {
     await Future.delayed(_networkDelay);
 
@@ -120,7 +120,7 @@ class MockApiService {
 
   /// Fetch limited products (for demonstrating end of list)
   static Future<List<Product>> fetchLimitedProducts(
-    PaginationRequest request,
+    SuperPaginationRequest request,
   ) async {
     await Future.delayed(_networkDelay);
 
@@ -191,7 +191,7 @@ class MockApiService {
 
   /// Single stream: Products with real-time updates
   /// Simulates a backend that pushes updates every 3 seconds
-  static Stream<List<Product>> productsStream(PaginationRequest request) async* {
+  static Stream<List<Product>> productsStream(SuperPaginationRequest request) async* {
     // Initial data
     yield await fetchProducts(request);
 
@@ -225,7 +225,7 @@ class MockApiService {
 
   /// Multiple streams: Products from different sources
   /// Stream 1: Regular products
-  static Stream<List<Product>> regularProductsStream(PaginationRequest request) async* {
+  static Stream<List<Product>> regularProductsStream(SuperPaginationRequest request) async* {
     final pageSize = request.pageSize ?? 10;
     final startIndex = (request.page - 1) * pageSize;
 
@@ -270,7 +270,7 @@ class MockApiService {
   }
 
   /// Stream 2: Featured/premium products
-  static Stream<List<Product>> featuredProductsStream(PaginationRequest request) async* {
+  static Stream<List<Product>> featuredProductsStream(SuperPaginationRequest request) async* {
     final pageSize = request.pageSize ?? 10;
     final startIndex = (request.page - 1) * pageSize;
 
@@ -321,7 +321,7 @@ class MockApiService {
   /// initial batch then updates every 4 seconds, letting the caller observe
   /// that page 1 and page 2 live subscriptions run independently.
   static Stream<List<Product>> accumulatingProductsStream(
-      PaginationRequest request) async* {
+      SuperPaginationRequest request) async* {
     final page = request.page;
     final pageSize = request.pageSize ?? 8;
     final startIndex = (page - 1) * pageSize;
@@ -359,7 +359,7 @@ class MockApiService {
   /// error after ~3 seconds, triggering `pageErrors[2]` in the cubit while
   /// sibling pages remain unaffected.
   static Stream<List<Product>> unreliablePageStream(
-      PaginationRequest request) async* {
+      SuperPaginationRequest request) async* {
     final page = request.page;
     final pageSize = request.pageSize ?? 8;
     final startIndex = (page - 1) * pageSize;
@@ -402,7 +402,7 @@ class MockApiService {
   }
 
   /// Stream 3: Sale/discounted products
-  static Stream<List<Product>> saleProductsStream(PaginationRequest request) async* {
+  static Stream<List<Product>> saleProductsStream(SuperPaginationRequest request) async* {
     final pageSize = request.pageSize ?? 10;
     final startIndex = (request.page - 1) * pageSize;
 

@@ -10,21 +10,21 @@ part of '../../pagination_feature.dart';
 /// ```dart
 /// SingleChildScrollView(
 ///   scrollDirection: Axis.horizontal,
-///   child: SmartPaginationRow.withProvider(
-///     request: PaginationRequest(page: 1, pageSize: 20),
-///     provider: PaginationProvider.future((request) => fetchProducts(request)),
+///   child: SuperPaginationRow.withProvider(
+///     request: SuperPaginationRequest(page: 1, pageSize: 20),
+///     provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
 ///     itemBuilder: (context, items, index) {
 ///       return ProductChip(product: items[index]);
 ///     },
 ///   ),
 /// )
 /// ```
-class SmartPaginationRow<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationRow with a provider for data fetching.
+class SuperPaginationRow<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationRow with a provider for data fetching.
   ///
   /// The [request] and [provider] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered.
-  SmartPaginationRow.withProvider({
+  SuperPaginationRow.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -73,11 +73,11 @@ class SmartPaginationRow<T, R extends PaginationRequest> extends SmartPagination
     Duration? dataAge,
   }) : super.rowWithProvider();
 
-  /// Creates a SmartPaginationRow with an external cubit.
+  /// Creates a SuperPaginationRow with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationRow.withCubit({
+  SuperPaginationRow.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

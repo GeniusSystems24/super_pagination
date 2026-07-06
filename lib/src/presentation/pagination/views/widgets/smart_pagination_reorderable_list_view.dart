@@ -8,9 +8,9 @@ part of '../../pagination_feature.dart';
 ///
 /// Example usage:
 /// ```dart
-/// SmartPaginationReorderableListView.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) => fetchTasks(request)),
+/// SuperPaginationReorderableListView.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) => fetchTasks(request)),
 ///   itemBuilder: (context, items, index) {
 ///     return ListTile(
 ///       key: ValueKey(items[index].id),
@@ -22,13 +22,13 @@ part of '../../pagination_feature.dart';
 ///   },
 /// )
 /// ```
-class SmartPaginationReorderableListView<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationReorderableListView with a provider for data fetching.
+class SuperPaginationReorderableListView<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationReorderableListView with a provider for data fetching.
   ///
   /// The [request], [provider], and [onReorder] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered.
   /// Each item must have a unique key for reordering to work correctly.
-  SmartPaginationReorderableListView.withProvider({
+  SuperPaginationReorderableListView.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -81,11 +81,11 @@ class SmartPaginationReorderableListView<T, R extends PaginationRequest> extends
     Duration? dataAge,
   }) : super.reorderableListViewWithProvider();
 
-  /// Creates a SmartPaginationReorderableListView with an external cubit.
+  /// Creates a SuperPaginationReorderableListView with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationReorderableListView.withCubit({
+  SuperPaginationReorderableListView.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

@@ -14,7 +14,7 @@ additional API/graph checks.
 - Original public declarations missing after refactor: **0**
 - Public declarations after refactor: **107**
 - New `SuperPagination*` aliases: **21**
-- Existing `SmartPagination` named constructors preserved: **16**
+- Existing `SuperPagination` named constructors preserved: **16**
 - Flutter imports in Domain: **0**
 - Flutter imports in Application: **0**
 - Remaining `package:smart_pagination/...` imports: **0**
@@ -22,7 +22,7 @@ additional API/graph checks.
 
 ## Compatibility checks
 
-The original tests continue to use the `SmartPagination*` names while importing
+The original tests continue to use the `SuperPagination*` names while importing
 the renamed package. A new alias test uses `SuperPagination*` constructors and
 checks assignability to the former types. This verifies both naming styles at
 compile/test time when Flutter SDK is available.

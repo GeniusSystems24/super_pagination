@@ -36,9 +36,9 @@ class MergedStreamsScreen extends StatelessWidget {
           _buildStreamBadges(),
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
-              request: const PaginationRequest(page: 1, pageSize: 15),
-              provider: PaginationProvider.mergeStreams(
+                SuperPaginationRequest>.listViewWithProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 15),
+              provider: SuperPaginationProvider.mergeStreams(
                 (request) => [
                   ExampleDependencies.catalog.regularProductsStream(request),
                   ExampleDependencies.catalog.featuredProductsStream(request),
@@ -239,7 +239,7 @@ class MergedStreamsScreen extends StatelessWidget {
                 );
               },
 
-              // Smart preloading: Load when 3 items from the end
+              // Super preloading: Load when 3 items from the end
               invisibleItemsThreshold: 3,
             ),
           ),

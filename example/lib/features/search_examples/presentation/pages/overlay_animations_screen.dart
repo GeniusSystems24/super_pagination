@@ -167,24 +167,24 @@ class _OverlayAnimationsScreenState extends State<OverlayAnimationsScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            SmartSearchDropdown<Product, Product>.withProvider(
+            SuperSearchDropdown<Product, Product>.withProvider(
               key: ValueKey(
                 '${_selectedAnimation.name}_${_animationDuration.inMilliseconds}_${_selectedCurve.hashCode}',
               ),
-              request: PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+              request: SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 300),
                 searchOnEmpty: true,
               ),
-              overlayConfig: SmartSearchOverlayConfig(
+              overlayConfig: SuperSearchOverlayConfig(
                 animationType: _selectedAnimation,
                 animationDuration: _animationDuration,
                 animationCurve: _selectedCurve,
@@ -367,26 +367,26 @@ class _OverlayValueDemo extends StatefulWidget {
 }
 
 class _OverlayValueDemoState extends State<_OverlayValueDemo> {
-  late SmartSearchController<Product, Product> _controller;
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperSearchController<Product, Product> _controller;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   @override
   void initState() {
     super.initState();
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: PaginationRequest(page: 1, pageSize: 10),
-      provider: PaginationProvider.future(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: SuperPaginationRequest(page: 1, pageSize: 10),
+      provider: SuperPaginationProvider.future(
         (request) => ExampleDependencies.catalog.fetchProducts(request),
       ),
     );
-    _controller = SmartSearchController<Product, Product>(
+    _controller = SuperSearchController<Product, Product>(
       cubit: _cubit,
-      searchRequestBuilder: (query) => PaginationRequest(
+      searchRequestBuilder: (query) => SuperPaginationRequest(
         page: 1,
         pageSize: 10,
         searchQuery: query,
       ),
-      config: const SmartSearchConfig(
+      config: const SuperSearchConfig(
         debounceDelay: Duration(milliseconds: 300),
         searchOnEmpty: true,
       ),
@@ -486,9 +486,9 @@ class _OverlayValueDemoState extends State<_OverlayValueDemo> {
         const SizedBox(height: 8),
 
         // The search overlay
-        SmartSearchOverlay<Product, Product>(
+        SuperSearchOverlay<Product, Product>(
           controller: _controller,
-          overlayConfig: SmartSearchOverlayConfig(
+          overlayConfig: SuperSearchOverlayConfig(
             animationType: widget.animationType,
             animationDuration: widget.animationDuration,
             animationCurve: widget.animationCurve,

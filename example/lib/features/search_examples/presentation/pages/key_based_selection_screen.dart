@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating key-based selection in SmartSearchDropdown.
+/// Example screen demonstrating key-based selection in SuperSearchDropdown.
 ///
 /// Key-based selection allows you to:
 /// - Select items by their unique key (ID, SKU, etc.) instead of object reference
@@ -96,25 +96,25 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
               Icons.vpn_key_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchDropdown<Product, String>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, String>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 300,
                 borderRadius: 12,
               ),
@@ -176,25 +176,25 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
               Icons.playlist_add_check_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchDropdown<Product, String>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, String>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 300,
                 borderRadius: 12,
               ),
@@ -253,25 +253,25 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
               Icons.checklist_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchMultiDropdown<Product, String>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, String>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -364,9 +364,9 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
               Icons.style_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchDropdown<Product, String>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, String>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) async {
                   // Simulate slow network to show pending key state
                   await Future.delayed(const Duration(seconds: 2));
@@ -376,7 +376,7 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
                   );
                 },
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,

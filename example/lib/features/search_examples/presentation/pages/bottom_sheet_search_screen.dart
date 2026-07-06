@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating SmartSearchMultiDropdown with bottomSheet display mode.
+/// Example screen demonstrating SuperSearchMultiDropdown with bottomSheet display mode.
 ///
 /// This screen shows how to:
 /// - Use bottomSheet mode instead of overlay dropdown
@@ -81,24 +81,24 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
               displayMode: SearchDisplayMode.overlay, // Default
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
               ),
               showSelected: true,
@@ -132,25 +132,25 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
               displayMode: SearchDisplayMode.bottomSheet, // Bottom sheet mode
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 fetchOnInit: true, // Pre-load data when controller is created
               ),
-              bottomSheetConfig: const SmartSearchBottomSheetConfig(
+              bottomSheetConfig: const SuperSearchBottomSheetConfig(
                 title: 'Select Products',
                 confirmText: 'Done',
                 showSelectedCount: true,
@@ -188,15 +188,15 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
@@ -211,7 +211,7 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
                   ),
                 );
               },
-              bottomSheetConfig: SmartSearchBottomSheetConfig(
+              bottomSheetConfig: SuperSearchBottomSheetConfig(
                 titleBuilder: (count) => Row(
                   children: [
                     const Icon(Icons.shopping_cart),
@@ -325,7 +325,7 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
               Text('• Includes confirm/cancel buttons'),
               SizedBox(height: 16),
               Text(
-                'SmartSearchBottomSheetConfig',
+                'SuperSearchBottomSheetConfig',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text('• title: Bottom sheet title'),
@@ -337,7 +337,7 @@ class _BottomSheetSearchScreenState extends State<BottomSheetSearchScreen> {
               Text('• showDragHandle: Show drag indicator'),
               SizedBox(height: 16),
               Text(
-                'SmartSearchConfig',
+                'SuperSearchConfig',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text('• fetchOnInit: Pre-load data on creation'),

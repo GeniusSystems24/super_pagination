@@ -1,6 +1,6 @@
 part of '../search_feature.dart';
 
-/// Controller for managing search state and connecting to SmartPaginationCubit.
+/// Controller for managing search state and connecting to SuperPaginationCubit.
 ///
 /// This controller handles:
 /// - Debounced search input
@@ -18,9 +18,9 @@ part of '../search_feature.dart';
 ///
 /// Example with key-based selection:
 /// ```dart
-/// final searchController = SmartSearchController<Product, String>(
+/// final searchController = SuperSearchController<Product, String>(
 ///   cubit: productsCubit,
-///   searchRequestBuilder: (query) => PaginationRequest(
+///   searchRequestBuilder: (query) => SuperPaginationRequest(
 ///     page: 1,
 ///     pageSize: 20,
 ///     searchQuery: query,
@@ -31,11 +31,11 @@ part of '../search_feature.dart';
 ///   onSelected: (item, key) => print('Selected: $item with key: $key'),
 /// );
 /// ```
-class SmartSearchController<T, K> extends ChangeNotifier {
-  SmartSearchController({
-    required SmartPaginationCubit<T, PaginationRequest> cubit,
-    required PaginationRequest Function(String query) searchRequestBuilder,
-    SmartSearchConfig config = const SmartSearchConfig(),
+class SuperSearchController<T, K> extends ChangeNotifier {
+  SuperSearchController({
+    required SuperPaginationCubit<T, SuperPaginationRequest> cubit,
+    required SuperPaginationRequest Function(String query) searchRequestBuilder,
+    SuperSearchConfig config = const SuperSearchConfig(),
     void Function(T item, K key)? onSelected,
     T? initialSelectedValue,
     K? selectedKey,
@@ -71,9 +71,9 @@ class SmartSearchController<T, K> extends ChangeNotifier {
     }
   }
 
-  final SmartPaginationCubit<T, PaginationRequest> _cubit;
-  final PaginationRequest Function(String query) _searchRequestBuilder;
-  final SmartSearchConfig _config;
+  final SuperPaginationCubit<T, SuperPaginationRequest> _cubit;
+  final SuperPaginationRequest Function(String query) _searchRequestBuilder;
+  final SuperSearchConfig _config;
   void Function(T item, K key)? _onSelected;
 
   /// Function to extract the key from an item.
@@ -83,7 +83,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   final String Function(K key)? _selectedKeyLabelBuilder;
 
   /// Subscription to cubit state changes for syncing pending keys.
-  StreamSubscription<SmartPaginationState<T>>? _cubitSubscription;
+  StreamSubscription<SuperPaginationState<T>>? _cubitSubscription;
 
   /// Sets the selection callback.
   set onSelected(void Function(T item, K key)? callback) {
@@ -116,7 +116,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   Object? _overlayValue;
 
   /// The connected pagination cubit.
-  SmartPaginationCubit<T, PaginationRequest> get cubit => _cubit;
+  SuperPaginationCubit<T, SuperPaginationRequest> get cubit => _cubit;
 
   /// The text editing controller for the search field.
   TextEditingController get textController => _textController;
@@ -125,7 +125,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   FocusNode get focusNode => _focusNode;
 
   /// The current search configuration.
-  SmartSearchConfig get config => _config;
+  SuperSearchConfig get config => _config;
 
   /// The current search query text.
   String get query => _textController.text;
@@ -216,7 +216,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   /// Returns the currently focused item, or null if none.
   T? get focusedItem {
     final state = _cubit.state;
-    if (state is SmartPaginationLoaded<T>) {
+    if (state is SuperPaginationLoaded<T>) {
       final items = state.items;
       if (_focusedIndex >= 0 && _focusedIndex < items.length) {
         return items[_focusedIndex];
@@ -228,7 +228,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   /// Returns the total number of items in the current results.
   int get _itemCount {
     final state = _cubit.state;
-    if (state is SmartPaginationLoaded<T>) {
+    if (state is SuperPaginationLoaded<T>) {
       return state.items.length;
     }
     return 0;
@@ -277,10 +277,10 @@ class SmartSearchController<T, K> extends ChangeNotifier {
   }
 
   /// Called when cubit state changes to sync pending keys with loaded data.
-  void _onCubitStateChanged(SmartPaginationState<T> state) {
+  void _onCubitStateChanged(SuperPaginationState<T> state) {
     if (_pendingKey == null || _keyExtractor == null) return;
 
-    if (state is SmartPaginationLoaded<T>) {
+    if (state is SuperPaginationLoaded<T>) {
       // Try to find the item matching the pending key
       for (final item in state.items) {
         if (_keyExtractor(item) == _pendingKey) {
@@ -350,7 +350,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
     // Preserve the focused index when reopening
 
     // If cubit is in initial state and searchOnEmpty is true, trigger initial fetch
-    if (_cubit.state is SmartPaginationInitial && _config.searchOnEmpty) {
+    if (_cubit.state is SuperPaginationInitial && _config.searchOnEmpty) {
       _performSearch(_textController.text);
     }
 
@@ -535,7 +535,7 @@ class SmartSearchController<T, K> extends ChangeNotifier {
 
     // Try to find the item in current data
     final state = _cubit.state;
-    if (state is SmartPaginationLoaded<T>) {
+    if (state is SuperPaginationLoaded<T>) {
       for (final item in state.items) {
         if (_keyExtractor(item) == key) {
           selectItem(item);

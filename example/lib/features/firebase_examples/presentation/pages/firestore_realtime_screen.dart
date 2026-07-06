@@ -94,7 +94,7 @@ class _FirestoreRealtimeScreenState extends State<FirestoreRealtimeScreen> {
   }
 
   /// Streams messages from Firestore in real-time
-  Stream<List<RealtimeMessage>> streamMessages(PaginationRequest request) {
+  Stream<List<RealtimeMessage>> streamMessages(SuperPaginationRequest request) {
     final firestore = FirebaseFirestore.instance;
     final pageSize = request.pageSize ?? 50;
 
@@ -232,9 +232,9 @@ class _FirestoreRealtimeScreenState extends State<FirestoreRealtimeScreen> {
         // Messages list
         Expanded(
           child: SuperPagination<RealtimeMessage,
-              PaginationRequest>.listViewWithProvider(
-            request: const PaginationRequest(page: 1, pageSize: 50),
-            provider: PaginationProvider.stream(streamMessages),
+              SuperPaginationRequest>.listViewWithProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 50),
+            provider: SuperPaginationProvider.stream(streamMessages),
             itemBuilder: (context, items, index) {
               final message = items[index];
               final isNew = index == 0 &&

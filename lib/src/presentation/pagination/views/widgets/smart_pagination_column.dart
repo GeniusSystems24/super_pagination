@@ -9,21 +9,21 @@ part of '../../pagination_feature.dart';
 /// Example usage:
 /// ```dart
 /// SingleChildScrollView(
-///   child: SmartPaginationColumn.withProvider(
-///     request: PaginationRequest(page: 1, pageSize: 20),
-///     provider: PaginationProvider.future((request) => fetchProducts(request)),
+///   child: SuperPaginationColumn.withProvider(
+///     request: SuperPaginationRequest(page: 1, pageSize: 20),
+///     provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
 ///     itemBuilder: (context, items, index) {
 ///       return ListTile(title: Text(items[index].name));
 ///     },
 ///   ),
 /// )
 /// ```
-class SmartPaginationColumn<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationColumn with a provider for data fetching.
+class SuperPaginationColumn<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationColumn with a provider for data fetching.
   ///
   /// The [request] and [provider] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered.
-  SmartPaginationColumn.withProvider({
+  SuperPaginationColumn.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -70,11 +70,11 @@ class SmartPaginationColumn<T, R extends PaginationRequest> extends SmartPaginat
     Duration? dataAge,
   }) : super.columnWithProvider();
 
-  /// Creates a SmartPaginationColumn with an external cubit.
+  /// Creates a SuperPaginationColumn with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationColumn.withCubit({
+  SuperPaginationColumn.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

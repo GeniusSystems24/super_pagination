@@ -87,9 +87,9 @@ class _HasReachedEndScreenState extends State<HasReachedEndScreen> {
           const Divider(height: 1),
           // Product List
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, products, index) {
@@ -257,9 +257,9 @@ class HasReachedEndCallbackScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 15),
-              provider: PaginationProvider.future(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 15),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilderType: PaginateBuilderType.listView,

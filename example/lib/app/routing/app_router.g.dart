@@ -153,8 +153,8 @@ RouteBase get $homeShellRouteData => ShellRouteData.$route(
             ),
             GoRouteData.$route(
               path: 'preloading',
-              parentNavigatorKey: SmartPreloadingRoute.$parentNavigatorKey,
-              factory: $SmartPreloadingRoute._fromState,
+              parentNavigatorKey: SuperPreloadingRoute.$parentNavigatorKey,
+              factory: $SuperPreloadingRoute._fromState,
             ),
             GoRouteData.$route(
               path: 'data-operations',
@@ -946,9 +946,9 @@ mixin $StateSeparationRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $SmartPreloadingRoute on GoRouteData {
-  static SmartPreloadingRoute _fromState(GoRouterState state) =>
-      const SmartPreloadingRoute();
+mixin $SuperPreloadingRoute on GoRouteData {
+  static SuperPreloadingRoute _fromState(GoRouterState state) =>
+      const SuperPreloadingRoute();
 
   @override
   String get location => GoRouteData.$location(

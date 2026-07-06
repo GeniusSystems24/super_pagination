@@ -4,7 +4,7 @@
 
 أُعيد تنظيم حزمة `smart_pagination` باسم `super_pagination` مع الحفاظ على طريقة
 الاستخدام الحالية قدر الإمكان، وإضافة أسماء `SuperPagination*` الجديدة دون حذف
-أسماء `SmartPagination*` القديمة.
+أسماء `SuperPagination*` القديمة.
 
 ## التغييرات المعمارية
 
@@ -25,7 +25,7 @@
 import 'package:super_pagination/pagination.dart';
 ```
 
-تبقى جميع منشئات وخصائص واستدعاءات `SmartPagination*` متاحة، ويمكن استخدام
+تبقى جميع منشئات وخصائص واستدعاءات `SuperPagination*` متاحة، ويمكن استخدام
 `SuperPagination*` الجديدة اختيارياً.
 
 ## الاختبارات المضافة

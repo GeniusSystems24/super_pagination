@@ -43,7 +43,7 @@ void main() {
       expect(canonical, contains("export 'src/public/super_pagination_aliases.dart';"));
       expect(compatibility, contains("export 'super_pagination.dart';"));
       expect(aliases, contains('typedef SuperPagination<'));
-      expect(aliases, contains('= SmartPagination<T, R>;'));
+      expect(aliases, contains('= SuperPagination<T, R>;'));
     });
   });
 }

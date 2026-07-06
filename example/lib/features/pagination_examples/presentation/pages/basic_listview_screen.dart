@@ -14,9 +14,9 @@ class BasicListViewScreen extends StatelessWidget {
         title: const Text('Basic ListView'),
         backgroundColor: Colors.blue,
       ),
-      body: SuperPagination<Product, PaginationRequest>.withProvider(
-        request: const PaginationRequest(page: 1, pageSize: 20),
-        provider: PaginationProvider.future(
+      body: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+        request: const SuperPaginationRequest(page: 1, pageSize: 20),
+        provider: SuperPaginationProvider.future(
           (request) => ExampleDependencies.catalog.fetchProducts(request),
         ),
         itemBuilder: (context, products, index) {
@@ -210,7 +210,7 @@ class BasicListViewScreen extends StatelessWidget {
           );
         },
 
-        // Smart preloading: Load when 3 items from the end
+        // Super preloading: Load when 3 items from the end
         invisibleItemsThreshold: 3,
       ),
     );

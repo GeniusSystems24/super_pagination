@@ -4,7 +4,7 @@
 
 part of '../pagination_feature.dart';
 
-class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
+class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidget {
   final Widget bottomLoader;
   final double? heightOfInitialLoadingAndEmptyWidget;
   final SliverGridDelegate gridDelegate;
@@ -26,19 +26,19 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
   final void Function(int)? onPageChanged;
   final Widget emptyWidget;
   final Widget loadingWidget;
-  final List<SmartPaginationChangeListener>? listeners;
+  final List<SuperPaginationChangeListener>? listeners;
   final ListBuilder<T>? listBuilder;
   final ScrollController? scrollController;
-  final SmartPaginationCubit<T, R> cubit;
-  final SmartPaginationLoaded<T> Function(SmartPaginationLoaded<T> state)?
+  final SuperPaginationCubit<T, R> cubit;
+  final SuperPaginationLoaded<T> Function(SuperPaginationLoaded<T> state)?
   beforeBuild;
   final double? cacheExtent;
 
   final Widget Function(Exception exception)? onError;
 
-  final void Function(SmartPaginationLoaded<T> loader)? onReachedEnd;
+  final void Function(SuperPaginationLoaded<T> loader)? onReachedEnd;
 
-  final void Function(SmartPaginationLoaded<T> loader)? onLoaded;
+  final void Function(SuperPaginationLoaded<T> loader)? onLoaded;
 
   final bool internalCubit;
 
@@ -100,7 +100,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
   final bool canRefresh;
 
   /// Custom refresh callback. If not provided, [cubit.reload] is used.
-  final Future<void> Function(SmartPaginationCubit<T, R> cubit)? onRefresh;
+  final Future<void> Function(SuperPaginationCubit<T, R> cubit)? onRefresh;
 
   // ========== Partial Update & Animation Options ==========
 
@@ -114,7 +114,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Controls when the widget rebuilds in response to state changes.
   /// If not provided, the widget rebuilds on every state change.
-  final BlocBuilderCondition<SmartPaginationState<T>>? buildWhen;
+  final BlocBuilderCondition<SuperPaginationState<T>>? buildWhen;
 
   /// Custom animation builder for item insertion.
   /// If not provided, a default fade + size animation is used.
@@ -148,10 +148,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
   /// (`reverse: true`, `pageView`, `reorderableListView`, `custom`).
   final bool preserveScrollAnchorOnAppend;
 
-  SmartPagination.withProvider({
+  SuperPagination.withProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.itemBuilderType = PaginateBuilderType.listView,
     this.heightOfInitialLoadingAndEmptyWidget,
@@ -205,10 +205,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     Logger? logger,
     int maxPagesInMemory = 5,
     RetryConfig? retryConfig,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -224,7 +224,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
            ? [if (refreshListener != null) refreshListener, ...?filterListeners]
            : null;
 
-  SmartPagination.withCubit({
+  SuperPagination.withCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -275,8 +275,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : internalCubit = false,
        listeners =
            refreshListener != null || filterListeners?.isNotEmpty == true
@@ -285,10 +285,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a Column layout (non-scrollable)
   /// Similar to PaginatorColumn
-  SmartPagination.columnWithProvider({
+  SuperPagination.columnWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.heightOfInitialLoadingAndEmptyWidget,
     this.onError,
@@ -305,8 +305,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.allowImplicitScrolling = false,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
     Logger? logger,
@@ -345,7 +345,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -362,7 +362,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a Column layout (non-scrollable)
   /// with an external Cubit
-  SmartPagination.columnWithCubit({
+  SuperPagination.columnWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -381,8 +381,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.allowImplicitScrolling = false,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     this.scrollController,
     this.cacheExtent,
     this.firstPageLoadingBuilder,
@@ -423,10 +423,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a GridView layout
   /// Similar to PaginatorGridView
-  SmartPagination.gridViewWithProvider({
+  SuperPagination.gridViewWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.heightOfInitialLoadingAndEmptyWidget,
     this.gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
@@ -453,8 +453,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.cacheExtent,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -484,7 +484,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -501,7 +501,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a GridView layout
   /// with an external Cubit
-  SmartPagination.gridViewWithCubit({
+  SuperPagination.gridViewWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -530,8 +530,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.cacheExtent,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     this.firstPageLoadingBuilder,
     this.firstPageErrorBuilder,
     this.firstPageEmptyBuilder,
@@ -562,10 +562,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a ListView layout
   /// Similar to PaginatorListView
-  SmartPagination.listViewWithProvider({
+  SuperPagination.listViewWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.heightOfInitialLoadingAndEmptyWidget,
     this.onError,
@@ -606,8 +606,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -629,7 +629,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -646,7 +646,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a ListView layout
   /// with an external Cubit
-  SmartPagination.listViewWithCubit({
+  SuperPagination.listViewWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -689,8 +689,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : itemBuilderType = PaginateBuilderType.listView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -712,10 +712,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
            : null;
 
   /// Creates a pagination widget as a ReorderableListView layout
-  SmartPagination.reorderableListViewWithProvider({
+  SuperPagination.reorderableListViewWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     required this.onReorder,
     this.heightOfInitialLoadingAndEmptyWidget,
@@ -757,8 +757,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -779,7 +779,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        onPageChanged = null,
        customViewBuilder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -796,7 +796,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a ReorderableListView layout
   /// with an external Cubit
-  SmartPagination.reorderableListViewWithCubit({
+  SuperPagination.reorderableListViewWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -840,8 +840,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : itemBuilderType = PaginateBuilderType.reorderableListView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -863,10 +863,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a PageView layout
   /// Similar to PaginatorPageView
-  SmartPagination.pageViewWithProvider({
+  SuperPagination.pageViewWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.heightOfInitialLoadingAndEmptyWidget,
     this.onError,
@@ -890,8 +890,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.listBuilder,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -928,7 +928,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -945,7 +945,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a PageView layout
   /// with an external Cubit
-  SmartPagination.pageViewWithCubit({
+  SuperPagination.pageViewWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -971,8 +971,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.listBuilder,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     this.cacheExtent,
     this.firstPageLoadingBuilder,
     this.firstPageErrorBuilder,
@@ -1010,10 +1010,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a StaggeredGridView layout
   /// Similar to PaginatorFirestoreStaggeredGridView
-  SmartPagination.staggeredGridViewWithProvider({
+  SuperPagination.staggeredGridViewWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required StaggeredGridTile Function(
       BuildContext context,
       List<T> documents,
@@ -1044,8 +1044,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     double crossAxisSpacing = 4.0,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -1081,7 +1081,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -1098,7 +1098,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a StaggeredGridView layout
   /// with an external Cubit
-  SmartPagination.staggeredGridViewWithCubit({
+  SuperPagination.staggeredGridViewWithCubit({
     super.key,
     required this.cubit,
     required StaggeredGridTile Function(
@@ -1131,8 +1131,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     double crossAxisSpacing = 4.0,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     this.scrollController,
     this.cacheExtent,
     this.firstPageLoadingBuilder,
@@ -1169,10 +1169,10 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a Row layout (horizontal non-scrollable)
   /// Similar to PaginatorRow
-  SmartPagination.rowWithProvider({
+  SuperPagination.rowWithProvider({
     super.key,
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     required this.itemBuilder,
     this.heightOfInitialLoadingAndEmptyWidget,
     this.onError,
@@ -1192,8 +1192,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.cacheExtent,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -1230,7 +1230,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
        customViewBuilder = null,
        onReorder = null,
        internalCubit = true,
-       cubit = SmartPaginationCubit<T, R>(
+       cubit = SuperPaginationCubit<T, R>(
          request: request,
          provider: provider,
          listBuilder: listBuilder,
@@ -1247,7 +1247,7 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
 
   /// Creates a pagination widget as a Row layout (horizontal non-scrollable)
   /// with an external Cubit
-  SmartPagination.rowWithCubit({
+  SuperPagination.rowWithCubit({
     super.key,
     required this.cubit,
     required this.itemBuilder,
@@ -1269,8 +1269,8 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
     this.cacheExtent,
     Widget? separator,
     double spacing = 4,
-    SmartPaginationRefreshedChangeListener? refreshListener,
-    List<SmartPaginationFilterChangeListener<T>>? filterListeners,
+    SuperPaginationRefreshedChangeListener? refreshListener,
+    List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     this.scrollController,
     this.firstPageLoadingBuilder,
     this.firstPageErrorBuilder,
@@ -1307,11 +1307,11 @@ class SmartPagination<T, R extends PaginationRequest> extends StatefulWidget {
            : null;
 
   @override
-  State<SmartPagination<T, R>> createState() => _SmartPaginationState<T, R>();
+  State<SuperPagination<T, R>> createState() => _SuperPaginationState<T, R>();
 }
 
-class _SmartPaginationState<T, R extends PaginationRequest>
-    extends State<SmartPagination<T, R>> {
+class _SuperPaginationState<T, R extends SuperPaginationRequest>
+    extends State<SuperPagination<T, R>> {
   bool get _isRefreshEnabled => widget.canRefresh;
 
   ScrollPhysics _buildRefreshPhysics() {
@@ -1365,7 +1365,7 @@ class _SmartPaginationState<T, R extends PaginationRequest>
 
   Widget _buildFirstPageErrorWidget(
     BuildContext context,
-    SmartPaginationError<T> state,
+    SuperPaginationError<T> state,
   ) {
     if (widget.firstPageErrorBuilder != null) {
       return widget.firstPageErrorBuilder!(
@@ -1393,15 +1393,15 @@ class _SmartPaginationState<T, R extends PaginationRequest>
   ///  - the items list reference changes (insert/update/remove/reload);
   ///  - hasReachedEnd, isLoadingMore, or loadMoreError flip;
   ///  - lastOperation changes (so animated paths get the right signal).
-  /// Pure metadata-only changes (e.g. [SmartPaginationLoaded.lastUpdate]
-  /// or [SmartPaginationLoaded.fetchedAt]) no longer cause a rebuild.
+  /// Pure metadata-only changes (e.g. [SuperPaginationLoaded.lastUpdate]
+  /// or [SuperPaginationLoaded.fetchedAt]) no longer cause a rebuild.
   bool _defaultBuildWhen(
-    SmartPaginationState<T> previous,
-    SmartPaginationState<T> current,
+    SuperPaginationState<T> previous,
+    SuperPaginationState<T> current,
   ) {
     if (previous.runtimeType != current.runtimeType) return true;
-    if (previous is SmartPaginationLoaded<T> &&
-        current is SmartPaginationLoaded<T>) {
+    if (previous is SuperPaginationLoaded<T> &&
+        current is SuperPaginationLoaded<T>) {
       if (!identical(previous.items, current.items)) return true;
       if (previous.hasReachedEnd != current.hasReachedEnd) return true;
       if (previous.isLoadingMore != current.isLoadingMore) return true;
@@ -1416,27 +1416,27 @@ class _SmartPaginationState<T, R extends PaginationRequest>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SmartPaginationCubit<T, R>, SmartPaginationState<T>>(
+    return BlocBuilder<SuperPaginationCubit<T, R>, SuperPaginationState<T>>(
       bloc: widget.cubit,
       buildWhen: widget.buildWhen ?? _defaultBuildWhen,
       builder: (context, state) {
         if (!widget.cubit.didFetch) widget.cubit.fetchPaginatedList();
 
-        if (state is SmartPaginationInitial<T>) {
+        if (state is SuperPaginationInitial<T>) {
           return _buildWithScrollView(
             context,
             _buildFirstPageLoadingWidget(context),
           );
         }
 
-        if (state is SmartPaginationError<T>) {
+        if (state is SuperPaginationError<T>) {
           return _buildWithScrollView(
             context,
             _buildFirstPageErrorWidget(context, state),
           );
         }
 
-        final loadedState = state as SmartPaginationLoaded<T>;
+        final loadedState = state as SuperPaginationLoaded<T>;
         if (widget.onLoaded != null) {
           widget.onLoaded!(loadedState);
         }
@@ -1569,13 +1569,13 @@ class _SmartPaginationState<T, R extends PaginationRequest>
   void initState() {
     if (widget.listeners != null) {
       for (var listener in widget.listeners!) {
-        if (listener is SmartPaginationRefreshedChangeListener) {
+        if (listener is SuperPaginationRefreshedChangeListener) {
           listener.addListener(() {
             if (listener.refreshed) {
               widget.cubit.refreshPaginatedList();
             }
           });
-        } else if (listener is SmartPaginationFilterChangeListener<T>) {
+        } else if (listener is SuperPaginationFilterChangeListener<T>) {
           listener.addListener(() {
             if (listener.searchTerm != null) {
               widget.cubit.filterPaginatedList(listener.searchTerm);

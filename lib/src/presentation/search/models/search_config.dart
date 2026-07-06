@@ -53,8 +53,8 @@ enum OverlayAnimationType {
 }
 
 /// Configuration for search behavior.
-class SmartSearchConfig {
-  const SmartSearchConfig({
+class SuperSearchConfig {
+  const SuperSearchConfig({
     this.debounceDelay = const Duration(seconds: 1),
     this.minSearchLength = 0,
     this.searchOnEmpty = true,
@@ -91,7 +91,7 @@ class SmartSearchConfig {
   /// Whether to auto-focus the search field.
   final bool autoFocus;
 
-  SmartSearchConfig copyWith({
+  SuperSearchConfig copyWith({
     Duration? debounceDelay,
     int? minSearchLength,
     bool? searchOnEmpty,
@@ -100,7 +100,7 @@ class SmartSearchConfig {
     bool? clearOnClose,
     bool? autoFocus,
   }) {
-    return SmartSearchConfig(
+    return SuperSearchConfig(
       debounceDelay: debounceDelay ?? this.debounceDelay,
       minSearchLength: minSearchLength ?? this.minSearchLength,
       searchOnEmpty: searchOnEmpty ?? this.searchOnEmpty,
@@ -131,8 +131,8 @@ enum OverlayPosition {
 }
 
 /// Configuration for the search overlay appearance and behavior.
-class SmartSearchOverlayConfig {
-  const SmartSearchOverlayConfig({
+class SuperSearchOverlayConfig {
+  const SuperSearchOverlayConfig({
     this.position = OverlayPosition.auto,
     this.maxHeight = 300.0,
     this.maxWidth,
@@ -189,7 +189,7 @@ class SmartSearchOverlayConfig {
   /// Default is true for better UX with scrollable content.
   final bool followTargetOnScroll;
 
-  SmartSearchOverlayConfig copyWith({
+  SuperSearchOverlayConfig copyWith({
     OverlayPosition? position,
     double? maxHeight,
     double? maxWidth,
@@ -204,7 +204,7 @@ class SmartSearchOverlayConfig {
     BoxConstraints? constraints,
     bool? followTargetOnScroll,
   }) {
-    return SmartSearchOverlayConfig(
+    return SuperSearchOverlayConfig(
       position: position ?? this.position,
       maxHeight: maxHeight ?? this.maxHeight,
       maxWidth: maxWidth ?? this.maxWidth,
@@ -223,8 +223,8 @@ class SmartSearchOverlayConfig {
 }
 
 /// Configuration for the bottom sheet search appearance.
-class SmartSearchBottomSheetConfig {
-  const SmartSearchBottomSheetConfig({
+class SuperSearchBottomSheetConfig {
+  const SuperSearchBottomSheetConfig({
     this.title,
     this.titleBuilder,
     this.confirmText = 'Done',
@@ -295,7 +295,7 @@ class SmartSearchBottomSheetConfig {
   /// Whether to show the drag handle.
   final bool showDragHandle;
 
-  SmartSearchBottomSheetConfig copyWith({
+  SuperSearchBottomSheetConfig copyWith({
     String? title,
     Widget Function(int selectedCount)? titleBuilder,
     String? confirmText,
@@ -314,7 +314,7 @@ class SmartSearchBottomSheetConfig {
     bool? useSafeArea,
     bool? showDragHandle,
   }) {
-    return SmartSearchBottomSheetConfig(
+    return SuperSearchBottomSheetConfig(
       title: title ?? this.title,
       titleBuilder: titleBuilder ?? this.titleBuilder,
       confirmText: confirmText ?? this.confirmText,

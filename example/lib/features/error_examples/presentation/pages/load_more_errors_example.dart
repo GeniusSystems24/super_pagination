@@ -67,7 +67,7 @@ class _CompactErrorTab extends StatefulWidget {
 }
 
 class _CompactErrorTabState extends State<_CompactErrorTab> {
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // First page succeeds
@@ -105,9 +105,9 @@ class _CompactErrorTabState extends State<_CompactErrorTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(
@@ -154,7 +154,7 @@ class _InlineRetryTab extends StatefulWidget {
 class _InlineRetryTabState extends State<_InlineRetryTab> {
   int _loadMoreAttempts = 0;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // First page succeeds
@@ -208,10 +208,10 @@ class _InlineRetryTabState extends State<_InlineRetryTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('inline_retry_$_loadMoreAttempts'),
-            request: PaginationRequest(page: 1, pageSize: 15),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 15),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return Card(
@@ -284,7 +284,7 @@ class _SilentFailureTab extends StatefulWidget {
 class _SilentFailureTabState extends State<_SilentFailureTab> {
   bool _showErrorMessage = false;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // First page succeeds
@@ -336,9 +336,9 @@ class _SilentFailureTabState extends State<_SilentFailureTab> {
         Expanded(
           child: Stack(
             children: [
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
-                request: PaginationRequest(page: 1, pageSize: 20),
-                provider: PaginationProvider.future(_fetchProducts),
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: 20),
+                provider: SuperPaginationProvider.future(_fetchProducts),
                 itemBuilder: (context, products, index) {
                   final product = products[index];
                   return ListTile(

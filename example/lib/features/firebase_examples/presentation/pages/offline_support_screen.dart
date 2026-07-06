@@ -119,7 +119,7 @@ class _OfflineSupportScreenState extends State<OfflineSupportScreen> {
     });
   }
 
-  Stream<List<OfflineProduct>> streamProducts(PaginationRequest request) {
+  Stream<List<OfflineProduct>> streamProducts(SuperPaginationRequest request) {
     return _streamController?.stream ?? const Stream.empty();
   }
 
@@ -286,9 +286,9 @@ class _OfflineSupportScreenState extends State<OfflineSupportScreen> {
         // Products list
         Expanded(
           child: SuperPagination<OfflineProduct,
-              PaginationRequest>.listViewWithProvider(
-            request: const PaginationRequest(page: 1, pageSize: 30),
-            provider: PaginationProvider.stream(streamProducts),
+              SuperPaginationRequest>.listViewWithProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 30),
+            provider: SuperPaginationProvider.stream(streamProducts),
             itemBuilder: (context, items, index) {
               final product = items[index];
               return Card(

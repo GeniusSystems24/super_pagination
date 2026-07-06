@@ -1,18 +1,18 @@
 /// Lightweight request descriptor used by the pagination cubit.
 ///
-/// [PaginationRequest] encapsulates all the information needed to fetch
+/// [SuperPaginationRequest] encapsulates all the information needed to fetch
 /// a page of data. It supports both offset-based (page/pageSize) and
 /// cursor-based pagination strategies.
 ///
 /// ## Subclassing for type-safe custom requests
 ///
-/// Extend [PaginationRequest] to attach strongly-typed fields to every
+/// Extend [SuperPaginationRequest] to attach strongly-typed fields to every
 /// page fetch.  **You must override [copyWith] in the subclass** so that
 /// the cubit can create the next-page request while preserving your
 /// custom fields:
 ///
 /// ```dart
-/// class ProductRequest extends PaginationRequest {
+/// class ProductRequest extends SuperPaginationRequest {
 ///   const ProductRequest({
 ///     super.page,
 ///     super.pageSize,
@@ -42,9 +42,9 @@
 /// }
 ///
 /// // Then use it with the typed cubit/provider:
-/// SmartPaginationCubit<Product, ProductRequest>(
+/// SuperPaginationCubit<Product, ProductRequest>(
 ///   request: ProductRequest(page: 1, pageSize: 20, category: 'electronics'),
-///   provider: PaginationProvider<Product, ProductRequest>.future(
+///   provider: SuperPaginationProvider<Product, ProductRequest>.future(
 ///     (req) => api.fetchProducts(req.category, maxPrice: req.maxPrice),
 ///   ),
 /// );
@@ -53,27 +53,27 @@
 /// ## Offset-based pagination:
 ///
 /// ```dart
-/// final request = PaginationRequest(page: 1, pageSize: 20);
+/// final request = SuperPaginationRequest(page: 1, pageSize: 20);
 /// final nextRequest = request.copyWith(page: request.page + 1);
 /// ```
 ///
 /// ## Cursor-based pagination:
 ///
 /// ```dart
-/// final request = PaginationRequest(pageSize: 20, cursor: 'next_page_token');
+/// final request = SuperPaginationRequest(pageSize: 20, cursor: 'next_page_token');
 /// ```
 ///
 /// ## With filters:
 ///
 /// ```dart
-/// final request = PaginationRequest(
+/// final request = SuperPaginationRequest(
 ///   page: 1,
 ///   pageSize: 20,
 ///   filters: {'category': 'electronics', 'minPrice': 100},
 /// );
 /// ```
-class PaginationRequest {
-  const PaginationRequest({
+class SuperPaginationRequest {
+  const SuperPaginationRequest({
     this.page = 1,
     this.pageSize,
     this.cursor,
@@ -104,7 +104,7 @@ class PaginationRequest {
   ///
   /// **Override this in every subclass** to ensure the cubit can build
   /// the next-page request while preserving your custom fields.
-  PaginationRequest copyWith({
+  SuperPaginationRequest copyWith({
     int? page,
     int? pageSize,
     String? cursor,
@@ -112,7 +112,7 @@ class PaginationRequest {
     Map<String, dynamic>? extra,
     String? searchQuery,
   }) {
-    return PaginationRequest(
+    return SuperPaginationRequest(
       page: page ?? this.page,
       pageSize: pageSize ?? this.pageSize,
       cursor: cursor ?? this.cursor,

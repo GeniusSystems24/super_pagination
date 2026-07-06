@@ -18,14 +18,14 @@ class StreamAccumulationScreen extends StatefulWidget {
 }
 
 class _StreamAccumulationScreenState extends State<StreamAccumulationScreen> {
-  late final SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late final SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   @override
   void initState() {
     super.initState();
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 8),
-      provider: PaginationProvider.stream(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 8),
+      provider: SuperPaginationProvider.stream(
         ExampleDependencies.catalog.accumulatingProductsStream,
       ),
     );
@@ -50,7 +50,7 @@ class _StreamAccumulationScreenState extends State<StreamAccumulationScreen> {
           _buildInfoBanner(),
           _buildStatusBar(),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withCubit(
+            child: SuperPagination<Product, SuperPaginationRequest>.withCubit(
               cubit: _cubit,
               itemBuilderType: PaginateBuilderType.listView,
               itemBuilder: (context, items, index) => _buildItem(items[index]),

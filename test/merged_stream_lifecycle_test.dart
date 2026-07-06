@@ -30,12 +30,12 @@ StreamController<List<int>> _controller(_LifecycleCounter counter) {
 void main() {
   group('US2: merged-stream lifecycle (T027–T032)', () {
     test('T027: zero streams emits empty page and holds no resources', () async {
-      final provider = MergedStreamPaginationProvider<int, PaginationRequest>(
+      final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
         (req) => const <Stream<List<int>>>[],
       );
 
       final emissions = <List<int>>[];
-      final sub = provider.getMergedStream(PaginationRequest(page: 1)).listen(
+      final sub = provider.getMergedStream(SuperPaginationRequest(page: 1)).listen(
         emissions.add,
       );
       // Stream.value([]) emits one event then completes synchronously on
@@ -50,11 +50,11 @@ void main() {
       final c = _LifecycleCounter();
       final source = _controller(c);
 
-      final provider = MergedStreamPaginationProvider<int, PaginationRequest>(
+      final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
         (req) => [source.stream],
       );
 
-      final merged = provider.getMergedStream(PaginationRequest(page: 1));
+      final merged = provider.getMergedStream(SuperPaginationRequest(page: 1));
       final sub = merged.listen((_) {});
       // The merge controller's onListen subscribes to source.
       await Future<void>.delayed(Duration.zero);
@@ -75,12 +75,12 @@ void main() {
       final b = _controller(cB);
       final c = _controller(cC);
 
-      final provider = MergedStreamPaginationProvider<int, PaginationRequest>(
+      final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
         (req) => [a.stream, b.stream, c.stream],
       );
 
       final sub = provider
-          .getMergedStream(PaginationRequest(page: 1))
+          .getMergedStream(SuperPaginationRequest(page: 1))
           .listen((_) {});
       await Future<void>.delayed(Duration.zero);
       expect(cA.listens, 1);
@@ -103,13 +103,13 @@ void main() {
       final a = _controller(cA);
       final b = _controller(cB);
 
-      final provider = MergedStreamPaginationProvider<int, PaginationRequest>(
+      final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
         (req) => [a.stream, b.stream],
       );
 
       final emissions = <List<int>>[];
       final errors = <Object>[];
-      final sub = provider.getMergedStream(PaginationRequest(page: 1)).listen(
+      final sub = provider.getMergedStream(SuperPaginationRequest(page: 1)).listen(
         emissions.add,
         onError: errors.add,
       );
@@ -139,12 +139,12 @@ void main() {
       final a = StreamController<List<int>>();
       final b = StreamController<List<int>>();
 
-      final provider = MergedStreamPaginationProvider<int, PaginationRequest>(
+      final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
         (req) => [a.stream, b.stream],
       );
 
       var done = false;
-      final sub = provider.getMergedStream(PaginationRequest(page: 1)).listen(
+      final sub = provider.getMergedStream(SuperPaginationRequest(page: 1)).listen(
         (_) {},
         onDone: () => done = true,
       );
@@ -179,10 +179,10 @@ void main() {
         onCancel: () => cB.cancels++,
       );
 
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         provider:
-            PaginationProvider<int, PaginationRequest>.mergeStreams(
+            SuperPaginationProvider<int, SuperPaginationRequest>.mergeStreams(
           (req) => [a.stream, b.stream],
         ),
       );

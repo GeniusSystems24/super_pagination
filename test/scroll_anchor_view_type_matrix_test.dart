@@ -36,9 +36,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -81,9 +81,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -138,9 +138,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationGridView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationGridView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -187,9 +187,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationGridView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationGridView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -249,9 +249,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -323,10 +323,10 @@ void main() {
               // jumpTo cannot dispatch a ScrollUpdateNotification.
               body: SizedBox(
                 height: 200,
-                child: SmartPaginationStaggeredGridView<int,
-                        PaginationRequest>.withProvider(
-                  request: PaginationRequest(page: 1, pageSize: _pageSize),
-                  provider: PaginationProvider<int, PaginationRequest>.future(
+                child: SuperPaginationStaggeredGridView<int,
+                        SuperPaginationRequest>.withProvider(
+                  request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                  provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                     (req) async {
                       callCount++;
                       return List<int>.generate(
@@ -398,9 +398,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationPageView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: 5),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationPageView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: 5),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -470,9 +470,9 @@ void main() {
 
         // Use an external cubit so we can trigger load-more programmatically
         // without needing access to the widget's private state.
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async {
               callCount++;
               return List<int>.generate(
@@ -486,8 +486,8 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationReorderableListView<int,
-                      PaginationRequest>.withCubit(
+              body: SuperPaginationReorderableListView<int,
+                      SuperPaginationRequest>.withCubit(
                 cubit: cubit,
                 itemBuilder: (context, items, index) => ListTile(
                   key: ValueKey(items[index]),
@@ -553,9 +553,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(

@@ -93,7 +93,7 @@ class _CachedDataTabState extends State<_CachedDataTab> {
     _hasCache = true;
   }
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     if (_shouldFail) {
@@ -194,10 +194,10 @@ class _CachedDataTabState extends State<_CachedDataTab> {
   }
 
   Widget _buildNormalView() {
-    return SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+    return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: ValueKey('cached_data_$_shouldFail'),
-      request: PaginationRequest(page: 1, pageSize: 20),
-      provider: PaginationProvider.future(_fetchProducts),
+      request: SuperPaginationRequest(page: 1, pageSize: 20),
+      provider: SuperPaginationProvider.future(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(
@@ -228,7 +228,7 @@ class _PartialDataTabState extends State<_PartialDataTab> {
   bool _hasPartialData = false;
   String? _errorMessage;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // Simulate partial success: some data loaded before error
@@ -325,10 +325,10 @@ class _PartialDataTabState extends State<_PartialDataTab> {
   }
 
   Widget _buildLoadingView() {
-    return SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+    return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: const Key('partial_data_loading'),
-      request: PaginationRequest(page: 1, pageSize: 20),
-      provider: PaginationProvider.future(_fetchProducts),
+      request: SuperPaginationRequest(page: 1, pageSize: 20),
+      provider: SuperPaginationProvider.future(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(title: Text(product.name));
@@ -348,12 +348,12 @@ class _AlternativeSourceTab extends StatefulWidget {
 class _AlternativeSourceTabState extends State<_AlternativeSourceTab> {
   bool _usePrimarySource = true;
 
-  Future<List<Product>> _fetchFromPrimary(PaginationRequest request) async {
+  Future<List<Product>> _fetchFromPrimary(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     throw Exception('Primary server is unavailable');
   }
 
-  Future<List<Product>> _fetchFromBackup(PaginationRequest request) async {
+  Future<List<Product>> _fetchFromBackup(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 1000));
 
     return List.generate(15, (index) {
@@ -386,10 +386,10 @@ class _AlternativeSourceTabState extends State<_AlternativeSourceTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('alt_source_$_usePrimarySource'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(
               _usePrimarySource ? _fetchFromPrimary : _fetchFromBackup,
             ),
             itemBuilder: (context, products, index) {
@@ -439,7 +439,7 @@ class _UserRecoveryTab extends StatefulWidget {
 class _UserRecoveryTabState extends State<_UserRecoveryTab> {
   bool _requiresLogin = true;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     if (_requiresLogin) {
@@ -512,10 +512,10 @@ class _UserRecoveryTabState extends State<_UserRecoveryTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('user_recovery_$_requiresLogin'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(

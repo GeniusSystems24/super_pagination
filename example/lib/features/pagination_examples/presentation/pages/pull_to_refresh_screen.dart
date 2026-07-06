@@ -35,9 +35,9 @@ class PullToRefreshScreen extends StatelessWidget {
           ),
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
-              request: const PaginationRequest(page: 1, pageSize: 15),
-              provider: PaginationProvider.future(
+                SuperPaginationRequest>.listViewWithProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 15),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               canRefresh: true,

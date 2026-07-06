@@ -41,9 +41,9 @@ class _RowExampleScreenState extends State<RowExampleScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child:
-                  SuperPagination<Product, PaginationRequest>.rowWithProvider(
-                request: const PaginationRequest(page: 1, pageSize: 5),
-                provider: PaginationProvider.future(
+                  SuperPagination<Product, SuperPaginationRequest>.rowWithProvider(
+                request: const SuperPaginationRequest(page: 1, pageSize: 5),
+                provider: SuperPaginationProvider.future(
                   (request) => ExampleDependencies.catalog.fetchProducts(request),
                 ),
                 itemBuilder: (context, items, index) {

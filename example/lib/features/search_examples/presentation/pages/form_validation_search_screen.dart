@@ -5,10 +5,10 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating Form Validation with SmartSearchDropdown.
+/// Example screen demonstrating Form Validation with SuperSearchDropdown.
 ///
 /// This screen shows how to:
-/// - Use SmartSearchDropdown inside a Form with validation
+/// - Use SuperSearchDropdown inside a Form with validation
 /// - Use initialSelectedValue for pre-selected items
 /// - Use inputFormatters for input restrictions
 /// - Handle form submission with validation
@@ -62,7 +62,7 @@ class _FormValidationSearchScreenState
                       Expanded(
                         child: Text(
                           'This example demonstrates form validation, '
-                          'input formatters, and initial values with SmartSearchDropdown.',
+                          'input formatters, and initial values with SuperSearchDropdown.',
                           style: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
@@ -84,25 +84,25 @@ class _FormValidationSearchScreenState
                     ),
               ),
               const SizedBox(height: 8),
-              SmartSearchDropdown<Product, Product>.withProvider(
-                request: const PaginationRequest(page: 1, pageSize: 10),
-                provider: PaginationProvider.future(
+              SuperSearchDropdown<Product, Product>.withProvider(
+                request: const SuperPaginationRequest(page: 1, pageSize: 10),
+                provider: SuperPaginationProvider.future(
                   (request) => ExampleDependencies.catalog.searchProducts(
                     request.searchQuery ?? '',
                     pageSize: request.pageSize ?? 10,
                   ),
                 ),
-                searchRequestBuilder: (query) => PaginationRequest(
+                searchRequestBuilder: (query) => SuperPaginationRequest(
                   page: 1,
                   pageSize: 10,
                   searchQuery: query,
                 ),
-                searchConfig: const SmartSearchConfig(
+                searchConfig: const SuperSearchConfig(
                   debounceDelay: Duration(milliseconds: 500),
                   minSearchLength: 0,
                   searchOnEmpty: true,
                 ),
-                overlayConfig: const SmartSearchOverlayConfig(
+                overlayConfig: const SuperSearchOverlayConfig(
                   maxHeight: 250,
                   borderRadius: 12,
                 ),

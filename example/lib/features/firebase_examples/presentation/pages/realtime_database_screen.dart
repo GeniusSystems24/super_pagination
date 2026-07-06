@@ -82,7 +82,7 @@ class _RealtimeDatabaseScreenState extends State<RealtimeDatabaseScreen> {
   }
 
   /// Fetches posts from Firebase Realtime Database
-  Future<List<RTDBPost>> fetchPosts(PaginationRequest request) async {
+  Future<List<RTDBPost>> fetchPosts(SuperPaginationRequest request) async {
     final database = FirebaseDatabase.instance;
     final pageSize = request.pageSize ?? 10;
 
@@ -197,9 +197,9 @@ class _RealtimeDatabaseScreenState extends State<RealtimeDatabaseScreen> {
         // Posts list
         Expanded(
           child:
-              SuperPagination<RTDBPost, PaginationRequest>.listViewWithProvider(
-            request: const PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(fetchPosts),
+              SuperPagination<RTDBPost, SuperPaginationRequest>.listViewWithProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(fetchPosts),
             itemBuilder: (context, items, index) {
               final post = items[index];
               return Card(

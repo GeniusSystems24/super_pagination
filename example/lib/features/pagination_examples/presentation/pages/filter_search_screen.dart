@@ -101,16 +101,16 @@ class _FilterSearchScreenState extends State<FilterSearchScreen> {
           const Divider(height: 1),
           // Product List
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
               key: ValueKey('$_selectedCategory-$_searchQuery'),
-              request: PaginationRequest(
+              request: SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 filters: _selectedCategory != null
                     ? {'category': _selectedCategory}
                     : null,
               ),
-              provider: PaginationProvider.future(
+              provider: SuperPaginationProvider.future(
                 (request) async {
                   if (_searchQuery.isNotEmpty) {
                     return ExampleDependencies.catalog.searchProducts(

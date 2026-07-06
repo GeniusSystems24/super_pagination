@@ -155,21 +155,21 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
             ),
           ),
           const SizedBox(height: 8),
-          SmartSearchDropdown<Product, String>.withProvider(
-            request: const PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(_searchProducts),
-            searchRequestBuilder: (query) => PaginationRequest(
+          SuperSearchDropdown<Product, String>.withProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(_searchProducts),
+            searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 10,
               searchQuery: query,
             ),
             keyExtractor: (p) => p.id,
-            searchConfig: const SmartSearchConfig(
+            searchConfig: const SuperSearchConfig(
               debounceDelay: Duration(milliseconds: 300),
               fetchOnInit: true,
               skipDebounceOnEmpty: true,
             ),
-            overlayConfig: const SmartSearchOverlayConfig(
+            overlayConfig: const SuperSearchOverlayConfig(
               maxHeight: 350,
               borderRadius: 16,
               elevation: 12,
@@ -274,7 +274,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
     );
   }
 
-  static Future<List<Product>> _searchProducts(PaginationRequest request) async {
+  static Future<List<Product>> _searchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 400));
 
     final products = List.generate(
@@ -703,21 +703,21 @@ class _TeamMemberSearchExampleState extends State<_TeamMemberSearchExample> {
           const SizedBox(height: 24),
 
           // Multi-select search
-          SmartSearchMultiDropdown<User, String>.withProvider(
-            request: const PaginationRequest(page: 1, pageSize: 15),
-            provider: PaginationProvider.future(_searchUsers),
-            searchRequestBuilder: (query) => PaginationRequest(
+          SuperSearchMultiDropdown<User, String>.withProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 15),
+            provider: SuperPaginationProvider.future(_searchUsers),
+            searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 15,
               searchQuery: query,
             ),
             keyExtractor: (u) => u.id,
             displayMode: SearchDisplayMode.bottomSheet,
-            searchConfig: const SmartSearchConfig(
+            searchConfig: const SuperSearchConfig(
               debounceDelay: Duration(milliseconds: 300),
               fetchOnInit: true,
             ),
-            bottomSheetConfig: SmartSearchBottomSheetConfig(
+            bottomSheetConfig: SuperSearchBottomSheetConfig(
               titleBuilder: (count) => Row(
                 children: [
                   const Icon(Icons.people),
@@ -790,7 +790,7 @@ class _TeamMemberSearchExampleState extends State<_TeamMemberSearchExample> {
     );
   }
 
-  static Future<List<User>> _searchUsers(PaginationRequest request) async {
+  static Future<List<User>> _searchUsers(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 400));
 
     final users = List.generate(
@@ -1116,20 +1116,20 @@ class _CountryPickerExampleState extends State<_CountryPickerExample> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  SmartSearchDropdown<Country, String>.withProvider(
-                    request: const PaginationRequest(page: 1, pageSize: 20),
-                    provider: PaginationProvider.future(_searchCountries),
-                    searchRequestBuilder: (query) => PaginationRequest(
+                  SuperSearchDropdown<Country, String>.withProvider(
+                    request: const SuperPaginationRequest(page: 1, pageSize: 20),
+                    provider: SuperPaginationProvider.future(_searchCountries),
+                    searchRequestBuilder: (query) => SuperPaginationRequest(
                       page: 1,
                       pageSize: 20,
                       searchQuery: query,
                     ),
                     keyExtractor: (c) => c.code,
-                    searchConfig: const SmartSearchConfig(
+                    searchConfig: const SuperSearchConfig(
                       debounceDelay: Duration(milliseconds: 200),
                       fetchOnInit: true,
                     ),
-                    overlayConfig: const SmartSearchOverlayConfig(
+                    overlayConfig: const SuperSearchOverlayConfig(
                       maxHeight: 300,
                       borderRadius: 12,
                     ),
@@ -1236,7 +1236,7 @@ class _CountryPickerExampleState extends State<_CountryPickerExample> {
   }
 
   static Future<List<Country>> _searchCountries(
-      PaginationRequest request) async {
+      SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 300));
 
     final query = request.searchQuery?.toLowerCase() ?? '';
@@ -1433,20 +1433,20 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
             ),
           ),
           const SizedBox(height: 8),
-          SmartSearchMultiDropdown<Tag, String>.withProvider(
-            request: const PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_searchTags),
-            searchRequestBuilder: (query) => PaginationRequest(
+          SuperSearchMultiDropdown<Tag, String>.withProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_searchTags),
+            searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 20,
               searchQuery: query,
             ),
             keyExtractor: (t) => t.id,
-            searchConfig: const SmartSearchConfig(
+            searchConfig: const SuperSearchConfig(
               debounceDelay: Duration(milliseconds: 200),
               fetchOnInit: true,
             ),
-            overlayConfig: const SmartSearchOverlayConfig(
+            overlayConfig: const SuperSearchOverlayConfig(
               maxHeight: 280,
               borderRadius: 12,
               animationType: OverlayAnimationType.slideDown,
@@ -1534,7 +1534,7 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
     );
   }
 
-  static Future<List<Tag>> _searchTags(PaginationRequest request) async {
+  static Future<List<Tag>> _searchTags(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final query = request.searchQuery?.toLowerCase() ?? '';
@@ -1708,20 +1708,20 @@ class _EmployeeDirectoryExampleState extends State<_EmployeeDirectoryExample> {
                 const SizedBox(height: 20),
 
                 // Search
-                SmartSearchDropdown<User, String>.withProvider(
-                  request: const PaginationRequest(page: 1, pageSize: 15),
-                  provider: PaginationProvider.future(_searchEmployees),
-                  searchRequestBuilder: (query) => PaginationRequest(
+                SuperSearchDropdown<User, String>.withProvider(
+                  request: const SuperPaginationRequest(page: 1, pageSize: 15),
+                  provider: SuperPaginationProvider.future(_searchEmployees),
+                  searchRequestBuilder: (query) => SuperPaginationRequest(
                     page: 1,
                     pageSize: 15,
                     searchQuery: query,
                   ),
                   keyExtractor: (u) => u.id,
-                  searchConfig: const SmartSearchConfig(
+                  searchConfig: const SuperSearchConfig(
                     debounceDelay: Duration(milliseconds: 300),
                     fetchOnInit: true,
                   ),
-                  overlayConfig: const SmartSearchOverlayConfig(
+                  overlayConfig: const SuperSearchOverlayConfig(
                     maxHeight: 350,
                     borderRadius: 16,
                     elevation: 8,
@@ -1825,7 +1825,7 @@ class _EmployeeDirectoryExampleState extends State<_EmployeeDirectoryExample> {
     );
   }
 
-  static Future<List<User>> _searchEmployees(PaginationRequest request) async {
+  static Future<List<User>> _searchEmployees(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 400));
 
     final query = request.searchQuery?.toLowerCase() ?? '';

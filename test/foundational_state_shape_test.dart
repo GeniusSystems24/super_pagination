@@ -1,6 +1,6 @@
 // Foundational regression test for spec 002-stabilize-provider, Phase 2 (T006).
 //
-// Asserts that `SmartPaginationLoaded.pageErrors` is additive and
+// Asserts that `SuperPaginationLoaded.pageErrors` is additive and
 // backward-compatible: existing call sites that construct the state without
 // supplying `pageErrors` must continue to compile and produce a state whose
 // `pageErrors` field is the canonical empty map.
@@ -9,12 +9,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:super_pagination/pagination.dart';
 
 void main() {
-  group('SmartPaginationLoaded.pageErrors (additive field, BC anchor)', () {
+  group('SuperPaginationLoaded.pageErrors (additive field, BC anchor)', () {
     test('defaults to const <int, Object>{} when not supplied', () {
-      final state = SmartPaginationLoaded<int>(
+      final state = SuperPaginationLoaded<int>(
         items: const <int>[],
         allItems: const <int>[],
-        meta: PaginationMeta(
+        meta: SuperPaginationMeta(
           page: 1,
           pageSize: 20,
           hasNext: false,
@@ -28,10 +28,10 @@ void main() {
     });
 
     test('survives copyWith without pageErrors override', () {
-      final original = SmartPaginationLoaded<int>(
+      final original = SuperPaginationLoaded<int>(
         items: const <int>[1, 2, 3],
         allItems: const <int>[1, 2, 3],
-        meta: PaginationMeta(
+        meta: SuperPaginationMeta(
           page: 1,
           pageSize: 20,
           hasNext: true,
@@ -47,10 +47,10 @@ void main() {
     });
 
     test('copyWith can set a new pageErrors map', () {
-      final original = SmartPaginationLoaded<int>(
+      final original = SuperPaginationLoaded<int>(
         items: const <int>[1],
         allItems: const <int>[1],
-        meta: PaginationMeta(
+        meta: SuperPaginationMeta(
           page: 1,
           pageSize: 20,
           hasNext: true,
@@ -69,15 +69,15 @@ void main() {
     });
 
     test('pageErrors difference breaks equality (isolated)', () {
-      // Note: we don't assert `base == sameAsBase` because PaginationMeta
+      // Note: we don't assert `base == sameAsBase` because SuperPaginationMeta
       // (a pre-existing type) lacks value equality and instantiates a fresh
       // `fetchedAt = DateTime.now()` per construction. Instead we use
       // copyWith to keep meta reference-identical, so the only difference
       // between the two states under test is `pageErrors`.
-      final base = SmartPaginationLoaded<int>(
+      final base = SuperPaginationLoaded<int>(
         items: const <int>[],
         allItems: const <int>[],
-        meta: PaginationMeta(
+        meta: SuperPaginationMeta(
           page: 1,
           pageSize: 20,
           hasNext: false,

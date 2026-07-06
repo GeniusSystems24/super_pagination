@@ -44,7 +44,7 @@ class NetworkErrorsExample extends StatefulWidget {
 class _NetworkErrorsExampleState extends State<NetworkErrorsExample> {
   String _selectedErrorType = 'network';
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // Throw different error types based on selection
@@ -231,10 +231,10 @@ class _NetworkErrorsExampleState extends State<NetworkErrorsExample> {
           // Paginated list
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
+                SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey('network_error_$_selectedErrorType'),
-              request: PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(_fetchProducts),
+              request: SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(_fetchProducts),
               itemBuilder: (context, products, index) {
                 final product = products[index];
                 return ListTile(

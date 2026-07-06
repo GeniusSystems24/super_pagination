@@ -8,9 +8,9 @@ part of '../../pagination_feature.dart';
 /// ## Example Usage
 ///
 /// ```dart
-/// SmartPaginatedListView<Product>(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future(fetchProducts),
+/// SuperPaginatedListView<Product>(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future(fetchProducts),
 ///   childBuilder: (context, product, index) => ProductCard(product: product),
 ///   firstPageErrorBuilder: (context, error, retry) {
 ///     return CustomErrorBuilder.material(

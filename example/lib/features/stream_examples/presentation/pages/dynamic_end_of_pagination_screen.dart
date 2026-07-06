@@ -24,7 +24,7 @@ class _DynamicEndOfPaginationScreenState
 
   static const _names = [
     'Wireless Headphones',
-    'Smart Watch',
+    'Super Watch',
     'Laptop',
     'Running Shoes',
     'Coffee Maker',
@@ -36,27 +36,27 @@ class _DynamicEndOfPaginationScreenState
   ];
 
   late final StreamController<List<Product>> _page1Controller;
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
   int _emittedCount = 5;
 
   @override
   void initState() {
     super.initState();
     _page1Controller = StreamController<List<Product>>.broadcast();
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: _pageSize),
-      provider: PaginationProvider.stream(_buildProvider),
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: _pageSize),
+      provider: SuperPaginationProvider.stream(_buildProvider),
     );
     // Emit the initial partial page after subscriptions are set up.
     Future.microtask(() => _emitPage(5));
   }
 
-  Stream<List<Product>> _buildProvider(PaginationRequest request) {
+  Stream<List<Product>> _buildProvider(SuperPaginationRequest request) {
     if (request.page == 1) return _page1Controller.stream;
     return _staticPageStream(request);
   }
 
-  Stream<List<Product>> _staticPageStream(PaginationRequest request) async* {
+  Stream<List<Product>> _staticPageStream(SuperPaginationRequest request) async* {
     final ps = request.pageSize ?? _pageSize;
     final start = (request.page - 1) * ps;
     yield _makeStaticItems(request.page, ps, start, 'loaded');
@@ -129,7 +129,7 @@ class _DynamicEndOfPaginationScreenState
           _buildInfoBanner(),
           _buildControlPanel(),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withCubit(
+            child: SuperPagination<Product, SuperPaginationRequest>.withCubit(
               key: ValueKey(_cubit),
               cubit: _cubit,
               itemBuilderType: PaginateBuilderType.listView,

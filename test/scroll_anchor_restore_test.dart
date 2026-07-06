@@ -40,9 +40,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -131,9 +131,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -216,9 +216,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -299,10 +299,10 @@ void main() {
                 // maxScrollExtent == 0 and jumpTo cannot dispatch a
                 // ScrollUpdateNotification.
                 height: 200,
-                child: SmartPaginationStaggeredGridView<int,
-                        PaginationRequest>.withProvider(
-                  request: PaginationRequest(page: 1, pageSize: _pageSize),
-                  provider: PaginationProvider<int, PaginationRequest>.future(
+                child: SuperPaginationStaggeredGridView<int,
+                        SuperPaginationRequest>.withProvider(
+                  request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                  provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                     (req) async {
                       providerCallCount++;
                       return List<int>.generate(
@@ -373,9 +373,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -460,9 +460,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -536,9 +536,9 @@ void main() {
         var providerCallCount = 0;
         final scrollController = ScrollController();
 
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async {
               providerCallCount++;
               return List<int>.generate(
@@ -552,7 +552,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withCubit(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withCubit(
                 cubit: cubit,
                 scrollController: scrollController,
                 itemBuilder: (context, items, index) => SizedBox(
@@ -592,9 +592,9 @@ void main() {
 
         // Fresh scope has only page-1 items. No stale page-2 data merged.
         final state = cubit.state;
-        expect(state, isA<SmartPaginationLoaded<int>>());
+        expect(state, isA<SuperPaginationLoaded<int>>());
         expect(
-          (state as SmartPaginationLoaded<int>).allItems.length,
+          (state as SuperPaginationLoaded<int>).allItems.length,
           _pageSize,
           reason:
               'After scope reset, only fresh page-1 items are present. '

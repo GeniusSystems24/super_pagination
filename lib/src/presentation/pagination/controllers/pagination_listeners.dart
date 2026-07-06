@@ -1,12 +1,12 @@
 part of '../pagination_feature.dart';
 
-class SmartPaginationChangeListener extends ChangeNotifier
+class SuperPaginationChangeListener extends ChangeNotifier
     implements IPaginationChangeListener {}
 
-class SmartPaginationRefreshedChangeListener
-    extends SmartPaginationChangeListener
+class SuperPaginationRefreshedChangeListener
+    extends SuperPaginationChangeListener
     implements IPaginationRefreshedChangeListener {
-  SmartPaginationRefreshedChangeListener();
+  SuperPaginationRefreshedChangeListener();
 
   bool _refreshed = false;
 
@@ -24,10 +24,10 @@ class SmartPaginationRefreshedChangeListener
   }
 }
 
-class SmartPaginationFilterChangeListener<T>
-    extends SmartPaginationChangeListener
+class SuperPaginationFilterChangeListener<T>
+    extends SuperPaginationChangeListener
     implements IPaginationFilterChangeListener<T> {
-  SmartPaginationFilterChangeListener();
+  SuperPaginationFilterChangeListener();
 
   WhereChecker<T>? _filterChecker;
 
@@ -44,10 +44,10 @@ class SmartPaginationFilterChangeListener<T>
   }
 }
 
-class SmartPaginationOrderChangeListener<T>
-    extends SmartPaginationChangeListener
+class SuperPaginationOrderChangeListener<T>
+    extends SuperPaginationChangeListener
     implements IPaginationOrderChangeListener<T> {
-  SmartPaginationOrderChangeListener();
+  SuperPaginationOrderChangeListener();
 
   CompareBy<T>? _orderBy;
 

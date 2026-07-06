@@ -1,6 +1,6 @@
 // US4 acceptance tests for spec 002-stabilize-provider, Phase 6 (T043–T046).
 //
-// Verifies that a developer-defined `PaginationRequest` subclass flows
+// Verifies that a developer-defined `SuperPaginationRequest` subclass flows
 // through every provider variant's user callback unchanged: the subclass
 // instance reaching the callback is reference-identical to the one supplied
 // by the cubit, and its custom fields are readable without a cast (FR-030).
@@ -10,7 +10,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_pagination/pagination.dart';
 
-class _ProductRequest extends PaginationRequest {
+class _ProductRequest extends SuperPaginationRequest {
   const _ProductRequest({
     super.page,
     super.pageSize,
@@ -44,21 +44,21 @@ void main() {
     test('T043: future provider receives the custom subclass unchanged',
         () async {
       _ProductRequest? received;
-      final cubit = SmartPaginationCubit<int, _ProductRequest>(
+      final cubit = SuperPaginationCubit<int, _ProductRequest>(
         request: const _ProductRequest(
           page: 1,
           pageSize: 5,
           category: 'electronics',
           maxPrice: 99.99,
         ),
-        provider: PaginationProvider<int, _ProductRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, _ProductRequest>.future((req) async {
           received = req;
           return List<int>.generate(5, (i) => i);
         }),
       );
 
       cubit.refreshPaginatedList();
-      await cubit.stream.firstWhere((s) => s is SmartPaginationLoaded<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationLoaded<int>);
 
       expect(received, isA<_ProductRequest>(),
           reason: 'callback must receive the exact subclass, not the base');
@@ -74,14 +74,14 @@ void main() {
         () async {
       final receivedRequests = <_ProductRequest>[];
       final controllers = <int, StreamController<List<int>>>{};
-      final cubit = SmartPaginationCubit<int, _ProductRequest>(
+      final cubit = SuperPaginationCubit<int, _ProductRequest>(
         request: const _ProductRequest(
           page: 1,
           pageSize: 5,
           category: 'books',
           maxPrice: 19.99,
         ),
-        provider: PaginationProvider<int, _ProductRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, _ProductRequest>.stream((req) {
           receivedRequests.add(req);
           final ctrl = controllers.putIfAbsent(
             req.page,
@@ -123,7 +123,7 @@ void main() {
 
     test('T045: merged-stream provider preserves custom subclass', () async {
       final receivedRequests = <_ProductRequest>[];
-      final cubit = SmartPaginationCubit<int, _ProductRequest>(
+      final cubit = SuperPaginationCubit<int, _ProductRequest>(
         request: const _ProductRequest(
           page: 1,
           pageSize: 5,
@@ -131,7 +131,7 @@ void main() {
           maxPrice: 49.99,
         ),
         provider:
-            PaginationProvider<int, _ProductRequest>.mergeStreams((req) {
+            SuperPaginationProvider<int, _ProductRequest>.mergeStreams((req) {
           receivedRequests.add(req);
           return [
             Stream<List<int>>.value([1, 2, 3, 4, 5]),
@@ -141,7 +141,7 @@ void main() {
       );
 
       cubit.refreshPaginatedList();
-      await cubit.stream.firstWhere((s) => s is SmartPaginationLoaded<int>);
+      await cubit.stream.firstWhere((s) => s is SuperPaginationLoaded<int>);
 
       expect(receivedRequests, isNotEmpty);
       for (final req in receivedRequests) {

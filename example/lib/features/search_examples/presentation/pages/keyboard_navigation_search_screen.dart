@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating keyboard navigation in SmartSearchDropdown.
+/// Example screen demonstrating keyboard navigation in SuperSearchDropdown.
 ///
 /// This screen shows how to:
 /// - Navigate search results with arrow keys
@@ -95,25 +95,25 @@ class _KeyboardNavigationSearchScreenState
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 300),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 300,
                 borderRadius: 12,
               ),

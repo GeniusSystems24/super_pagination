@@ -1,9 +1,9 @@
 /// Flutter presentation module for pagination.
 ///
 /// MVC mapping:
-/// - Model: [SmartPaginationState] and its concrete states.
-/// - Controllers: [SmartPaginationCubit] and [SmartPaginationController].
-/// - Views: [SmartPagination] and the specialized pagination widgets.
+/// - Model: [SuperPaginationState] and its concrete states.
+/// - Controllers: [SuperPaginationCubit] and [SuperPaginationController].
+/// - Views: [SuperPagination] and the specialized pagination widgets.
 library;
 
 import 'dart:async';

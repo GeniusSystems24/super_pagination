@@ -7,20 +7,20 @@ part of '../../pagination_feature.dart';
 ///
 /// Example usage:
 /// ```dart
-/// SmartPaginationListView.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) => fetchProducts(request)),
+/// SuperPaginationListView.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
 ///   itemBuilder: (context, items, index) {
 ///     return ListTile(title: Text(items[index].name));
 ///   },
 /// )
 /// ```
-class SmartPaginationListView<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationListView with a provider for data fetching.
+class SuperPaginationListView<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationListView with a provider for data fetching.
   ///
   /// The [request] and [provider] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered.
-  SmartPaginationListView.withProvider({
+  SuperPaginationListView.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -72,11 +72,11 @@ class SmartPaginationListView<T, R extends PaginationRequest> extends SmartPagin
     Duration? dataAge,
   }) : super.listViewWithProvider();
 
-  /// Creates a SmartPaginationListView with an external cubit.
+  /// Creates a SuperPaginationListView with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationListView.withCubit({
+  SuperPaginationListView.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

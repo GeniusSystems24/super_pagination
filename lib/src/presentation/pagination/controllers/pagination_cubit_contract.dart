@@ -1,13 +1,13 @@
 part of '../pagination_feature.dart';
 
 /// Base interface for pagination cubits that provides common functionality
-/// for both SmartPagination and DualPagination cubits.
+/// for both SuperPagination and DualPagination cubits.
 ///
-/// [R] is the concrete [PaginationRequest] type (or subclass).
-/// It defaults to the base [PaginationRequest] bound so that existing code
+/// [R] is the concrete [SuperPaginationRequest] type (or subclass).
+/// It defaults to the base [SuperPaginationRequest] bound so that existing code
 /// without custom request types continues to compile unchanged.
 abstract class IPaginationCubit<T, StateType extends IPaginationState<T>,
-    R extends PaginationRequest> extends Cubit<StateType> {
+    R extends SuperPaginationRequest> extends Cubit<StateType> {
   IPaginationCubit(super.initialState);
 
   /// Initial request configuration used when the pagination starts.
@@ -33,7 +33,7 @@ abstract class IPaginationCubit<T, StateType extends IPaginationState<T>,
 
 /// Base interface for pagination cubits with list building capabilities.
 abstract class IPaginationListCubit<T, StateType extends IPaginationState<T>,
-    R extends PaginationRequest> extends IPaginationCubit<T, StateType, R> {
+    R extends SuperPaginationRequest> extends IPaginationCubit<T, StateType, R> {
   IPaginationListCubit(super.initialState);
 
   /// Whether the cubit has fetched data at least once.

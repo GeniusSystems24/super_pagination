@@ -1,8 +1,8 @@
 part of '../../search_feature.dart';
 
-/// Theme extension for SmartSearch widgets.
+/// Theme extension for SuperSearch widgets.
 ///
-/// This extension provides customizable theming for all SmartSearch components
+/// This extension provides customizable theming for all SuperSearch components
 /// including the search box, overlay dropdown, and result items.
 ///
 /// ## Usage
@@ -12,10 +12,10 @@ part of '../../search_feature.dart';
 /// ```dart
 /// MaterialApp(
 ///   theme: ThemeData.light().copyWith(
-///     extensions: [SmartSearchTheme.light()],
+///     extensions: [SuperSearchTheme.light()],
 ///   ),
 ///   darkTheme: ThemeData.dark().copyWith(
-///     extensions: [SmartSearchTheme.dark()],
+///     extensions: [SuperSearchTheme.dark()],
 ///   ),
 /// )
 /// ```
@@ -23,15 +23,15 @@ part of '../../search_feature.dart';
 /// Or create a custom theme:
 ///
 /// ```dart
-/// SmartSearchTheme(
+/// SuperSearchTheme(
 ///   searchBoxBackgroundColor: Colors.grey[100],
 ///   searchBoxTextColor: Colors.black87,
 ///   // ... other properties
 /// )
 /// ```
-class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
-  /// Creates a SmartSearchTheme with the given properties.
-  const SmartSearchTheme({
+class SuperSearchTheme extends ThemeExtension<SuperSearchTheme> {
+  /// Creates a SuperSearchTheme with the given properties.
+  const SuperSearchTheme({
     // Search Box
     this.searchBoxBackgroundColor,
     this.searchBoxTextColor,
@@ -195,9 +195,9 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
   // Factory Constructors
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Creates a light theme for SmartSearch widgets.
-  factory SmartSearchTheme.light() {
-    return SmartSearchTheme(
+  /// Creates a light theme for SuperSearch widgets.
+  factory SuperSearchTheme.light() {
+    return SuperSearchTheme(
       // Search Box
       searchBoxBackgroundColor: Colors.white,
       searchBoxTextColor: const Color(0xFF1F2937),
@@ -242,9 +242,9 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
     );
   }
 
-  /// Creates a dark theme for SmartSearch widgets.
-  factory SmartSearchTheme.dark() {
-    return SmartSearchTheme(
+  /// Creates a dark theme for SuperSearch widgets.
+  factory SuperSearchTheme.dark() {
+    return SuperSearchTheme(
       // Search Box
       searchBoxBackgroundColor: const Color(0xFF1F2937),
       searchBoxTextColor: const Color(0xFFF9FAFB),
@@ -289,28 +289,28 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
     );
   }
 
-  /// Gets the SmartSearchTheme from the current context.
+  /// Gets the SuperSearchTheme from the current context.
   ///
   /// Falls back to light or dark theme based on the system brightness
   /// if no theme extension is found.
-  static SmartSearchTheme of(BuildContext context) {
-    final theme = Theme.of(context).extension<SmartSearchTheme>();
+  static SuperSearchTheme of(BuildContext context) {
+    final theme = Theme.of(context).extension<SuperSearchTheme>();
     if (theme != null) return theme;
 
     // Fall back to system theme based on brightness
     final brightness = Theme.of(context).brightness;
     return brightness == Brightness.dark
-        ? SmartSearchTheme.dark()
-        : SmartSearchTheme.light();
+        ? SuperSearchTheme.dark()
+        : SuperSearchTheme.light();
   }
 
-  /// Gets the SmartSearchTheme from the current context, or null if not found.
-  static SmartSearchTheme? maybeOf(BuildContext context) {
-    return Theme.of(context).extension<SmartSearchTheme>();
+  /// Gets the SuperSearchTheme from the current context, or null if not found.
+  static SuperSearchTheme? maybeOf(BuildContext context) {
+    return Theme.of(context).extension<SuperSearchTheme>();
   }
 
   @override
-  SmartSearchTheme copyWith({
+  SuperSearchTheme copyWith({
     // Search Box
     Color? searchBoxBackgroundColor,
     Color? searchBoxTextColor,
@@ -353,7 +353,7 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
     double? scrollbarThickness,
     Radius? scrollbarRadius,
   }) {
-    return SmartSearchTheme(
+    return SuperSearchTheme(
       searchBoxBackgroundColor:
           searchBoxBackgroundColor ?? this.searchBoxBackgroundColor,
       searchBoxTextColor: searchBoxTextColor ?? this.searchBoxTextColor,
@@ -395,10 +395,10 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
   }
 
   @override
-  SmartSearchTheme lerp(ThemeExtension<SmartSearchTheme>? other, double t) {
-    if (other is! SmartSearchTheme) return this;
+  SuperSearchTheme lerp(ThemeExtension<SuperSearchTheme>? other, double t) {
+    if (other is! SuperSearchTheme) return this;
 
-    return SmartSearchTheme(
+    return SuperSearchTheme(
       searchBoxBackgroundColor: Color.lerp(
           searchBoxBackgroundColor, other.searchBoxBackgroundColor, t),
       searchBoxTextColor:
@@ -458,7 +458,7 @@ class SmartSearchTheme extends ThemeExtension<SmartSearchTheme> {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is! SmartSearchTheme) return false;
+    if (other is! SuperSearchTheme) return false;
 
     return searchBoxBackgroundColor == other.searchBoxBackgroundColor &&
         searchBoxTextColor == other.searchBoxTextColor &&

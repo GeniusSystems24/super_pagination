@@ -1,6 +1,6 @@
 part of '../../search_feature.dart';
 
-/// A search box widget that connects to a SmartPaginationCubit for searching.
+/// A search box widget that connects to a SuperPaginationCubit for searching.
 ///
 /// This widget provides a text field that triggers search operations on the
 /// connected cubit when the user types.
@@ -12,7 +12,7 @@ part of '../../search_feature.dart';
 ///
 /// Example:
 /// ```dart
-/// SmartSearchBox<Product, String>(
+/// SuperSearchBox<Product, String>(
 ///   controller: searchController,
 ///   decoration: InputDecoration(
 ///     hintText: 'Search products...',
@@ -20,8 +20,8 @@ part of '../../search_feature.dart';
 ///   ),
 /// )
 /// ```
-class SmartSearchBox<T, K> extends StatelessWidget {
-  const SmartSearchBox({
+class SuperSearchBox<T, K> extends StatelessWidget {
+  const SuperSearchBox({
     super.key,
     required this.controller,
     this.decoration,
@@ -54,7 +54,7 @@ class SmartSearchBox<T, K> extends StatelessWidget {
   });
 
   /// The search controller managing this search box.
-  final SmartSearchController<T, K> controller;
+  final SuperSearchController<T, K> controller;
 
   /// Decoration for the text field.
   final InputDecoration? decoration;
@@ -224,7 +224,7 @@ class SmartSearchBox<T, K> extends StatelessWidget {
   }
 
   InputDecoration _buildDecoration(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
     final effectiveBorderRadius =
         borderRadius ??
         searchTheme.searchBoxBorderRadius ??

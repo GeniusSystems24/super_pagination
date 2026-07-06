@@ -18,7 +18,7 @@ class _ReorderableListScreenState extends State<ReorderableListScreen> {
   Future<void> _loadInitialData() async {
     if (_isInitialized) return;
 
-    final request = const PaginationRequest(page: 1, pageSize: 20);
+    final request = const SuperPaginationRequest(page: 1, pageSize: 20);
     final products = await ExampleDependencies.catalog.fetchProducts(request);
 
     setState(() {
@@ -134,9 +134,9 @@ class _ReorderableListScreenState extends State<ReorderableListScreen> {
                 }
 
                 return SuperPagination<Product,
-                    PaginationRequest>.reorderableListViewWithProvider(
-                  request: const PaginationRequest(page: 1, pageSize: 20),
-                  provider: PaginationProvider.future(
+                    SuperPaginationRequest>.reorderableListViewWithProvider(
+                  request: const SuperPaginationRequest(page: 1, pageSize: 20),
+                  provider: SuperPaginationProvider.future(
                     (request) async => _items,
                   ),
                   itemBuilder: (context, items, index) {
@@ -310,7 +310,7 @@ class _PriorityTasksScreenState extends State<PriorityTasksScreen> {
   Future<void> _loadInitialData() async {
     if (_isInitialized) return;
 
-    final request = const PaginationRequest(page: 1, pageSize: 15);
+    final request = const SuperPaginationRequest(page: 1, pageSize: 15);
     final products = await ExampleDependencies.catalog.fetchProducts(request);
 
     setState(() {
@@ -396,9 +396,9 @@ class _PriorityTasksScreenState extends State<PriorityTasksScreen> {
                 }
 
                 return SuperPagination<Product,
-                    PaginationRequest>.reorderableListViewWithProvider(
-                  request: const PaginationRequest(page: 1, pageSize: 15),
-                  provider: PaginationProvider.future(
+                    SuperPaginationRequest>.reorderableListViewWithProvider(
+                  request: const SuperPaginationRequest(page: 1, pageSize: 15),
+                  provider: SuperPaginationProvider.future(
                     (request) async => _tasks,
                   ),
                   itemBuilder: (context, items, index) {

@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           route: AppRoutes.stateSeparation,
         ),
         ExampleItem(
-          title: 'Smart Preloading',
+          title: 'Super Preloading',
           description: 'Load items before reaching end',
           icon: Icons.speed_rounded,
           color: Color(0xFF7C3AED),
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ),
     ExampleCategory(
       title: 'Search',
-      subtitle: 'Smart search components',
+      subtitle: 'Super search components',
       icon: Icons.search_rounded,
       items: [
         ExampleItem(

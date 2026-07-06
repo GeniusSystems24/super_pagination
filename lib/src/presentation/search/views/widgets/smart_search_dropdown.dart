@@ -1,7 +1,7 @@
 part of '../../search_feature.dart';
 
 /// A convenient widget that combines search functionality with a dropdown
-/// overlay showing paginated results from a SmartPaginationCubit.
+/// overlay showing paginated results from a SuperPaginationCubit.
 ///
 /// This widget provides a complete search-with-results solution that can be
 /// placed anywhere in your UI. The results dropdown automatically positions
@@ -21,12 +21,12 @@ part of '../../search_feature.dart';
 ///
 /// Example with key-based selection:
 /// ```dart
-/// SmartSearchDropdown<Product, String>.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) async {
+/// SuperSearchDropdown<Product, String>.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) async {
 ///     return await api.searchProducts(request.searchQuery ?? '');
 ///   }),
-///   searchRequestBuilder: (query) => PaginationRequest(...),
+///   searchRequestBuilder: (query) => SuperPaginationRequest(...),
 ///   itemBuilder: (context, product) => ListTile(title: Text(product.name)),
 ///   keyExtractor: (product) => product.sku,
 ///   selectedKey: 'SKU-001',
@@ -37,7 +37,7 @@ part of '../../search_feature.dart';
 ///
 /// Example with showSelected mode:
 /// ```dart
-/// SmartSearchDropdown<Product, String>.withProvider(
+/// SuperSearchDropdown<Product, String>.withProvider(
 ///   // ... other properties
 ///   showSelected: true,
 ///   selectedItemBuilder: (context, product, onClear) => ListTile(
@@ -52,9 +52,9 @@ part of '../../search_feature.dart';
 ///
 /// Example with external cubit:
 /// ```dart
-/// SmartSearchDropdown<Product, String>.withCubit(
+/// SuperSearchDropdown<Product, String>.withCubit(
 ///   cubit: productSearchCubit,
-///   searchRequestBuilder: (query) => PaginationRequest(
+///   searchRequestBuilder: (query) => SuperPaginationRequest(
 ///     page: 1,
 ///     pageSize: 20,
 ///     searchQuery: query,
@@ -68,17 +68,17 @@ part of '../../search_feature.dart';
 ///   },
 /// )
 /// ```
-class SmartSearchDropdown<T, K> extends StatefulWidget {
+class SuperSearchDropdown<T, K> extends StatefulWidget {
   /// Creates a search dropdown with an internal cubit.
-  const SmartSearchDropdown.withProvider({
+  const SuperSearchDropdown.withProvider({
     super.key,
-    required PaginationRequest request,
-    required PaginationProvider<T, PaginationRequest> provider,
+    required SuperPaginationRequest request,
+    required SuperPaginationProvider<T, SuperPaginationRequest> provider,
     required this.searchRequestBuilder,
     required this.itemBuilder,
     this.onSelected,
-    this.searchConfig = const SmartSearchConfig(),
-    this.overlayConfig = const SmartSearchOverlayConfig(),
+    this.searchConfig = const SuperSearchConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
     this.decoration,
     this.style,
     this.prefixIcon,
@@ -126,14 +126,14 @@ class SmartSearchDropdown<T, K> extends StatefulWidget {
         _orders = orders;
 
   /// Creates a search dropdown with an external cubit.
-  const SmartSearchDropdown.withCubit({
+  const SuperSearchDropdown.withCubit({
     super.key,
-    required SmartPaginationCubit<T, PaginationRequest> cubit,
+    required SuperPaginationCubit<T, SuperPaginationRequest> cubit,
     required this.searchRequestBuilder,
     required this.itemBuilder,
     this.onSelected,
-    this.searchConfig = const SmartSearchConfig(),
-    this.overlayConfig = const SmartSearchOverlayConfig(),
+    this.searchConfig = const SuperSearchConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
     this.decoration,
     this.style,
     this.prefixIcon,
@@ -173,9 +173,9 @@ class SmartSearchDropdown<T, K> extends StatefulWidget {
         _dataAge = null,
         _orders = null;
 
-  final SmartPaginationCubit<T, PaginationRequest>? _cubit;
-  final PaginationRequest? _request;
-  final PaginationProvider<T, PaginationRequest>? _provider;
+  final SuperPaginationCubit<T, SuperPaginationRequest>? _cubit;
+  final SuperPaginationRequest? _request;
+  final SuperPaginationProvider<T, SuperPaginationRequest>? _provider;
   final ListBuilder<T>? _listBuilder;
   final OnInsertionCallback<T>? _onInsertionCallback;
   final int _maxPagesInMemory;
@@ -185,7 +185,7 @@ class SmartSearchDropdown<T, K> extends StatefulWidget {
   final SortOrderCollection<T>? _orders;
 
   /// Builds the pagination request for a search query.
-  final PaginationRequest Function(String query) searchRequestBuilder;
+  final SuperPaginationRequest Function(String query) searchRequestBuilder;
 
   /// Builder for each result item.
   final Widget Function(BuildContext context, T item) itemBuilder;
@@ -195,10 +195,10 @@ class SmartSearchDropdown<T, K> extends StatefulWidget {
   final void Function(T item, K key)? onSelected;
 
   /// Configuration for search behavior.
-  final SmartSearchConfig searchConfig;
+  final SuperSearchConfig searchConfig;
 
   /// Configuration for the overlay appearance.
-  final SmartSearchOverlayConfig overlayConfig;
+  final SuperSearchOverlayConfig overlayConfig;
 
   /// Decoration for the search text field.
   final InputDecoration? decoration;
@@ -325,15 +325,15 @@ class SmartSearchDropdown<T, K> extends StatefulWidget {
   final TextInputType keyboardType;
 
   @override
-  State<SmartSearchDropdown<T, K>> createState() =>
-      _SmartSearchDropdownState<T, K>();
+  State<SuperSearchDropdown<T, K>> createState() =>
+      _SuperSearchDropdownState<T, K>();
 }
 
-class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
-  SmartPaginationCubit<T, PaginationRequest>? _internalCubit;
-  SmartSearchController<T, K>? _searchController;
+class _SuperSearchDropdownState<T, K> extends State<SuperSearchDropdown<T, K>> {
+  SuperPaginationCubit<T, SuperPaginationRequest>? _internalCubit;
+  SuperSearchController<T, K>? _searchController;
 
-  SmartPaginationCubit<T, PaginationRequest> get _cubit => widget._cubit ?? _internalCubit!;
+  SuperPaginationCubit<T, SuperPaginationRequest> get _cubit => widget._cubit ?? _internalCubit!;
 
   @override
   void initState() {
@@ -344,7 +344,7 @@ class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
 
   void _initializeCubit() {
     if (widget._cubit == null) {
-      _internalCubit = SmartPaginationCubit<T, PaginationRequest>(
+      _internalCubit = SuperPaginationCubit<T, SuperPaginationRequest>(
         request: widget._request!,
         provider: widget._provider!,
         listBuilder: widget._listBuilder,
@@ -359,7 +359,7 @@ class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
   }
 
   void _initializeController() {
-    _searchController = SmartSearchController<T, K>(
+    _searchController = SuperSearchController<T, K>(
       cubit: _cubit,
       searchRequestBuilder: widget.searchRequestBuilder,
       config: widget.searchConfig,
@@ -394,7 +394,7 @@ class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
         }
 
         // Show the search overlay
-        return SmartSearchOverlay<T, K>(
+        return SuperSearchOverlay<T, K>(
           controller: _searchController!,
           itemBuilder: widget.itemBuilder,
           searchBoxDecoration: widget.decoration,
@@ -428,7 +428,7 @@ class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
     final pendingKey = _searchController!.selectedKey;
     if (pendingKey == null) return const SizedBox.shrink();
 
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     // Use custom selectedKeyBuilder if provided
     if (widget.selectedKeyBuilder != null) {
@@ -453,7 +453,7 @@ class _SmartSearchDropdownState<T, K> extends State<SmartSearchDropdown<T, K>> {
 
   Widget _buildSelectedItemDisplay(BuildContext context) {
     final selectedItem = _searchController!.selectedItem as T;
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     // Use custom selectedItemBuilder if provided
     if (widget.selectedItemBuilder != null) {

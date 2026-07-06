@@ -19,12 +19,12 @@ part of '../../search_feature.dart';
 ///
 /// Example with key-based selection:
 /// ```dart
-/// SmartSearchMultiDropdown<Product, String>.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) async {
+/// SuperSearchMultiDropdown<Product, String>.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) async {
 ///     return await api.searchProducts(request.searchQuery ?? '');
 ///   }),
-///   searchRequestBuilder: (query) => PaginationRequest(...),
+///   searchRequestBuilder: (query) => SuperPaginationRequest(...),
 ///   itemBuilder: (context, product) => ListTile(title: Text(product.name)),
 ///   keyExtractor: (product) => product.sku,
 ///   selectedKeys: ['SKU-001', 'SKU-002', 'SKU-003'],
@@ -35,7 +35,7 @@ part of '../../search_feature.dart';
 ///
 /// Example with showSelected:
 /// ```dart
-/// SmartSearchMultiDropdown<Product, String>.withProvider(
+/// SuperSearchMultiDropdown<Product, String>.withProvider(
 ///   // ... other properties
 ///   showSelected: true,
 ///   selectedItemBuilder: (context, product, onRemove) => Chip(
@@ -44,19 +44,19 @@ part of '../../search_feature.dart';
 ///   ),
 /// )
 /// ```
-class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
+class SuperSearchMultiDropdown<T, K> extends StatefulWidget {
   /// Creates a multi-selection search dropdown with an internal cubit.
-  const SmartSearchMultiDropdown.withProvider({
+  const SuperSearchMultiDropdown.withProvider({
     super.key,
-    required PaginationRequest request,
-    required PaginationProvider<T, PaginationRequest> provider,
+    required SuperPaginationRequest request,
+    required SuperPaginationProvider<T, SuperPaginationRequest> provider,
     required this.searchRequestBuilder,
     required this.itemBuilder,
     this.onSelected,
     this.displayMode = SearchDisplayMode.overlay,
-    this.searchConfig = const SmartSearchConfig(),
-    this.overlayConfig = const SmartSearchOverlayConfig(),
-    this.bottomSheetConfig = const SmartSearchBottomSheetConfig(),
+    this.searchConfig = const SuperSearchConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
+    this.bottomSheetConfig = const SuperSearchBottomSheetConfig(),
     this.decoration,
     this.style,
     this.prefixIcon,
@@ -111,16 +111,16 @@ class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
         _orders = orders;
 
   /// Creates a multi-selection search dropdown with an external cubit.
-  const SmartSearchMultiDropdown.withCubit({
+  const SuperSearchMultiDropdown.withCubit({
     super.key,
-    required SmartPaginationCubit<T, PaginationRequest> cubit,
+    required SuperPaginationCubit<T, SuperPaginationRequest> cubit,
     required this.searchRequestBuilder,
     required this.itemBuilder,
     this.onSelected,
     this.displayMode = SearchDisplayMode.overlay,
-    this.searchConfig = const SmartSearchConfig(),
-    this.overlayConfig = const SmartSearchOverlayConfig(),
-    this.bottomSheetConfig = const SmartSearchBottomSheetConfig(),
+    this.searchConfig = const SuperSearchConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
+    this.bottomSheetConfig = const SuperSearchBottomSheetConfig(),
     this.decoration,
     this.style,
     this.prefixIcon,
@@ -167,9 +167,9 @@ class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
         _dataAge = null,
         _orders = null;
 
-  final SmartPaginationCubit<T, PaginationRequest>? _cubit;
-  final PaginationRequest? _request;
-  final PaginationProvider<T, PaginationRequest>? _provider;
+  final SuperPaginationCubit<T, SuperPaginationRequest>? _cubit;
+  final SuperPaginationRequest? _request;
+  final SuperPaginationProvider<T, SuperPaginationRequest>? _provider;
   final ListBuilder<T>? _listBuilder;
   final OnInsertionCallback<T>? _onInsertionCallback;
   final int _maxPagesInMemory;
@@ -179,7 +179,7 @@ class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
   final SortOrderCollection<T>? _orders;
 
   /// Builds the pagination request for a search query.
-  final PaginationRequest Function(String query) searchRequestBuilder;
+  final SuperPaginationRequest Function(String query) searchRequestBuilder;
 
   /// Builder for each result item.
   final Widget Function(BuildContext context, T item) itemBuilder;
@@ -192,13 +192,13 @@ class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
   final SearchDisplayMode displayMode;
 
   /// Configuration for search behavior.
-  final SmartSearchConfig searchConfig;
+  final SuperSearchConfig searchConfig;
 
   /// Configuration for the overlay appearance.
-  final SmartSearchOverlayConfig overlayConfig;
+  final SuperSearchOverlayConfig overlayConfig;
 
   /// Configuration for the bottom sheet appearance.
-  final SmartSearchBottomSheetConfig bottomSheetConfig;
+  final SuperSearchBottomSheetConfig bottomSheetConfig;
 
   /// Decoration for the search text field.
   final InputDecoration? decoration;
@@ -326,16 +326,16 @@ class SmartSearchMultiDropdown<T, K> extends StatefulWidget {
   final VoidCallback? onMaxSelectionsReached;
 
   @override
-  State<SmartSearchMultiDropdown<T, K>> createState() =>
-      _SmartSearchMultiDropdownState<T, K>();
+  State<SuperSearchMultiDropdown<T, K>> createState() =>
+      _SuperSearchMultiDropdownState<T, K>();
 }
 
-class _SmartSearchMultiDropdownState<T, K>
-    extends State<SmartSearchMultiDropdown<T, K>> {
-  SmartPaginationCubit<T, PaginationRequest>? _internalCubit;
-  SmartSearchMultiController<T, K>? _searchController;
+class _SuperSearchMultiDropdownState<T, K>
+    extends State<SuperSearchMultiDropdown<T, K>> {
+  SuperPaginationCubit<T, SuperPaginationRequest>? _internalCubit;
+  SuperSearchMultiController<T, K>? _searchController;
 
-  SmartPaginationCubit<T, PaginationRequest> get _cubit => widget._cubit ?? _internalCubit!;
+  SuperPaginationCubit<T, SuperPaginationRequest> get _cubit => widget._cubit ?? _internalCubit!;
 
   @override
   void initState() {
@@ -346,7 +346,7 @@ class _SmartSearchMultiDropdownState<T, K>
 
   void _initializeCubit() {
     if (widget._cubit == null) {
-      _internalCubit = SmartPaginationCubit<T, PaginationRequest>(
+      _internalCubit = SuperPaginationCubit<T, SuperPaginationRequest>(
         request: widget._request!,
         provider: widget._provider!,
         listBuilder: widget._listBuilder,
@@ -361,7 +361,7 @@ class _SmartSearchMultiDropdownState<T, K>
   }
 
   void _initializeController() {
-    _searchController = SmartSearchMultiController<T, K>(
+    _searchController = SuperSearchMultiController<T, K>(
       cubit: _cubit,
       searchRequestBuilder: widget.searchRequestBuilder,
       config: widget.searchConfig,
@@ -392,7 +392,7 @@ class _SmartSearchMultiDropdownState<T, K>
           children: [
             // Search input based on display mode
             if (widget.displayMode == SearchDisplayMode.overlay)
-              _SmartSearchMultiOverlay<T, K>(
+              _SuperSearchMultiOverlay<T, K>(
                 controller: _searchController!,
                 itemBuilder: _buildResultItem,
                 onItemSelected: (item) {
@@ -440,7 +440,7 @@ class _SmartSearchMultiDropdownState<T, K>
   }
 
   Widget _buildBottomSheetTrigger(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
     final effectiveBorderRadius =
         widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
 
@@ -502,7 +502,7 @@ class _SmartSearchMultiDropdownState<T, K>
       showDragHandle: config.showDragHandle,
       shape: RoundedRectangleBorder(borderRadius: config.borderRadius),
       builder: (bottomSheetContext) {
-        return _SmartSearchBottomSheetContent<T, K>(
+        return _SuperSearchBottomSheetContent<T, K>(
           controller: _searchController!,
           cubit: _cubit,
           config: config,
@@ -529,7 +529,7 @@ class _SmartSearchMultiDropdownState<T, K>
 
   Widget _buildResultItem(BuildContext context, T item) {
     final isSelected = _searchController!.isItemSelected(item);
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Stack(
       children: [
@@ -553,7 +553,7 @@ class _SmartSearchMultiDropdownState<T, K>
   }
 
   Widget _buildSelectedItems(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     // Build list of widgets: selected items + pending keys
     final List<Widget> children = [];
@@ -595,7 +595,7 @@ class _SmartSearchMultiDropdownState<T, K>
   Widget _buildPendingKeyChip(
     BuildContext context,
     K key,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (widget.selectedKeyBuilder != null) {
       return widget.selectedKeyBuilder!(
@@ -620,7 +620,7 @@ class _SmartSearchMultiDropdownState<T, K>
   Widget _buildSelectedItemChip(
     BuildContext context,
     T item,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (widget.selectedItemBuilder != null) {
       return widget.selectedItemBuilder!(
@@ -700,13 +700,13 @@ class _DefaultMultiSelectedItemChip<T> extends StatelessWidget {
 }
 
 /// Overlay widget for multi-selection search.
-class _SmartSearchMultiOverlay<T, K> extends StatefulWidget {
-  const _SmartSearchMultiOverlay({
+class _SuperSearchMultiOverlay<T, K> extends StatefulWidget {
+  const _SuperSearchMultiOverlay({
     required this.controller,
     required this.itemBuilder,
     required this.onItemSelected,
     this.searchBoxDecoration,
-    this.overlayConfig = const SmartSearchOverlayConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
     this.loadingBuilder,
     this.emptyBuilder,
     this.errorBuilder,
@@ -729,11 +729,11 @@ class _SmartSearchMultiOverlay<T, K> extends StatefulWidget {
     this.searchBoxKeyboardType = TextInputType.text,
   });
 
-  final SmartSearchMultiController<T, K> controller;
+  final SuperSearchMultiController<T, K> controller;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final ValueChanged<T> onItemSelected;
   final InputDecoration? searchBoxDecoration;
-  final SmartSearchOverlayConfig overlayConfig;
+  final SuperSearchOverlayConfig overlayConfig;
   final WidgetBuilder? loadingBuilder;
   final WidgetBuilder? emptyBuilder;
   final Widget Function(BuildContext context, Exception error)? errorBuilder;
@@ -756,12 +756,12 @@ class _SmartSearchMultiOverlay<T, K> extends StatefulWidget {
   final TextInputType searchBoxKeyboardType;
 
   @override
-  State<_SmartSearchMultiOverlay<T, K>> createState() =>
-      _SmartSearchMultiOverlayState<T, K>();
+  State<_SuperSearchMultiOverlay<T, K>> createState() =>
+      _SuperSearchMultiOverlayState<T, K>();
 }
 
-class _SmartSearchMultiOverlayState<T, K>
-    extends State<_SmartSearchMultiOverlay<T, K>>
+class _SuperSearchMultiOverlayState<T, K>
+    extends State<_SuperSearchMultiOverlay<T, K>>
     with SingleTickerProviderStateMixin {
   final LayerLink _layerLink = LayerLink();
   final GlobalKey _searchBoxKey = GlobalKey();
@@ -852,7 +852,7 @@ class _SmartSearchMultiOverlayState<T, K>
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child: _SmartSearchMultiBox<T, K>(
+      child: _SuperSearchMultiBox<T, K>(
         key: _searchBoxKey,
         controller: widget.controller,
         decoration: widget.searchBoxDecoration,
@@ -875,8 +875,8 @@ class _SmartSearchMultiOverlayState<T, K>
 }
 
 /// Search box widget for multi-selection.
-class _SmartSearchMultiBox<T, K> extends StatelessWidget {
-  const _SmartSearchMultiBox({
+class _SuperSearchMultiBox<T, K> extends StatelessWidget {
+  const _SuperSearchMultiBox({
     super.key,
     required this.controller,
     this.decoration,
@@ -895,7 +895,7 @@ class _SmartSearchMultiBox<T, K> extends StatelessWidget {
     this.keyboardType = TextInputType.text,
   });
 
-  final SmartSearchMultiController<T, K> controller;
+  final SuperSearchMultiController<T, K> controller;
   final InputDecoration? decoration;
   final TextStyle? style;
   final Widget? prefixIcon;
@@ -913,7 +913,7 @@ class _SmartSearchMultiBox<T, K> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     final effectiveBorderRadius =
         borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
@@ -995,7 +995,7 @@ class _SmartSearchMultiBox<T, K> extends StatelessWidget {
     );
   }
 
-  Widget? _buildSuffixIcon(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget? _buildSuffixIcon(BuildContext context, SuperSearchTheme searchTheme) {
     if (suffixIcon != null) return suffixIcon;
 
     if (showClearButton && controller.hasText) {
@@ -1031,8 +1031,8 @@ class _MultiOverlayContent<T, K> extends StatefulWidget {
 
   final LayerLink layerLink;
   final GlobalKey searchBoxKey;
-  final SmartSearchMultiController<T, K> controller;
-  final SmartSearchOverlayConfig config;
+  final SuperSearchMultiController<T, K> controller;
+  final SuperSearchOverlayConfig config;
   final Animation<double> fadeAnimation;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final ValueChanged<T> onItemSelected;
@@ -1137,7 +1137,7 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
       padding: padding,
     );
 
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Stack(
       children: [
@@ -1172,20 +1172,20 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
     );
   }
 
-  Widget _buildContent(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildContent(BuildContext context, SuperSearchTheme searchTheme) {
     return ListenableBuilder(
       listenable: widget.controller,
       builder: (context, _) {
-        return BlocBuilder<SmartPaginationCubit<T, PaginationRequest>, SmartPaginationState<T>>(
+        return BlocBuilder<SuperPaginationCubit<T, SuperPaginationRequest>, SuperPaginationState<T>>(
           bloc: widget.controller.cubit,
           builder: (context, state) {
             return switch (state) {
-              SmartPaginationError<T>(:final error) => _buildError(
+              SuperPaginationError<T>(:final error) => _buildError(
                   context,
                   error,
                   searchTheme,
                 ),
-              SmartPaginationLoaded<T>(:final items) => _buildResults(
+              SuperPaginationLoaded<T>(:final items) => _buildResults(
                   context,
                   items,
                   searchTheme,
@@ -1198,7 +1198,7 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
     );
   }
 
-  Widget _buildInitialOrLoading(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildInitialOrLoading(BuildContext context, SuperSearchTheme searchTheme) {
     if (widget.loadingBuilder != null) {
       return widget.loadingBuilder!(context);
     }
@@ -1218,7 +1218,7 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
   Widget _buildError(
     BuildContext context,
     Exception error,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (widget.errorBuilder != null) {
       return widget.errorBuilder!(context, error);
@@ -1257,7 +1257,7 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
   Widget _buildResults(
     BuildContext context,
     List<T> items,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (items.isEmpty) {
       return _buildEmpty(context, searchTheme);
@@ -1323,7 +1323,7 @@ class _MultiOverlayContentState<T, K> extends State<_MultiOverlayContent<T, K>> 
     );
   }
 
-  Widget _buildEmpty(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildEmpty(BuildContext context, SuperSearchTheme searchTheme) {
     if (widget.emptyBuilder != null) {
       return widget.emptyBuilder!(context);
     }
@@ -1363,7 +1363,7 @@ class _ThemedMultiOverlayContainer extends StatelessWidget {
     this.overlayDecoration,
   });
 
-  final SmartSearchOverlayConfig config;
+  final SuperSearchOverlayConfig config;
   final BoxDecoration? overlayDecoration;
   final double width;
   final double maxHeight;
@@ -1371,7 +1371,7 @@ class _ThemedMultiOverlayContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     final effectiveBorderRadius = searchTheme.overlayBorderRadius ??
         BorderRadius.circular(config.borderRadius);
@@ -1539,8 +1539,8 @@ class _DefaultPendingKeyChip<K> extends StatelessWidget {
 }
 
 /// Bottom sheet content for multi-selection search.
-class _SmartSearchBottomSheetContent<T, K> extends StatefulWidget {
-  const _SmartSearchBottomSheetContent({
+class _SuperSearchBottomSheetContent<T, K> extends StatefulWidget {
+  const _SuperSearchBottomSheetContent({
     required this.controller,
     required this.cubit,
     required this.config,
@@ -1562,9 +1562,9 @@ class _SmartSearchBottomSheetContent<T, K> extends StatefulWidget {
     this.onMaxSelectionsReached,
   });
 
-  final SmartSearchMultiController<T, K> controller;
-  final SmartPaginationCubit<T, PaginationRequest> cubit;
-  final SmartSearchBottomSheetConfig config;
+  final SuperSearchMultiController<T, K> controller;
+  final SuperPaginationCubit<T, SuperPaginationRequest> cubit;
+  final SuperSearchBottomSheetConfig config;
   final Widget Function(BuildContext context, T item) itemBuilder;
   final double heightFactor;
   final WidgetBuilder? loadingBuilder;
@@ -1583,12 +1583,12 @@ class _SmartSearchBottomSheetContent<T, K> extends StatefulWidget {
   final VoidCallback? onMaxSelectionsReached;
 
   @override
-  State<_SmartSearchBottomSheetContent<T, K>> createState() =>
-      _SmartSearchBottomSheetContentState<T, K>();
+  State<_SuperSearchBottomSheetContent<T, K>> createState() =>
+      _SuperSearchBottomSheetContentState<T, K>();
 }
 
-class _SmartSearchBottomSheetContentState<T, K>
-    extends State<_SmartSearchBottomSheetContent<T, K>> {
+class _SuperSearchBottomSheetContentState<T, K>
+    extends State<_SuperSearchBottomSheetContent<T, K>> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -1616,7 +1616,7 @@ class _SmartSearchBottomSheetContentState<T, K>
   Widget build(BuildContext context) {
     final config = widget.config;
     final theme = Theme.of(context);
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * widget.heightFactor,
@@ -1636,13 +1636,13 @@ class _SmartSearchBottomSheetContentState<T, K>
             child: ListenableBuilder(
               listenable: widget.controller,
               builder: (context, _) {
-                return BlocBuilder<SmartPaginationCubit<T, PaginationRequest>, SmartPaginationState<T>>(
+                return BlocBuilder<SuperPaginationCubit<T, SuperPaginationRequest>, SuperPaginationState<T>>(
                   bloc: widget.cubit,
                   builder: (context, state) {
                     return switch (state) {
-                      SmartPaginationError<T>(:final error) =>
+                      SuperPaginationError<T>(:final error) =>
                         _buildError(context, error, searchTheme),
-                      SmartPaginationLoaded<T>(:final items) =>
+                      SuperPaginationLoaded<T>(:final items) =>
                         _buildResults(context, items, searchTheme),
                       _ => _buildLoading(context, searchTheme),
                     };
@@ -1662,9 +1662,9 @@ class _SmartSearchBottomSheetContentState<T, K>
 
   Widget _buildHeader(
     BuildContext context,
-    SmartSearchBottomSheetConfig config,
+    SuperSearchBottomSheetConfig config,
     ThemeData theme,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     return ListenableBuilder(
       listenable: widget.controller,
@@ -1710,7 +1710,7 @@ class _SmartSearchBottomSheetContentState<T, K>
     );
   }
 
-  Widget _buildSearchBox(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildSearchBox(BuildContext context, SuperSearchTheme searchTheme) {
     final effectiveBorderRadius =
         widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
 
@@ -1761,7 +1761,7 @@ class _SmartSearchBottomSheetContentState<T, K>
     );
   }
 
-  Widget _buildLoading(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildLoading(BuildContext context, SuperSearchTheme searchTheme) {
     if (widget.loadingBuilder != null) {
       return widget.loadingBuilder!(context);
     }
@@ -1781,7 +1781,7 @@ class _SmartSearchBottomSheetContentState<T, K>
   Widget _buildError(
     BuildContext context,
     Exception error,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (widget.errorBuilder != null) {
       return widget.errorBuilder!(context, error);
@@ -1821,7 +1821,7 @@ class _SmartSearchBottomSheetContentState<T, K>
   Widget _buildResults(
     BuildContext context,
     List<T> items,
-    SmartSearchTheme searchTheme,
+    SuperSearchTheme searchTheme,
   ) {
     if (items.isEmpty) {
       return _buildEmpty(context, searchTheme);
@@ -1874,7 +1874,7 @@ class _SmartSearchBottomSheetContentState<T, K>
     );
   }
 
-  Widget _buildEmpty(BuildContext context, SmartSearchTheme searchTheme) {
+  Widget _buildEmpty(BuildContext context, SuperSearchTheme searchTheme) {
     if (widget.emptyBuilder != null) {
       return widget.emptyBuilder!(context);
     }
@@ -1906,7 +1906,7 @@ class _SmartSearchBottomSheetContentState<T, K>
 
   Widget _buildFooter(
     BuildContext context,
-    SmartSearchBottomSheetConfig config,
+    SuperSearchBottomSheetConfig config,
     ThemeData theme,
   ) {
     return ListenableBuilder(

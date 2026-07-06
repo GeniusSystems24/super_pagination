@@ -1,13 +1,13 @@
 import '../../domain/models/pagination_meta.dart';
 
 /// Base interface for pagination states that provides common functionality
-/// for both SmartPagination and DualPagination states.
+/// for both SuperPagination and DualPagination states.
 abstract class IPaginationState<T> {
-  PaginationMeta? get meta;
+  SuperPaginationMeta? get meta;
 }
 
 /// Base interface for pagination states that provides common functionality
-/// for both SmartPagination and DualPagination states.
+/// for both SuperPagination and DualPagination states.
 abstract class IPaginationInitialState<T> extends IPaginationState<T> {
   /// Whether the pagination has reached the end of available data.
   bool get hasReachedEnd;
@@ -16,7 +16,7 @@ abstract class IPaginationInitialState<T> extends IPaginationState<T> {
   DateTime get lastUpdate;
 
   @override
-  PaginationMeta? get meta => null;
+  SuperPaginationMeta? get meta => null;
 }
 
 /// Base interface for loaded pagination states.
@@ -31,7 +31,7 @@ abstract class IPaginationLoadedState<T> extends IPaginationState<T> {
   DateTime get lastUpdate;
 
   @override
-  PaginationMeta get meta;
+  SuperPaginationMeta get meta;
 }
 
 /// Base interface for error pagination states.
@@ -40,5 +40,5 @@ abstract class IPaginationErrorState<T> extends IPaginationState<T> {
   Exception get error;
 
   @override
-  PaginationMeta? get meta => null;
+  SuperPaginationMeta? get meta => null;
 }

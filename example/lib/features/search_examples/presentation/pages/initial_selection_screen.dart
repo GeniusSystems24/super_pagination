@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating initial/pre-selection in SmartSearchDropdown.
+/// Example screen demonstrating initial/pre-selection in SuperSearchDropdown.
 ///
 /// This screen shows how to:
 /// - Set initial selected value using initialSelectedValue
@@ -106,25 +106,25 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
               Icons.check_circle_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 300,
                 borderRadius: 12,
               ),
@@ -238,25 +238,25 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const SizedBox(height: 8),
-                    SmartSearchDropdown<Product, String>.withProvider(
-                      request: const PaginationRequest(page: 1, pageSize: 20),
-                      provider: PaginationProvider.future(
+                    SuperSearchDropdown<Product, String>.withProvider(
+                      request: const SuperPaginationRequest(page: 1, pageSize: 20),
+                      provider: SuperPaginationProvider.future(
                         (request) => ExampleDependencies.catalog.searchProducts(
                           request.searchQuery ?? '',
                           pageSize: request.pageSize ?? 20,
                         ),
                       ),
-                      searchRequestBuilder: (query) => PaginationRequest(
+                      searchRequestBuilder: (query) => SuperPaginationRequest(
                         page: 1,
                         pageSize: 20,
                         searchQuery: query,
                       ),
-                      searchConfig: const SmartSearchConfig(
+                      searchConfig: const SuperSearchConfig(
                         debounceDelay: Duration(milliseconds: 500),
                         minSearchLength: 0,
                         searchOnEmpty: true,
                       ),
-                      overlayConfig: const SmartSearchOverlayConfig(
+                      overlayConfig: const SuperSearchOverlayConfig(
                         maxHeight: 250,
                         borderRadius: 8,
                       ),
@@ -320,25 +320,25 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
               Icons.checklist_rounded,
             ),
             const SizedBox(height: 12),
-            SmartSearchMultiDropdown<Product, String>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, String>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -568,27 +568,27 @@ class _ConditionalDropdownState extends State<_ConditionalDropdown> {
               ],
             ),
             const SizedBox(height: 12),
-            SmartSearchDropdown<Product, String>.withProvider(
+            SuperSearchDropdown<Product, String>.withProvider(
               // Use a unique key to rebuild when preference changes
               key: ValueKey('dropdown_$_rememberSelection'),
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 20,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 8,
               ),

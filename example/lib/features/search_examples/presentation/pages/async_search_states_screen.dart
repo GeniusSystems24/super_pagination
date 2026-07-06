@@ -103,23 +103,23 @@ class _AsyncSearchStatesScreenState extends State<AsyncSearchStatesScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchDropdown<Product, Product>.withProvider(
+            SuperSearchDropdown<Product, Product>.withProvider(
               key: ValueKey('default-$_simulateError-$_simulateEmpty-$_debounceMs'),
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => _fetchProducts(request),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: SmartSearchConfig(
+              searchConfig: SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: _debounceMs),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -142,23 +142,23 @@ class _AsyncSearchStatesScreenState extends State<AsyncSearchStatesScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchDropdown<Product, Product>.withProvider(
+            SuperSearchDropdown<Product, Product>.withProvider(
               key: ValueKey('custom-$_simulateError-$_simulateEmpty-$_debounceMs'),
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => _fetchProducts(request),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: SmartSearchConfig(
+              searchConfig: SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: _debounceMs),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -343,7 +343,7 @@ class _AsyncSearchStatesScreenState extends State<AsyncSearchStatesScreen> {
     );
   }
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     // Add artificial delay to show loading state
     await Future.delayed(const Duration(milliseconds: 800));
 

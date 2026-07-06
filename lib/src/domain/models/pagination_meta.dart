@@ -1,13 +1,13 @@
 /// Metadata describing the state of a paginated response.
 ///
-/// [PaginationMeta] contains information about the current state of pagination,
+/// [SuperPaginationMeta] contains information about the current state of pagination,
 /// including page numbers, cursors, and availability of additional pages.
 /// This class supports both offset-based and cursor-based pagination strategies.
 ///
 /// ## Offset-based pagination example:
 ///
 /// ```dart
-/// final meta = PaginationMeta(
+/// final meta = SuperPaginationMeta(
 ///   page: 2,
 ///   pageSize: 20,
 ///   hasNext: true,
@@ -23,7 +23,7 @@
 /// ## Cursor-based pagination example:
 ///
 /// ```dart
-/// final meta = PaginationMeta(
+/// final meta = SuperPaginationMeta(
 ///   nextCursor: 'eyJpZCI6MTIzfQ==',
 ///   previousCursor: 'eyJpZCI6MTAwfQ==',
 ///   hasNext: true,
@@ -31,10 +31,10 @@
 /// );
 ///
 /// // Use nextCursor for the next request
-/// final nextRequest = PaginationRequest(cursor: meta.nextCursor);
+/// final nextRequest = SuperPaginationRequest(cursor: meta.nextCursor);
 /// ```
-class PaginationMeta {
-  PaginationMeta({
+class SuperPaginationMeta {
+  SuperPaginationMeta({
     this.page,
     this.pageSize,
     this.nextCursor,
@@ -69,7 +69,7 @@ class PaginationMeta {
   /// Timestamp of when this metadata was produced.
   final DateTime fetchedAt;
 
-  PaginationMeta copyWith({
+  SuperPaginationMeta copyWith({
     int? page,
     int? pageSize,
     String? nextCursor,
@@ -79,7 +79,7 @@ class PaginationMeta {
     int? totalCount,
     DateTime? fetchedAt,
   }) {
-    return PaginationMeta(
+    return SuperPaginationMeta(
       page: page ?? this.page,
       pageSize: pageSize ?? this.pageSize,
       nextCursor: nextCursor ?? this.nextCursor,
@@ -104,8 +104,8 @@ class PaginationMeta {
     }..removeWhere((key, value) => value == null);
   }
 
-  factory PaginationMeta.fromJson(Map<String, dynamic> json) {
-    return PaginationMeta(
+  factory SuperPaginationMeta.fromJson(Map<String, dynamic> json) {
+    return SuperPaginationMeta(
       page: json['page'] as int?,
       pageSize: json['pageSize'] as int? ?? json['limit'] as int?,
       nextCursor: json['nextCursor'] as String? ?? json['next'] as String?,

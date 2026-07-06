@@ -19,7 +19,7 @@ class _BasicErrorExampleState extends State<BasicErrorExample> {
   bool _shouldFail = true;
   int _retryCount = 0;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     if (_shouldFail) {
@@ -112,10 +112,10 @@ class _BasicErrorExampleState extends State<BasicErrorExample> {
           // Paginated list
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.listViewWithProvider(
+                SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey('basic_error_$_retryCount'),
-              request: PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(_fetchProducts),
+              request: SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(_fetchProducts),
               itemBuilder: (context, products, index) {
                 final product = products[index];
                 return ListTile(

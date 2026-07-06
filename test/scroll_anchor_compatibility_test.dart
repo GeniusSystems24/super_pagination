@@ -34,9 +34,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -85,9 +85,9 @@ void main() {
         var providerCallCount = 0;
         final externalController = ScrollController();
 
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async {
               providerCallCount++;
               return List<int>.generate(
@@ -101,7 +101,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withCubit(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withCubit(
                 cubit: cubit,
                 scrollController: externalController,
                 itemBuilder: (context, items, index) => SizedBox(
@@ -152,9 +152,9 @@ void main() {
         var listenerInvocations = 0;
         externalController.addListener(() => listenerInvocations++);
 
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async => List<int>.generate(
               _pageSize,
               (i) => (req.page - 1) * _pageSize + i,
@@ -165,7 +165,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withCubit(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withCubit(
                 cubit: cubit,
                 scrollController: externalController,
                 itemBuilder: (context, items, index) => SizedBox(
@@ -210,9 +210,9 @@ void main() {
       (tester) async {
         final externalController = ScrollController();
 
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async => List<int>.generate(_pageSize, (i) => i),
           ),
         );
@@ -220,7 +220,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withCubit(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withCubit(
                 cubit: cubit,
                 scrollController: externalController,
                 itemBuilder: (context, items, index) => SizedBox(
@@ -273,9 +273,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationListView<int, PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     providerCallCount++;
                     return List<int>.generate(
@@ -331,9 +331,9 @@ void main() {
       (tester) async {
         // README example: .withProvider
         final providerWidget =
-            SmartPaginationListView<int, PaginationRequest>.withProvider(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+            SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async => List<int>.generate(_pageSize, (i) => i),
           ),
           itemBuilder: (context, items, index) => SizedBox(
@@ -349,14 +349,14 @@ void main() {
         expect(find.text('Item 0'), findsOneWidget);
 
         // README example: .withCubit
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: _pageSize),
-          provider: PaginationProvider<int, PaginationRequest>.future(
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
             (req) async => List<int>.generate(_pageSize, (i) => i + 100),
           ),
         );
         final cubitWidget =
-            SmartPaginationListView<int, PaginationRequest>.withCubit(
+            SuperPaginationListView<int, SuperPaginationRequest>.withCubit(
           cubit: cubit,
           itemBuilder: (context, items, index) => SizedBox(
             height: _itemHeight,

@@ -9,13 +9,13 @@ final class MockCatalogGateway implements DemoCatalogGateway {
 
   @override
   Future<List<Product>> fetchProducts(
-    PaginationRequest request, {
+    SuperPaginationRequest request, {
     bool simulateError = false,
   }) =>
       MockApiService.fetchProducts(request, simulateError: simulateError);
 
   @override
-  Future<List<Product>> fetchProductsWithError(PaginationRequest request) =>
+  Future<List<Product>> fetchProductsWithError(SuperPaginationRequest request) =>
       _legacyService.fetchProductsWithError(request);
 
   @override
@@ -26,26 +26,26 @@ final class MockCatalogGateway implements DemoCatalogGateway {
       MockApiService.searchProducts(query, pageSize: pageSize);
 
   @override
-  Stream<List<Product>> productsStream(PaginationRequest request) =>
+  Stream<List<Product>> productsStream(SuperPaginationRequest request) =>
       MockApiService.productsStream(request);
 
   @override
-  Stream<List<Product>> regularProductsStream(PaginationRequest request) =>
+  Stream<List<Product>> regularProductsStream(SuperPaginationRequest request) =>
       MockApiService.regularProductsStream(request);
 
   @override
-  Stream<List<Product>> featuredProductsStream(PaginationRequest request) =>
+  Stream<List<Product>> featuredProductsStream(SuperPaginationRequest request) =>
       MockApiService.featuredProductsStream(request);
 
   @override
-  Stream<List<Product>> saleProductsStream(PaginationRequest request) =>
+  Stream<List<Product>> saleProductsStream(SuperPaginationRequest request) =>
       MockApiService.saleProductsStream(request);
 
   @override
-  Stream<List<Product>> accumulatingProductsStream(PaginationRequest request) =>
+  Stream<List<Product>> accumulatingProductsStream(SuperPaginationRequest request) =>
       MockApiService.accumulatingProductsStream(request);
 
   @override
-  Stream<List<Product>> unreliablePageStream(PaginationRequest request) =>
+  Stream<List<Product>> unreliablePageStream(SuperPaginationRequest request) =>
       MockApiService.unreliablePageStream(request);
 }

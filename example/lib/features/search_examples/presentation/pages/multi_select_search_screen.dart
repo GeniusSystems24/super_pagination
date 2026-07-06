@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating SmartSearchMultiDropdown.
+/// Example screen demonstrating SuperSearchMultiDropdown.
 ///
 /// This screen shows how to:
 /// - Select multiple items from search results
@@ -82,26 +82,26 @@ class _MultiSelectSearchScreenState extends State<MultiSelectSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
                 skipDebounceOnEmpty: true, // Instant search when cleared
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -133,25 +133,25 @@ class _MultiSelectSearchScreenState extends State<MultiSelectSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),
@@ -187,25 +187,25 @@ class _MultiSelectSearchScreenState extends State<MultiSelectSearchScreen> {
                   ),
             ),
             const SizedBox(height: 8),
-            SmartSearchMultiDropdown<Product, Product>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 10),
-              provider: PaginationProvider.future(
+            SuperSearchMultiDropdown<Product, Product>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 10),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
                 ),
               ),
-              searchRequestBuilder: (query) => PaginationRequest(
+              searchRequestBuilder: (query) => SuperPaginationRequest(
                 page: 1,
                 pageSize: 10,
                 searchQuery: query,
               ),
-              searchConfig: const SmartSearchConfig(
+              searchConfig: const SuperSearchConfig(
                 debounceDelay: Duration(milliseconds: 500),
                 minSearchLength: 0,
                 searchOnEmpty: true,
               ),
-              overlayConfig: const SmartSearchOverlayConfig(
+              overlayConfig: const SuperSearchOverlayConfig(
                 maxHeight: 250,
                 borderRadius: 12,
               ),

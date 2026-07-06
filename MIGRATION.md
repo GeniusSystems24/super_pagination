@@ -15,7 +15,7 @@ import 'package:super_pagination/pagination.dart';
 import 'package:super_pagination/super_pagination.dart';
 ```
 
-No constructor or callback change is required. Existing `SmartPagination*` names
+No constructor or callback change is required. Existing `SuperPagination*` names
 remain available.
 
 ## Optional naming migration
@@ -23,8 +23,8 @@ remain available.
 New code may replace the prefix only:
 
 ```dart
-SmartPagination<Product, PaginationRequest>.listViewWithProvider(...);
-SuperPagination<Product, PaginationRequest>.listViewWithProvider(...);
+SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(...);
+SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(...);
 ```
 
 Equivalent aliases are provided for widgets, cubits, controllers, states,

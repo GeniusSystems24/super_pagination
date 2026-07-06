@@ -149,7 +149,7 @@ CustomTransitionPage<void> _buildPageWithTransition({
         TypedGoRoute<CustomViewBuilderRoute>(path: 'custom-builder'),
         TypedGoRoute<ReorderableListRoute>(path: 'reorderable'),
         TypedGoRoute<StateSeparationRoute>(path: 'state-separation'),
-        TypedGoRoute<SmartPreloadingRoute>(path: 'preloading'),
+        TypedGoRoute<SuperPreloadingRoute>(path: 'preloading'),
         TypedGoRoute<DataOperationsRoute>(path: 'data-operations'),
         TypedGoRoute<DataAgeRoute>(path: 'data-age'),
         TypedGoRoute<SortingRoute>(path: 'sorting'),
@@ -665,8 +665,8 @@ class StateSeparationRoute extends GoRouteData with $StateSeparationRoute {
   }
 }
 
-class SmartPreloadingRoute extends GoRouteData with $SmartPreloadingRoute {
-  const SmartPreloadingRoute();
+class SuperPreloadingRoute extends GoRouteData with $SuperPreloadingRoute {
+  const SuperPreloadingRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       _rootNavigatorKey;
@@ -676,7 +676,7 @@ class SmartPreloadingRoute extends GoRouteData with $SmartPreloadingRoute {
     return _buildPageWithTransition(
       context: context,
       state: state,
-      child: const SmartPreloadingScreen(),
+      child: const SuperPreloadingScreen(),
     );
   }
 }

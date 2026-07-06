@@ -1,7 +1,7 @@
 # Super Pagination
 
 > **v4 migration:** the package name is now `super_pagination`. Replace only the
-> package segment in imports. Existing `SmartPagination*` API names remain
+> package segment in imports. Existing `SuperPagination*` API names remain
 > available as compatibility aliases, while new code can use
 > `SuperPagination*`.
 
@@ -16,8 +16,8 @@
 
 ```dart
 SuperPaginationListView.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Type, PaginationRequest>.future((req) => api.getProducts(req)),
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => api.getProducts(req)),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
 ```
@@ -25,7 +25,7 @@ SuperPaginationListView.withProvider(
 ## Features
 
 - **7 Widget Classes** - ListView, GridView, PageView, StaggeredGrid, Column, Row, ReorderableList
-- **Smart Search** - Auto-positioning dropdown with key-based selection
+- **Super Search** - Auto-positioning dropdown with key-based selection
 - **Built-in BLoC** - State management included, or bring your own cubit
 - **Error Handling** - 6 pre-built styles with first-page/load-more separation
 - **Stream Support** - Future, Stream, and merged streams
@@ -47,9 +47,9 @@ Spec 003 (`specs/003-load-more-guard/`) hardens load-more against duplicate conc
 Configure `identityKey` to drop items whose key already appears in an earlier accumulated page. The library never deduplicates silently — without `identityKey`, items are appended exactly as the provider returned them.
 
 ```dart
-SuperPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(api.fetchProducts),
+SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(api.fetchProducts),
   identityKey: (product) => product.id,
 );
 ```
@@ -106,9 +106,9 @@ Every public wrapper (`SuperPaginationListView`, `SuperPaginationGridView`,
 post-append suppression flag are all disabled.
 
 ```dart
-SuperPaginationListView<Product, PaginationRequest>.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(api.fetchProducts),
+SuperPaginationListView<Product, SuperPaginationRequest>.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(api.fetchProducts),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
   preserveScrollAnchorOnAppend: false, // legacy "stick to bottom" behavior
 );
@@ -145,8 +145,8 @@ import 'package:super_pagination/pagination.dart';
 
 ```dart
 SuperPaginationListView.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Type, PaginationRequest>.future((req) => fetchProducts(req)),
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => fetchProducts(req)),
   itemBuilder: (context, items, index) => ListTile(
     title: Text(items[index].name),
   ),
@@ -157,8 +157,8 @@ SuperPaginationListView.withProvider(
 
 ```dart
 SuperPaginationGridView.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Type, PaginationRequest>.future((req) => fetchProducts(req)),
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => fetchProducts(req)),
   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
   itemBuilder: (context, items, index) => ProductCard(items[index]),
 )
@@ -167,9 +167,9 @@ SuperPaginationGridView.withProvider(
 ### With External Cubit
 
 ```dart
-final cubit = SuperPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Type, PaginationRequest>.future(fetchProducts),
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future(fetchProducts),
   dataAge: Duration(minutes: 5), // Auto-refresh stale data
 );
 
@@ -199,17 +199,17 @@ Each widget has two constructors:
 
 ---
 
-## Smart Search
+## Super Search
 
 Search components with auto-positioning overlay and key-based selection.
 
 ### Basic Dropdown
 
 ```dart
-SmartSearchDropdown<Product, int>.withProvider(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Product, PaginationRequest>.future((req) => api.search(req.searchQuery)),
-  searchRequestBuilder: (query) => PaginationRequest(page: 1, pageSize: 20, searchQuery: query),
+SuperSearchDropdown<Product, int>.withProvider(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future((req) => api.search(req.searchQuery)),
+  searchRequestBuilder: (query) => SuperPaginationRequest(page: 1, pageSize: 20, searchQuery: query),
   itemBuilder: (context, product) => ListTile(title: Text(product.name)),
   keyExtractor: (product) => product.id,
   onSelected: (product, id) => print('Selected: ${product.name} (ID: $id)'),
@@ -221,7 +221,7 @@ SmartSearchDropdown<Product, int>.withProvider(
 Select by ID instead of object reference - essential for edit forms and state management.
 
 ```dart
-SmartSearchDropdown<Product, int>.withProvider(
+SuperSearchDropdown<Product, int>.withProvider(
   // ... provider config
   itemBuilder: (context, product) => ListTile(title: Text(product.name)),
 
@@ -237,7 +237,7 @@ SmartSearchDropdown<Product, int>.withProvider(
 ### Multi-Selection
 
 ```dart
-SmartSearchMultiDropdown<Product, int>.withProvider(
+SuperSearchMultiDropdown<Product, int>.withProvider(
   // ... provider config
   keyExtractor: (product) => product.id,
   selectedKeys: selectedIds,
@@ -251,10 +251,10 @@ SmartSearchMultiDropdown<Product, int>.withProvider(
 For mobile-friendly selection, use `displayMode: SearchDisplayMode.bottomSheet`:
 
 ```dart
-SmartSearchMultiDropdown<Product, int>.withProvider(
+SuperSearchMultiDropdown<Product, int>.withProvider(
   // ... provider config
   displayMode: SearchDisplayMode.bottomSheet,
-  bottomSheetConfig: SmartSearchBottomSheetConfig(
+  bottomSheetConfig: SuperSearchBottomSheetConfig(
     title: 'Select Products',
     confirmText: 'Done',
     showSelectedCount: true,
@@ -275,24 +275,24 @@ SmartSearchMultiDropdown<Product, int>.withProvider(
 
 | Component | Description |
 |-----------|-------------|
-| `SmartSearchDropdown<T, K>` | Single-selection search dropdown |
-| `SmartSearchMultiDropdown<T, K>` | Multi-selection with chips |
-| `SmartSearchController<T, K>` | Controller for programmatic control |
-| `SmartSearchBox<T, K>` | Standalone search input |
-| `SmartSearchOverlay<T, K>` | Standalone results overlay |
-| `SmartSearchTheme` | ThemeExtension for styling |
+| `SuperSearchDropdown<T, K>` | Single-selection search dropdown |
+| `SuperSearchMultiDropdown<T, K>` | Multi-selection with chips |
+| `SuperSearchController<T, K>` | Controller for programmatic control |
+| `SuperSearchBox<T, K>` | Standalone search input |
+| `SuperSearchOverlay<T, K>` | Standalone results overlay |
+| `SuperSearchTheme` | ThemeExtension for styling |
 
 ### Configuration
 
 ```dart
-SmartSearchDropdown<Product, int>.withProvider(
+SuperSearchDropdown<Product, int>.withProvider(
   // ...
-  searchConfig: SmartSearchConfig(
+  searchConfig: SuperSearchConfig(
     debounceDelay: Duration(milliseconds: 500),
     minSearchLength: 2,
     searchOnEmpty: false,
   ),
-  overlayConfig: SmartSearchOverlayConfig(
+  overlayConfig: SuperSearchOverlayConfig(
     position: OverlayPosition.auto,
     maxHeight: 400,
     animationType: OverlayAnimationType.fadeScale,
@@ -300,16 +300,16 @@ SmartSearchDropdown<Product, int>.withProvider(
 )
 ```
 
-### SmartSearchDropdown Parameters
+### SuperSearchDropdown Parameters
 
 #### Core Parameters
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `request` | `PaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
-| `provider` | `PaginationProvider<T, PaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
-| `cubit` | `SuperPaginationCubit<T, PaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
-| `searchRequestBuilder` | `PaginationRequest Function(String)` | Yes | - | Builds request from search query |
+| `request` | `SuperPaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
+| `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
+| `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
+| `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
 | `itemBuilder` | `Widget Function(BuildContext, T)` | Yes | - | Builds each result item |
 
 #### Selection Callback
@@ -380,8 +380,8 @@ SmartSearchDropdown<Product, int>.withProvider(
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `searchConfig` | `SmartSearchConfig` | No | `SmartSearchConfig()` | Search behavior config |
-| `overlayConfig` | `SmartSearchOverlayConfig` | No | `SmartSearchOverlayConfig()` | Overlay appearance config |
+| `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
+| `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
 
 #### Cubit Options (`.withProvider` only)
 
@@ -397,16 +397,16 @@ SmartSearchDropdown<Product, int>.withProvider(
 
 ---
 
-### SmartSearchMultiDropdown Parameters
+### SuperSearchMultiDropdown Parameters
 
 #### Core Parameters
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `request` | `PaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
-| `provider` | `PaginationProvider<T, PaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
-| `cubit` | `SuperPaginationCubit<T, PaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
-| `searchRequestBuilder` | `PaginationRequest Function(String)` | Yes | - | Builds request from search query |
+| `request` | `SuperPaginationRequest` | Yes* | - | Pagination config (for `.withProvider`) |
+| `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
+| `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
+| `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
 | `itemBuilder` | `Widget Function(BuildContext, T)` | Yes | - | Builds each result item |
 
 #### Selection Callback
@@ -487,8 +487,8 @@ SmartSearchDropdown<Product, int>.withProvider(
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `searchConfig` | `SmartSearchConfig` | No | `SmartSearchConfig()` | Search behavior config |
-| `overlayConfig` | `SmartSearchOverlayConfig` | No | `SmartSearchOverlayConfig()` | Overlay appearance config |
+| `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
+| `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
 
 #### Cubit Options (`.withProvider` only)
 
@@ -539,9 +539,9 @@ SuperPaginationListView.withProvider(
 ### Automatic Retry
 
 ```dart
-SuperPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Product, PaginationRequest>.future(fetchProducts),
+SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
   retryConfig: RetryConfig(
     maxAttempts: 3,
     initialDelay: Duration(seconds: 1),
@@ -683,9 +683,9 @@ final orders = SortOrderCollection<Product>(
   defaultOrderId: 'name',
 );
 
-final cubit = SuperPaginationCubit<Product, PaginationRequest>(
-  request: PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Product, PaginationRequest>.future(fetchProducts),
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
   orders: orders,
 );
 
@@ -701,13 +701,13 @@ cubit.resetOrder();
 ### Future (REST API)
 
 ```dart
-PaginationProvider.future((request) => api.fetchProducts(request))
+SuperPaginationProvider.future((request) => api.fetchProducts(request))
 ```
 
 ### Stream (Real-time)
 
 ```dart
-PaginationProvider.stream((request) => firestore.collection('products').snapshots())
+SuperPaginationProvider.stream((request) => firestore.collection('products').snapshots())
 ```
 
 #### Stream Accumulation
@@ -723,7 +723,7 @@ A page whose latest emission has fewer items than `pageSize` is treated as the e
 ### Merged Streams
 
 ```dart
-PaginationProvider.mergeStreams((request) => [
+SuperPaginationProvider.mergeStreams((request) => [
   regularStream(request),
   featuredStream(request),
 ])
@@ -762,8 +762,8 @@ BlocBuilder<SuperPaginationCubit<Product, ProductRequest>, SuperPaginationState<
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `request` | `PaginationRequest` | Page number and size |
-| `provider` | `PaginationProvider<T, PaginationRequest>` | Data source |
+| `request` | `SuperPaginationRequest` | Page number and size |
+| `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Data source |
 | `itemBuilder` | `Widget Function(context, items, index)` | Item widget builder |
 | `invisibleItemsThreshold` | `int` | Preload trigger (default: 3) |
 | `separator` | `Widget?` | Divider between items |
@@ -777,8 +777,8 @@ BlocBuilder<SuperPaginationCubit<Product, ProductRequest>, SuperPaginationState<
 
 ```dart
 SuperPaginationListView.withProvider(
-  request: const PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider<Product, PaginationRequest>.future(fetchProducts),
+  request: const SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
   canRefresh: true,
   onRefresh: (cubit) async {
     cubit.reload();
@@ -803,9 +803,9 @@ SuperPaginationListView.withProvider(
 ## Cubit API
 
 ```dart
-final cubit = SuperPaginationCubit<T, PaginationRequest>({
-  required PaginationRequest request,
-  required PaginationProvider<T, PaginationRequest> provider,
+final cubit = SuperPaginationCubit<T, SuperPaginationRequest>({
+  required SuperPaginationRequest request,
+  required SuperPaginationProvider<T, SuperPaginationRequest> provider,
   RetryConfig? retryConfig,
   Duration? dataAge,
   int? maxPagesInMemory,
@@ -920,10 +920,10 @@ Use standard Flutter theming with custom loading/empty/error builders.
 ```dart
 MaterialApp(
   theme: ThemeData.light().copyWith(
-    extensions: [SmartSearchTheme.light()],
+    extensions: [SuperSearchTheme.light()],
   ),
   darkTheme: ThemeData.dark().copyWith(
-    extensions: [SmartSearchTheme.dark()],
+    extensions: [SuperSearchTheme.dark()],
   ),
 )
 ```
@@ -931,7 +931,7 @@ MaterialApp(
 Custom theme:
 
 ```dart
-SmartSearchTheme(
+SuperSearchTheme(
   searchBoxBackgroundColor: Colors.grey[100],
   searchBoxBorderRadius: BorderRadius.circular(12),
   overlayBackgroundColor: Colors.white,

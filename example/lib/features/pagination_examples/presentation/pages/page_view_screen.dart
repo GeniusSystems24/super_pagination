@@ -34,9 +34,9 @@ class PageViewScreen extends StatelessWidget {
           ),
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.pageViewWithProvider(
-              request: const PaginationRequest(page: 1, pageSize: 1),
-              provider: PaginationProvider.future(
+                SuperPaginationRequest>.pageViewWithProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 1),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, items, index) {
@@ -236,7 +236,7 @@ class PageViewScreen extends StatelessWidget {
                 );
               },
 
-              // Smart preloading: Load when 3 items from the end
+              // Super preloading: Load when 3 items from the end
               invisibleItemsThreshold: 3,
             ),
           ),

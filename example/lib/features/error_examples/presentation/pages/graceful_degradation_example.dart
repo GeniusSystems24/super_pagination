@@ -83,7 +83,7 @@ class _OfflineModeTabState extends State<_OfflineModeTab> {
     );
   });
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
 
     if (_isOffline) {
@@ -230,10 +230,10 @@ class _OfflineModeTabState extends State<_OfflineModeTab> {
   }
 
   Widget _buildOnlineView() {
-    return SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+    return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: const Key('online_mode'),
-      request: PaginationRequest(page: 1, pageSize: 20),
-      provider: PaginationProvider.future(_fetchProducts),
+      request: SuperPaginationRequest(page: 1, pageSize: 20),
+      provider: SuperPaginationProvider.future(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(
@@ -257,7 +257,7 @@ class _OfflineModeTabState extends State<_OfflineModeTab> {
 class _PlaceholderContentTab extends StatelessWidget {
   const _PlaceholderContentTab();
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     throw Exception('Unable to load product data');
   }
@@ -278,9 +278,9 @@ class _PlaceholderContentTab extends StatelessWidget {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));

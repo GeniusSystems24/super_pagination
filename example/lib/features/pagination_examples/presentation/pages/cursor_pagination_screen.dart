@@ -34,13 +34,13 @@ class CursorPaginationScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
-              request: PaginationRequest(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+              request: SuperPaginationRequest(
                 page: 1,
                 pageSize: 15,
                 cursor: null, // Start with no cursor
               ),
-              provider: PaginationProvider.future((request) async {
+              provider: SuperPaginationProvider.future((request) async {
                 // Simulate cursor-based API call
                 final products = await ExampleDependencies.catalog.fetchProducts(request);
                 // In real app, you'd use the cursor from response

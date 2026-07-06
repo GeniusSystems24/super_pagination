@@ -34,9 +34,9 @@ void main() {
       'is rejected with no provider call',
       () async {
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),
@@ -79,9 +79,9 @@ void main() {
       'next fetchPaginatedList is allowed through',
       () async {
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),
@@ -133,9 +133,9 @@ void main() {
       () async {
         var providerCallCount = 0;
         final scrollController = ScrollController();
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),
@@ -188,9 +188,9 @@ void main() {
       'own jumpTo does NOT clear the suppression flag',
       () async {
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),
@@ -251,9 +251,9 @@ void main() {
       'suppressed',
       () async {
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),
@@ -298,10 +298,10 @@ void main() {
       () async {
         var attempt = 0;
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
           errorRetryStrategy: ErrorRetryStrategy.automatic,
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             attempt++;
             providerCallCount++;
             if (req.page == 1) return [0, 1, 2, 3, 4];
@@ -318,7 +318,7 @@ void main() {
         // First load-more → error
         cubit.fetchPaginatedList();
         await Future<void>.delayed(_settle);
-        final stateAfterError = cubit.state as SmartPaginationLoaded<int>;
+        final stateAfterError = cubit.state as SuperPaginationLoaded<int>;
         expect(stateAfterError.loadMoreError, isNotNull,
             reason: 'Load-more error should be in state');
         providerCallCount = 0;
@@ -351,9 +351,9 @@ void main() {
       'discards the pending anchor',
       () async {
         var providerCallCount = 0;
-        final cubit = SmartPaginationCubit<int, PaginationRequest>(
-          request: PaginationRequest(page: 1, pageSize: 5),
-          provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+          request: SuperPaginationRequest(page: 1, pageSize: 5),
+          provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
             providerCallCount++;
             return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
           }),

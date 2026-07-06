@@ -22,18 +22,18 @@ class DataOperationsScreen extends StatefulWidget {
 }
 
 class _DataOperationsScreenState extends State<DataOperationsScreen> {
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   int _productCounter = 1000; // For generating unique product IDs
 
   @override
   void initState() {
     super.initState();
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 10),
-      provider: PaginationProvider.future(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 10),
+      provider: SuperPaginationProvider.future(
         (request) => ExampleDependencies.catalog.fetchProducts(
-          PaginationRequest(
+          SuperPaginationRequest(
             page: request.page,
             pageSize: request.pageSize ?? 10,
           ),

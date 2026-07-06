@@ -91,7 +91,7 @@ class _FirestoreFiltersScreenState extends State<FirestoreFiltersScreen> {
 
   /// Fetches filtered products from Firestore using composite queries
   Future<List<FilteredProduct>> fetchFilteredProducts(
-      PaginationRequest request) async {
+      SuperPaginationRequest request) async {
     final firestore = FirebaseFirestore.instance;
     final pageSize = request.pageSize ?? 15;
 
@@ -260,9 +260,9 @@ class _FirestoreFiltersScreenState extends State<FirestoreFiltersScreen> {
         // Products list
         Expanded(
           child: SuperPagination<FilteredProduct,
-              PaginationRequest>.listViewWithProvider(
-            request: const PaginationRequest(page: 1, pageSize: 15),
-            provider: PaginationProvider.future(fetchFilteredProducts),
+              SuperPaginationRequest>.listViewWithProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 15),
+            provider: SuperPaginationProvider.future(fetchFilteredProducts),
             refreshListener: _refreshListener,
             itemBuilder: (context, items, index) {
               final product = items[index];

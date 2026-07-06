@@ -49,11 +49,11 @@ lib/
   callers can add Future, Stream, merged-stream, custom-request, and custom-view
   behavior without modifying package internals.
 - **Liskov Substitution:** `SuperPagination*` aliases retain the exact types and
-  constructors of `SmartPagination*`; custom `PaginationRequest` subclasses remain
+  constructors of `SuperPagination*`; custom `SuperPaginationRequest` subclasses remain
   valid wherever the base request is accepted.
 - **Interface Segregation:** state, listener, provider, cubit, and scroll-controller
   contracts are separated instead of requiring one broad interface.
-- **Dependency Inversion:** controllers depend on `PaginationProvider` and contract
+- **Dependency Inversion:** controllers depend on `SuperPaginationProvider` and contract
   types, while concrete Flutter views compose those controllers at the package edge.
 
 ## Compatibility policy
@@ -74,7 +74,7 @@ Both naming styles are supported:
 
 ```dart
 SuperPaginationListView.withProvider(...); // v4 canonical name
-SmartPaginationListView.withProvider(...); // compatibility name
+SuperPaginationListView.withProvider(...); // compatibility name
 ```
 
 The package rename necessarily changes the package segment in imports from

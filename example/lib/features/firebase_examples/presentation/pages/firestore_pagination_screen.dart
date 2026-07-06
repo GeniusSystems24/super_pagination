@@ -79,7 +79,7 @@ class _FirestorePaginationScreenState extends State<FirestorePaginationScreen> {
 
   /// Fetches products from Firestore using cursor-based pagination
   Future<List<FirestoreProduct>> fetchProducts(
-      PaginationRequest request) async {
+      SuperPaginationRequest request) async {
     final firestore = FirebaseFirestore.instance;
     final pageSize = request.pageSize ?? 20;
 
@@ -176,9 +176,9 @@ class _FirestorePaginationScreenState extends State<FirestorePaginationScreen> {
         // Product list
         Expanded(
           child: SuperPagination<FirestoreProduct,
-              PaginationRequest>.listViewWithProvider(
-            request: const PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(fetchProducts),
+              SuperPaginationRequest>.listViewWithProvider(
+            request: const SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(fetchProducts),
             itemBuilder: (context, items, index) {
               final product = items[index];
               return Card(

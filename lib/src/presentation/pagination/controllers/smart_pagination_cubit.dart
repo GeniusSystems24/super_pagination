@@ -1,6 +1,6 @@
 part of '../pagination_feature.dart';
 
-/// Per-page stream subscription entry tracked by `SmartPaginationCubit`'s
+/// Per-page stream subscription entry tracked by `SuperPaginationCubit`'s
 /// `_pageStreams` registry. Private to this library — not exported.
 ///
 /// Each entry owns exactly one `StreamSubscription`, the generation it was
@@ -77,12 +77,12 @@ enum ErrorRetryStrategy {
   none,
 }
 
-class SmartPaginationCubit<T, R extends PaginationRequest>
-    extends IPaginationListCubit<T, SmartPaginationState<T>, R> {
+class SuperPaginationCubit<T, R extends SuperPaginationRequest>
+    extends IPaginationListCubit<T, SuperPaginationState<T>, R> {
   static bool enableLogging = false;
-  SmartPaginationCubit({
+  SuperPaginationCubit({
     required R request,
-    required PaginationProvider<T, R> provider,
+    required SuperPaginationProvider<T, R> provider,
     ListBuilder<T>? listBuilder,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -105,7 +105,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
        _orders = orders,
        initialRequest = request,
        _currentRequest = request,
-       super(SmartPaginationInitial<T>()) {
+       super(SuperPaginationInitial<T>()) {
     // Listen to connectivity changes for auto-retry on network errors
     if (connectivityStream != null) {
       _connectivitySubscription = connectivityStream.listen(
@@ -114,7 +114,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     }
   }
 
-  final PaginationProvider<T, R> _provider;
+  final SuperPaginationProvider<T, R> _provider;
   final ListBuilder<T>? _listBuilder;
   final OnInsertionCallback<T>? _onInsertionCallback;
   final VoidCallback? _onClear;
@@ -147,9 +147,9 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   ///
   /// Example:
   /// ```dart
-  /// SmartPaginationCubit<Product, PaginationRequest>(
-  ///   request: PaginationRequest(page: 1, pageSize: 20),
-  ///   provider: PaginationProvider.future(api.fetchProducts),
+  /// SuperPaginationCubit<Product, SuperPaginationRequest>(
+  ///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+  ///   provider: SuperPaginationProvider.future(api.fetchProducts),
   ///   identityKey: (product) => product.id,
   /// );
   /// ```
@@ -159,7 +159,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   final R initialRequest;
 
   R _currentRequest;
-  PaginationMeta? _currentMeta;
+  SuperPaginationMeta? _currentMeta;
   final List<List<T>> _pages = <List<T>>[];
   StreamSubscription<bool>? _connectivitySubscription;
   int _fetchToken = 0;
@@ -183,14 +183,14 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// `_pageStreams.keys.first` is always the oldest active page — used by
   /// `_trimCachedPages` to propagate eviction to the registry.
   ///
-  /// `StreamPaginationProvider` and `MergedStreamPaginationProvider` populate
-  /// this map. `FuturePaginationProvider` does not.
+  /// `StreamSuperPaginationProvider` and `MergedStreamSuperPaginationProvider` populate
+  /// this map. `FutureSuperPaginationProvider` does not.
   ///
   /// See spec 002-stabilize-provider §FR-010 to FR-018, data-model.md §5.
   final Map<int, _PageStreamEntry<T>> _pageStreams =
       <int, _PageStreamEntry<T>>{};
 
-  /// Per-page error annotations carried in the public `SmartPaginationLoaded`
+  /// Per-page error annotations carried in the public `SuperPaginationLoaded`
   /// state. Populated when a page's stream errors; the failing page's
   /// subscription is cancelled and removed from `_pageStreams` before this
   /// map is updated. Sibling pages remain unaffected.
@@ -375,21 +375,21 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// ```
   bool setActiveOrder(String orderId) {
     if (_orders == null) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.w('Cannot set active order: no orders collection configured');
       }
       return false;
     }
 
     if (_orders!.setActiveOrder(orderId)) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('Active sort order changed to: $orderId');
       }
       _applySortingToCurrentState();
       return true;
     }
 
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.w('Sort order not found: $orderId');
     }
     return false;
@@ -405,7 +405,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     if (_orders == null) return;
 
     _orders!.resetToDefault();
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('Sort order reset to default: ${_orders!.defaultOrderId}');
     }
     _applySortingToCurrentState();
@@ -421,7 +421,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     if (_orders == null) return;
 
     _orders!.clearActiveOrder();
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('Sort order cleared');
     }
     _applySortingToCurrentState();
@@ -441,7 +441,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   void addSortOrder(SortOrder<T> order) {
     _orders ??= SortOrderCollection<T>(orders: []);
     _orders!.addOrder(order);
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('Sort order added: ${order.id}');
     }
   }
@@ -453,7 +453,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     if (_orders == null) return false;
 
     if (_orders!.removeOrder(orderId)) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('Sort order removed: $orderId');
       }
       _applySortingToCurrentState();
@@ -472,7 +472,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// ```
   void sortBy(ItemComparator<T> comparator) {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return;
+    if (currentState is! SuperPaginationLoaded<T>) return;
 
     final sorted = List<T>.from(currentState.items)..sort(comparator);
     final sortedAll = List<T>.from(currentState.allItems)..sort(comparator);
@@ -490,7 +490,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// Applies current sorting to the current state.
   void _applySortingToCurrentState() {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return;
+    if (currentState is! SuperPaginationLoaded<T>) return;
 
     final sortedItems = _applySorting(currentState.items);
     final sortedAllItems = _applySorting(currentState.allItems);
@@ -604,7 +604,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// re-entering a screen after some time.
   bool checkAndResetIfExpired() {
     if (isDataExpired) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('Data expired after $_dataAge, resetting pagination');
       }
       _resetToInitial();
@@ -630,7 +630,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     _suppressLoadMoreUntilUserScroll = false;
     _anchorRestoreInFlight = false;
     _skipNextSuppressionArm = false;
-    emit(SmartPaginationInitial<T>());
+    emit(SuperPaginationInitial<T>());
   }
 
   /// Refreshes the data age timer. Called on any data interaction.
@@ -655,7 +655,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   void filterPaginatedList(WhereChecker<T>? searchTerm) {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return;
+    if (currentState is! SuperPaginationLoaded<T>) return;
 
     if (searchTerm == null) {
       emit(
@@ -669,7 +669,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     }
 
     final filtered = currentState.allItems.where(searchTerm).toList();
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d(
         'Applied pagination filter ${currentState.allItems.length} -> ${filtered.length}',
       );
@@ -727,13 +727,13 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// ```
   void retryAfterError() {
     if (!_lastFetchWasError) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('retryAfterError called but there is no error to retry');
       }
       return;
     }
 
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('Retrying after error...');
     }
     _lastFetchWasError = false;
@@ -741,12 +741,12 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     _lastError = null;
 
     // Determine if this was an initial load or load more
-    if (state is SmartPaginationError<T>) {
+    if (state is SuperPaginationError<T>) {
       // Initial load failed, refresh
       refreshPaginatedList();
-    } else if (state is SmartPaginationLoaded<T>) {
+    } else if (state is SuperPaginationLoaded<T>) {
       // Load more failed, retry load more
-      final currentState = state as SmartPaginationLoaded<T>;
+      final currentState = state as SuperPaginationLoaded<T>;
       if (currentState.loadMoreError != null) {
         emit(currentState.copyWith(loadMoreError: null));
         final request = _buildRequest(reset: false);
@@ -764,7 +764,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     _lastError = null;
 
     final currentState = state;
-    if (currentState is SmartPaginationLoaded<T> &&
+    if (currentState is SuperPaginationLoaded<T> &&
         currentState.loadMoreError != null) {
       emit(currentState.copyWith(loadMoreError: null));
     }
@@ -774,7 +774,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// Automatically retries if there was a pending network error.
   void _onConnectivityChanged(bool isConnected) {
     if (isConnected && _lastFetchWasError && _lastErrorWasNetwork) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('Connectivity restored, retrying after network error...');
       }
       retryAfterError();
@@ -797,7 +797,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// ```
   void onConnectivityRestored() {
     if (_lastFetchWasError && _lastErrorWasNetwork) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d(
           'Connectivity restored (manual), retrying after network error...',
         );
@@ -810,7 +810,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   void fetchPaginatedList({R? requestOverride, int? limit}) {
     // Prevent concurrent fetch operations
     if (_isFetching) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('Fetch already in progress, skipping duplicate request');
       }
       return;
@@ -826,7 +826,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           break;
         case ErrorRetryStrategy.manual:
           // Don't retry automatically, require explicit retryAfterError() call
-          if (SmartPaginationCubit.enableLogging) {
+          if (SuperPaginationCubit.enableLogging) {
             _logger.d(
               'Error retry strategy is manual, skipping automatic retry. Call retryAfterError() to retry.',
             );
@@ -834,7 +834,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           return;
         case ErrorRetryStrategy.none:
           // Don't retry at all
-          if (SmartPaginationCubit.enableLogging) {
+          if (SuperPaginationCubit.enableLogging) {
             _logger.d(
               'Error retry strategy is none, skipping retry. Call refreshPaginatedList() to reset.',
             );
@@ -848,7 +848,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       // State has been reset to initial, continue to load fresh data
     }
 
-    if (state is SmartPaginationInitial<T>) {
+    if (state is SuperPaginationInitial<T>) {
       refreshPaginatedList(requestOverride: requestOverride, limit: limit);
       return;
     }
@@ -874,7 +874,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     );
     final loadMoreKey = _buildLoadMoreKey(request);
     if (_activeLoadMoreKey == loadMoreKey) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d(
           'Duplicate load-more for key=$loadMoreKey already in flight; skipping',
         );
@@ -891,7 +891,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
 
     // Set isLoadingMore = true when loading more items
     final currentState = state;
-    if (currentState is SmartPaginationLoaded<T>) {
+    if (currentState is SuperPaginationLoaded<T>) {
       if (currentState.isLoadingMore) return; // Already loading
 
       _isFetching = true;
@@ -941,20 +941,20 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     try {
       // Fetch data based on provider type
       final pageItems = await switch (_provider) {
-        FuturePaginationProvider<T, R>(:final dataProvider) =>
+        FutureSuperPaginationProvider<T, R>(:final dataProvider) =>
           _retryHandler != null
               ? _retryHandler.execute(
                   () => dataProvider(request),
                   onRetry: (attempt, error) {
-                    if (SmartPaginationCubit.enableLogging) {
+                    if (SuperPaginationCubit.enableLogging) {
                       _logger.w('Retry attempt $attempt after error: $error');
                     }
                   },
                 )
               : dataProvider(request),
-        StreamPaginationProvider<T, R> provider =>
+        StreamSuperPaginationProvider<T, R> provider =>
           (capturedStream = provider.streamProvider(request)).first,
-        MergedStreamPaginationProvider<T, R> provider =>
+        MergedStreamSuperPaginationProvider<T, R> provider =>
           (capturedStream = provider.getMergedStream(request)).first,
       };
 
@@ -984,7 +984,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       // empty page. (Empty initial-load is handled below — it produces an
       // empty Loaded state with `hasReachedEnd = true`.)
       if (!reset && pageItems.isEmpty) {
-        final meta = PaginationMeta(
+        final meta = SuperPaginationMeta(
           page: request.page,
           pageSize: request.pageSize,
           hasNext: false,
@@ -992,7 +992,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
         );
         _currentMeta = meta;
         final currentState = state;
-        if (currentState is SmartPaginationLoaded<T>) {
+        if (currentState is SuperPaginationLoaded<T>) {
           emit(
             currentState.copyWith(
               meta: meta,
@@ -1036,7 +1036,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       final sortedItems = _applySorting(aggregated);
 
       final hasNext = _computeHasNext(pageItems, request.pageSize);
-      final meta = PaginationMeta(
+      final meta = SuperPaginationMeta(
         page: request.page,
         pageSize: request.pageSize,
         hasNext: hasNext,
@@ -1054,7 +1054,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
         fetchOperation = const PaginationOperationReload();
       } else {
         final previousState = state;
-        final previousLength = previousState is SmartPaginationLoaded<T>
+        final previousLength = previousState is SuperPaginationLoaded<T>
             ? previousState.items.length
             : 0;
         final delta = sortedItems.length - previousLength;
@@ -1071,7 +1071,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       }
 
       emit(
-        SmartPaginationLoaded<T>(
+        SuperPaginationLoaded<T>(
           items: List<T>.from(sortedItems),
           allItems: sortedItems,
           meta: meta,
@@ -1131,9 +1131,9 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
         final provider = _provider;
         if (capturedStream.isBroadcast) {
           persistent = capturedStream;
-        } else if (provider is StreamPaginationProvider<T, R>) {
+        } else if (provider is StreamSuperPaginationProvider<T, R>) {
           persistent = provider.streamProvider(request);
-        } else if (provider is MergedStreamPaginationProvider<T, R>) {
+        } else if (provider is MergedStreamSuperPaginationProvider<T, R>) {
           persistent = provider.getMergedStream(request);
         } else {
           persistent = capturedStream;
@@ -1141,7 +1141,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
         _attachStream(persistent, request);
       }
     } on Exception catch (error, stackTrace) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e(
           'Pagination request failed',
           error: error,
@@ -1156,7 +1156,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       // Check if this is a network-related error
       _lastErrorWasNetwork = _isNetworkError(error);
       if (_lastErrorWasNetwork) {
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d(
             'Network error detected, will auto-retry when connectivity is restored',
           );
@@ -1164,11 +1164,11 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       }
 
       // Handle load more errors differently
-      if (!reset && state is SmartPaginationLoaded<T>) {
-        final currentState = state as SmartPaginationLoaded<T>;
+      if (!reset && state is SuperPaginationLoaded<T>) {
+        final currentState = state as SuperPaginationLoaded<T>;
         emit(currentState.copyWith(isLoadingMore: false, loadMoreError: error));
       } else {
-        emit(SmartPaginationError<T>(error: error));
+        emit(SuperPaginationError<T>(error: error));
       }
       // Spec 004-scroll-anchor-preservation §7.3 / plan §7.3 (T029):
       // Mirror the plain `catch` block below — clear suppression so the user
@@ -1181,7 +1181,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       }
     } catch (error, stackTrace) {
       final exception = Exception(error.toString());
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e(
           'Pagination request failed',
           error: exception,
@@ -1196,7 +1196,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       // Check if this is a network-related error (based on error message)
       _lastErrorWasNetwork = _isNetworkErrorMessage(error.toString());
       if (_lastErrorWasNetwork) {
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d(
             'Network error detected, will auto-retry when connectivity is restored',
           );
@@ -1204,13 +1204,13 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       }
 
       // Handle load more errors differently
-      if (!reset && state is SmartPaginationLoaded<T>) {
-        final currentState = state as SmartPaginationLoaded<T>;
+      if (!reset && state is SuperPaginationLoaded<T>) {
+        final currentState = state as SuperPaginationLoaded<T>;
         emit(
           currentState.copyWith(isLoadingMore: false, loadMoreError: exception),
         );
       } else {
-        emit(SmartPaginationError<T>(error: exception));
+        emit(SuperPaginationError<T>(error: exception));
       }
       // Spec 004-scroll-anchor-preservation §7.3 / plan §7.3 (T029):
       // Error path clears the suppression flag so the consumer can retry
@@ -1247,7 +1247,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     final pageSize = limit ?? base.pageSize ?? initialRequest.pageSize;
     final nextPage = reset ? 1 : base.page + 1;
 
-    // copyWith is declared on PaginationRequest but subclasses should override
+    // copyWith is declared on SuperPaginationRequest but subclasses should override
     // it to return their own type (preserving custom fields). The cast is safe
     // when the override is implemented correctly.
     return base.copyWith(page: nextPage, pageSize: pageSize) as R;
@@ -1314,7 +1314,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   ///
   /// Each emission is gated by `entry.generation == _generation` (stale-scope
   /// protection per FR-016), then attributed to the originating page (FR-011),
-  /// and the cubit re-emits a merged `SmartPaginationLoaded` whose `items` is
+  /// and the cubit re-emits a merged `SuperPaginationLoaded` whose `items` is
   /// the concatenation of every active page's `latestValue` in ascending page
   /// order (FR-012). On a per-page error, only the failing page's subscription
   /// is cancelled and removed; sibling pages keep emitting (FR-017,
@@ -1403,7 +1403,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       ..addAll(keys.map((k) => _pageStreams[k]!.latestValue));
   }
 
-  /// Emits a `SmartPaginationLoaded` derived from the current registry state.
+  /// Emits a `SuperPaginationLoaded` derived from the current registry state.
   /// `_pages` MUST already be in sync with the registry before calling.
   void _emitMergedLoaded(R request) {
     // Spec 003-load-more-guard §FR-012: apply identity-key deduplication to
@@ -1446,7 +1446,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     final lowestPage = _pageStreams.keys.isEmpty
         ? request.page
         : _pageStreams.keys.reduce((a, b) => a < b ? a : b);
-    final meta = PaginationMeta(
+    final meta = SuperPaginationMeta(
       page: highestPage,
       pageSize: pageSize,
       hasNext: !endOfPagination,
@@ -1455,7 +1455,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     _currentMeta = meta;
 
     emit(
-      SmartPaginationLoaded<T>(
+      SuperPaginationLoaded<T>(
         items: List<T>.from(sortedItems),
         allItems: sortedItems,
         meta: meta,
@@ -1491,7 +1491,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     entry.subscription.cancel();
     entry.error = error;
     _pageErrors[page] = error;
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.e(
         'Pagination per-page stream error on page $page',
         error: error,
@@ -1511,10 +1511,10 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// load-more so we can emit a precise [PaginationOperationInsert].
   bool _isPrefix(
     List<T> next,
-    SmartPaginationState<T> previousState,
+    SuperPaginationState<T> previousState,
     int previousLength,
   ) {
-    if (previousState is! SmartPaginationLoaded<T>) return false;
+    if (previousState is! SuperPaginationLoaded<T>) return false;
     if (previousLength == 0) return true;
     if (next.length < previousLength) return false;
     final previousItems = previousState.items;
@@ -1734,7 +1734,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> insertEmit(T item, {int index = 0}) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
 
@@ -1764,7 +1764,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> addOrUpdateEmit(T item, {int index = 0}) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final existingIndex = updated.indexWhere((element) => element == item);
@@ -1818,7 +1818,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   List<T> get currentItems {
     final currentState = state;
-    if (currentState is SmartPaginationLoaded<T>) {
+    if (currentState is SuperPaginationLoaded<T>) {
       return List<T>.unmodifiable(currentState.allItems);
     }
     return const [];
@@ -1827,7 +1827,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> insertAllEmit(List<T> items, {int index = 0}) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     if (items.isEmpty) return false;
 
@@ -1861,7 +1861,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> removeItemEmit(T item) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final removedIndex = updated.indexOf(item);
@@ -1889,7 +1889,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> removeAtEmit(int index) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
 
@@ -1916,7 +1916,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> removeWhereEmit(bool Function(T item) test) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final originalLength = updated.length;
@@ -1950,7 +1950,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T Function(T item) updater,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.indexWhere(matcher);
@@ -1995,7 +1995,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T Function(T item) updater,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final order = _orders?.activeOrder;
@@ -2057,7 +2057,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> clearItems() async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     _pages.clear();
     _onClear?.call();
@@ -2089,7 +2089,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     // Update last fetch time when setting items manually
     _lastFetchTime = DateTime.now();
 
-    if (currentState is SmartPaginationLoaded<T>) {
+    if (currentState is SuperPaginationLoaded<T>) {
       emit(
         currentState.copyWith(
           allItems: transformedItems,
@@ -2105,7 +2105,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       );
     } else {
       // Create a new loaded state if we're in initial or error state
-      final meta = PaginationMeta(
+      final meta = SuperPaginationMeta(
         page: 1,
         pageSize: items.length,
         hasNext: false,
@@ -2114,7 +2114,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       _currentMeta = meta;
 
       emit(
-        SmartPaginationLoaded<T>(
+        SuperPaginationLoaded<T>(
           items: List<T>.from(transformedItems),
           allItems: transformedItems,
           meta: meta,
@@ -2138,7 +2138,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     Future<T> Function(T currentItem) refresher,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final index = currentState.allItems.indexWhere(matcher);
     if (index == -1) return false;
@@ -2149,7 +2149,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
 
       // Re-check state hasn't changed dramatically during async gap
       final latestState = state;
-      if (latestState is! SmartPaginationLoaded<T>) return false;
+      if (latestState is! SuperPaginationLoaded<T>) return false;
 
       final updated = List<T>.from(latestState.allItems);
       // Re-find the item in case list shifted during async gap
@@ -2184,7 +2184,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       );
       return true;
     } on Exception catch (e) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('Failed to refresh item', error: e);
       }
       return false;
@@ -2199,7 +2199,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T Function(T item) updater,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.indexWhere(matcher);
@@ -2242,7 +2242,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T Function(T item) updater,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.lastIndexWhere(matcher);
@@ -2282,7 +2282,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> updateAtEmit(int index, T Function(T item) updater) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
 
@@ -2324,7 +2324,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T replacement,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.indexWhere(matcher);
@@ -2365,7 +2365,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     T replacement,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.lastIndexWhere(matcher);
@@ -2403,7 +2403,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> replaceAtEmit(int index, T replacement) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
 
@@ -2443,7 +2443,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     Future<T> Function(T currentItem) refresher,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final index = currentState.allItems.indexWhere(matcher);
     if (index == -1) return false;
@@ -2453,7 +2453,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       final refreshedItem = await refresher(currentItem);
 
       final latestState = state;
-      if (latestState is! SmartPaginationLoaded<T>) return false;
+      if (latestState is! SuperPaginationLoaded<T>) return false;
 
       final updated = List<T>.from(latestState.allItems);
       final latestIndex = updated.indexWhere(matcher);
@@ -2486,7 +2486,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       );
       return true;
     } on Exception catch (e) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('Failed to refresh first item', error: e);
       }
       return false;
@@ -2499,7 +2499,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     Future<T> Function(T currentItem) refresher,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final index = currentState.allItems.lastIndexWhere(matcher);
     if (index == -1) return false;
@@ -2509,7 +2509,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       final refreshedItem = await refresher(currentItem);
 
       final latestState = state;
-      if (latestState is! SmartPaginationLoaded<T>) return false;
+      if (latestState is! SuperPaginationLoaded<T>) return false;
 
       final updated = List<T>.from(latestState.allItems);
       final latestIndex = updated.lastIndexWhere(matcher);
@@ -2542,7 +2542,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       );
       return true;
     } on Exception catch (e) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('Failed to refresh last item', error: e);
       }
       return false;
@@ -2555,7 +2555,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     Future<T> Function(T currentItem) refresher,
   ) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     if (index < 0 || index >= currentState.allItems.length) return false;
 
@@ -2564,7 +2564,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       final refreshedItem = await refresher(currentItem);
 
       final latestState = state;
-      if (latestState is! SmartPaginationLoaded<T>) return false;
+      if (latestState is! SuperPaginationLoaded<T>) return false;
 
       if (index >= latestState.allItems.length) return false;
 
@@ -2597,7 +2597,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
       );
       return true;
     } on Exception catch (e) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('Failed to refresh item at index $index', error: e);
       }
       return false;
@@ -2607,7 +2607,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> removeFirstWhereEmit(bool Function(T item) test) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.indexWhere(test);
@@ -2634,7 +2634,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   @override
   Future<bool> removeLastWhereEmit(bool Function(T item) test) async {
     final currentState = state;
-    if (currentState is! SmartPaginationLoaded<T>) return false;
+    if (currentState is! SuperPaginationLoaded<T>) return false;
 
     final updated = List<T>.from(currentState.allItems);
     final index = updated.lastIndexWhere(test);
@@ -2708,7 +2708,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// ```
   void attachGridObserverController(GridObserverController controller) {
     _gridObserverController = controller;
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('GridObserverController attached');
     }
   }
@@ -2716,7 +2716,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// Detaches the list observer controller.
   void detachListObserverController() {
     _listObserverController = null;
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('ListObserverController detached');
     }
   }
@@ -2724,7 +2724,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   /// Detaches the grid observer controller.
   void detachGridObserverController() {
     _gridObserverController = null;
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('GridObserverController detached');
     }
   }
@@ -2733,7 +2733,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
   void detachAllObserverControllers() {
     _listObserverController = null;
     _gridObserverController = null;
-    if (SmartPaginationCubit.enableLogging) {
+    if (SuperPaginationCubit.enableLogging) {
       _logger.d('All observer controllers detached');
     }
   }
@@ -2765,7 +2765,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     // Validate index
     final items = currentItems;
     if (index < 0 || index >= items.length) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.w(
           'animateToIndex: index $index out of bounds (0-${items.length - 1})',
         );
@@ -2784,7 +2784,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           sliverContext: sliverContext,
           isFixedHeight: isFixedHeight,
         );
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d('Animated to index $index');
         }
         return true;
@@ -2800,18 +2800,18 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           sliverContext: sliverContext,
           isFixedHeight: isFixedHeight,
         );
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d('Animated to index $index (grid)');
         }
         return true;
       }
 
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.w('animateToIndex: no observer controller attached');
       }
       return false;
     } catch (e, stackTrace) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('animateToIndex failed', error: e, stackTrace: stackTrace);
       }
       return false;
@@ -2841,7 +2841,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     // Validate index
     final items = currentItems;
     if (index < 0 || index >= items.length) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.w(
           'jumpToIndex: index $index out of bounds (0-${items.length - 1})',
         );
@@ -2858,7 +2858,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           sliverContext: sliverContext,
           isFixedHeight: isFixedHeight,
         );
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d('Jumped to index $index');
         }
         return true;
@@ -2872,18 +2872,18 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
           sliverContext: sliverContext,
           isFixedHeight: isFixedHeight,
         );
-        if (SmartPaginationCubit.enableLogging) {
+        if (SuperPaginationCubit.enableLogging) {
           _logger.d('Jumped to index $index (grid)');
         }
         return true;
       }
 
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.w('jumpToIndex: no observer controller attached');
       }
       return false;
     } catch (e, stackTrace) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.e('jumpToIndex failed', error: e, stackTrace: stackTrace);
       }
       return false;
@@ -2920,7 +2920,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     final index = items.indexWhere(test);
 
     if (index == -1) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('animateFirstWhere: no matching item found');
       }
       return false;
@@ -2961,7 +2961,7 @@ class SmartPaginationCubit<T, R extends PaginationRequest>
     final index = items.indexWhere(test);
 
     if (index == -1) {
-      if (SmartPaginationCubit.enableLogging) {
+      if (SuperPaginationCubit.enableLogging) {
         _logger.d('jumpFirstWhere: no matching item found');
       }
       return false;

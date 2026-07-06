@@ -16,9 +16,9 @@ import 'package:super_pagination/pagination.dart';
 
 class _Harness {
   _Harness({int pageSize = 5}) : _pageSize = pageSize {
-    cubit = SmartPaginationCubit<int, PaginationRequest>(
-      request: PaginationRequest(page: 1, pageSize: pageSize),
-      provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+    cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+      request: SuperPaginationRequest(page: 1, pageSize: pageSize),
+      provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
         final ctrl = controllers.putIfAbsent(
           req.page,
           () => StreamController<List<int>>.broadcast(sync: true),
@@ -30,7 +30,7 @@ class _Harness {
 
   final int _pageSize;
   final Map<int, StreamController<List<int>>> controllers = {};
-  late final SmartPaginationCubit<int, PaginationRequest> cubit;
+  late final SuperPaginationCubit<int, SuperPaginationRequest> cubit;
 
   /// Convenience: seed page [page] with [count] sequentially numbered items
   /// starting at `(page-1)*pageSize + 1`. Useful for asserting page order in
@@ -57,8 +57,8 @@ class _Harness {
     await Future<void>.delayed(Duration.zero);
   }
 
-  SmartPaginationLoaded<int> get loaded =>
-      cubit.state as SmartPaginationLoaded<int>;
+  SuperPaginationLoaded<int> get loaded =>
+      cubit.state as SuperPaginationLoaded<int>;
 
   Future<void> dispose() async {
     await cubit.close();
@@ -250,10 +250,10 @@ void main() {
       // Use a fresh harness with maxPagesInMemory: 2
       await h.dispose();
       final controllers = <int, StreamController<List<int>>>{};
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         maxPagesInMemory: 2,
-        provider: PaginationProvider<int, PaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
           final ctrl = controllers.putIfAbsent(
             req.page,
             () => StreamController<List<int>>.broadcast(sync: true),
@@ -277,7 +277,7 @@ void main() {
       cubit.fetchPaginatedList();
       await seed(3);
 
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       // Only the last two pages survive in `_pages` after eviction.
       expect(loaded.items.length, 10,
           reason: 'maxPagesInMemory=2 keeps page 2 + page 3 only');
@@ -288,7 +288,7 @@ void main() {
       controllers[1]!.add([99, 99, 99, 99, 99]);
       await Future<void>.delayed(Duration.zero);
       final afterItems =
-          (cubit.state as SmartPaginationLoaded<int>).items;
+          (cubit.state as SuperPaginationLoaded<int>).items;
       expect(afterItems, equals(beforeItems),
           reason: 'evicted page 1 stream must no longer update state');
 

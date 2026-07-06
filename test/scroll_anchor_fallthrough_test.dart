@@ -48,10 +48,10 @@ void main() {
               // invisibleItemsThreshold of the visible viewport.
               body: SizedBox(
                 height: 200,
-                child: SmartPaginationListView<int,
-                        PaginationRequest>.withProvider(
-                  request: PaginationRequest(page: 1, pageSize: _pageSize),
-                  provider: PaginationProvider<int, PaginationRequest>.future(
+                child: SuperPaginationListView<int,
+                        SuperPaginationRequest>.withProvider(
+                  request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                  provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                     (req) async {
                       callCount++;
                       return List<int>.generate(
@@ -135,10 +135,10 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationPageView<int,
-                      PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: 5),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationPageView<int,
+                      SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: 5),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(
@@ -198,10 +198,10 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: SmartPaginationReorderableListView<int,
-                      PaginationRequest>.withProvider(
-                request: PaginationRequest(page: 1, pageSize: _pageSize),
-                provider: PaginationProvider<int, PaginationRequest>.future(
+              body: SuperPaginationReorderableListView<int,
+                      SuperPaginationRequest>.withProvider(
+                request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
+                provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
                   (req) async {
                     callCount++;
                     return List<int>.generate(

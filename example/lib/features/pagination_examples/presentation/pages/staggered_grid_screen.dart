@@ -35,9 +35,9 @@ class StaggeredGridScreen extends StatelessWidget {
           ),
           Expanded(
             child: SuperPagination<Product,
-                PaginationRequest>.staggeredGridViewWithProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+                SuperPaginationRequest>.staggeredGridViewWithProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               crossAxisCount: 2,
@@ -232,7 +232,7 @@ class StaggeredGridScreen extends StatelessWidget {
                 );
               },
 
-              // Smart preloading: Load when 3 items from the end
+              // Super preloading: Load when 3 items from the end
               invisibleItemsThreshold: 3,
             ),
           ),

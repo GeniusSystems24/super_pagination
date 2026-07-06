@@ -39,7 +39,7 @@ final class SeedDataService implements SeedDataGateway {
     final productNames = {
       'Electronics': [
         'Wireless Headphones',
-        'Smart Watch',
+        'Super Watch',
         'Laptop Stand',
         'USB-C Hub',
         'Mechanical Keyboard',
@@ -50,7 +50,7 @@ final class SeedDataService implements SeedDataGateway {
         'Monitor Light Bar',
         'Wireless Earbuds',
         'Tablet Stand',
-        'Smart Plug',
+        'Super Plug',
         'LED Desk Lamp',
         'Phone Holder',
       ],
@@ -92,7 +92,7 @@ final class SeedDataService implements SeedDataGateway {
         'Coffee Maker',
         'Air Purifier',
         'Robot Vacuum',
-        'Smart Thermostat',
+        'Super Thermostat',
         'Bedside Lamp',
         'Kitchen Scale',
         'Blender Pro',

@@ -7,22 +7,22 @@ part of '../../pagination_feature.dart';
 ///
 /// Example usage:
 /// ```dart
-/// SmartPaginationGridView.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) => fetchProducts(request)),
+/// SuperPaginationGridView.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
 ///   itemBuilder: (context, items, index) {
 ///     return ProductCard(product: items[index]);
 ///   },
 ///   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
 /// )
 /// ```
-class SmartPaginationGridView<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationGridView with a provider for data fetching.
+class SuperPaginationGridView<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationGridView with a provider for data fetching.
   ///
   /// The [request] and [provider] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered.
   /// The [gridDelegate] controls the layout of items in the grid.
-  SmartPaginationGridView.withProvider({
+  SuperPaginationGridView.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -75,11 +75,11 @@ class SmartPaginationGridView<T, R extends PaginationRequest> extends SmartPagin
     Duration? dataAge,
   }) : super.gridViewWithProvider();
 
-  /// Creates a SmartPaginationGridView with an external cubit.
+  /// Creates a SuperPaginationGridView with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationGridView.withCubit({
+  SuperPaginationGridView.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

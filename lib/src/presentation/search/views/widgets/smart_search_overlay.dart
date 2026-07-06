@@ -1,6 +1,6 @@
 part of '../../search_feature.dart';
 
-/// A widget that combines SmartSearchBox with an overlay dropdown for results.
+/// A widget that combines SuperSearchBox with an overlay dropdown for results.
 ///
 /// The overlay automatically positions itself in the best available space
 /// (top, bottom, left, or right) relative to the search box, unless a
@@ -13,7 +13,7 @@ part of '../../search_feature.dart';
 ///
 /// Example:
 /// ```dart
-/// SmartSearchOverlay<Product, String>(
+/// SuperSearchOverlay<Product, String>(
 ///   controller: searchController,
 ///   itemBuilder: (context, product) => ListTile(
 ///     title: Text(product.name),
@@ -24,14 +24,14 @@ part of '../../search_feature.dart';
 ///   },
 /// )
 /// ```
-class SmartSearchOverlay<T, K> extends StatefulWidget {
-  const SmartSearchOverlay({
+class SuperSearchOverlay<T, K> extends StatefulWidget {
+  const SuperSearchOverlay({
     super.key,
     required this.controller,
     required this.itemBuilder,
     this.onSelected,
     this.searchBoxDecoration,
-    this.overlayConfig = const SmartSearchOverlayConfig(),
+    this.overlayConfig = const SuperSearchOverlayConfig(),
     this.loadingBuilder,
     this.emptyBuilder,
     this.errorBuilder,
@@ -55,7 +55,7 @@ class SmartSearchOverlay<T, K> extends StatefulWidget {
   });
 
   /// The search controller managing the search state.
-  final SmartSearchController<T, K> controller;
+  final SuperSearchController<T, K> controller;
 
   /// Builder for each result item.
   final Widget Function(BuildContext context, T item) itemBuilder;
@@ -68,7 +68,7 @@ class SmartSearchOverlay<T, K> extends StatefulWidget {
   final InputDecoration? searchBoxDecoration;
 
   /// Configuration for the overlay appearance and behavior.
-  final SmartSearchOverlayConfig overlayConfig;
+  final SuperSearchOverlayConfig overlayConfig;
 
   /// Builder for the loading state in the overlay.
   final WidgetBuilder? loadingBuilder;
@@ -131,11 +131,11 @@ class SmartSearchOverlay<T, K> extends StatefulWidget {
   final TextInputType searchBoxKeyboardType;
 
   @override
-  State<SmartSearchOverlay<T, K>> createState() =>
-      _SmartSearchOverlayState<T, K>();
+  State<SuperSearchOverlay<T, K>> createState() =>
+      _SuperSearchOverlayState<T, K>();
 }
 
-class _SmartSearchOverlayState<T, K> extends State<SmartSearchOverlay<T, K>>
+class _SuperSearchOverlayState<T, K> extends State<SuperSearchOverlay<T, K>>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   final LayerLink _layerLink = LayerLink();
   final GlobalKey _searchBoxKey = GlobalKey();
@@ -362,7 +362,7 @@ class _SmartSearchOverlayState<T, K> extends State<SmartSearchOverlay<T, K>>
   Widget build(BuildContext context) {
     Widget child = CompositedTransformTarget(
       link: _layerLink,
-      child: SmartSearchBox<T, K>(
+      child: SuperSearchBox<T, K>(
         key: _searchBoxKey,
         controller: widget.controller,
         decoration: widget.searchBoxDecoration,
@@ -421,8 +421,8 @@ class _OverlayContent<T, K> extends StatefulWidget {
 
   final LayerLink layerLink;
   final GlobalKey searchBoxKey;
-  final SmartSearchController<T, K> controller;
-  final SmartSearchOverlayConfig config;
+  final SuperSearchController<T, K> controller;
+  final SuperSearchOverlayConfig config;
   final Animation<double> animation;
   final OverlayAnimationType animationType;
   final Widget Function(BuildContext context, T item) itemBuilder;
@@ -743,15 +743,15 @@ class _OverlayContentState<T, K> extends State<_OverlayContent<T, K>> {
     return ListenableBuilder(
       listenable: widget.controller,
       builder: (context, _) {
-        return BlocBuilder<SmartPaginationCubit<T, PaginationRequest>, SmartPaginationState<T>>(
+        return BlocBuilder<SuperPaginationCubit<T, SuperPaginationRequest>, SuperPaginationState<T>>(
           bloc: widget.controller.cubit,
           builder: (context, state) {
             return switch (state) {
-              SmartPaginationError<T>(:final error) => _buildError(
+              SuperPaginationError<T>(:final error) => _buildError(
                 context,
                 error,
               ),
-              SmartPaginationLoaded<T>(:final items) => _buildResults(
+              SuperPaginationLoaded<T>(:final items) => _buildResults(
                 context,
                 items,
               ),
@@ -768,7 +768,7 @@ class _OverlayContentState<T, K> extends State<_OverlayContent<T, K>> {
       return widget.loadingBuilder!(context);
     }
 
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -787,7 +787,7 @@ class _OverlayContentState<T, K> extends State<_OverlayContent<T, K>> {
       return widget.errorBuilder!(context, error);
     }
 
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -825,7 +825,7 @@ class _OverlayContentState<T, K> extends State<_OverlayContent<T, K>> {
     }
 
     final focusedIndex = widget.controller.focusedIndex;
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -882,7 +882,7 @@ class _OverlayContentState<T, K> extends State<_OverlayContent<T, K>> {
       return widget.emptyBuilder!(context);
     }
 
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -919,7 +919,7 @@ class _ThemedOverlayContainer extends StatelessWidget {
     this.overlayDecoration,
   });
 
-  final SmartSearchOverlayConfig config;
+  final SuperSearchOverlayConfig config;
   final BoxDecoration? overlayDecoration;
   final double width;
   final double maxHeight;
@@ -927,7 +927,7 @@ class _ThemedOverlayContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchTheme = SmartSearchTheme.of(context);
+    final searchTheme = SuperSearchTheme.of(context);
 
     final effectiveBorderRadius = searchTheme.overlayBorderRadius ??
         BorderRadius.circular(config.borderRadius);

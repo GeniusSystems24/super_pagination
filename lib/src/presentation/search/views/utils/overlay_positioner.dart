@@ -33,7 +33,7 @@ class OverlayPositioner {
     required Rect targetRect,
     required Size overlaySize,
     required Size screenSize,
-    required SmartSearchOverlayConfig config,
+    required SuperSearchOverlayConfig config,
     EdgeInsets padding = EdgeInsets.zero,
   }) {
     final position = config.position;
@@ -113,7 +113,7 @@ class OverlayPositioner {
     required Rect targetRect,
     required Size overlaySize,
     required Size screenSize,
-    required SmartSearchOverlayConfig config,
+    required SuperSearchOverlayConfig config,
     required EdgeInsets padding,
     required OverlayPosition resolvedPosition,
     required double spaceAbove,

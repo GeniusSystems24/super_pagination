@@ -128,10 +128,10 @@ class _MultiStreamScreenState extends State<MultiStreamScreen> {
   }
 
   Widget _buildStreamContent() {
-    return SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+    return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: ValueKey(_selectedTabIndex), // Force rebuild when tab changes
-      request: const PaginationRequest(page: 1, pageSize: 15),
-      provider: PaginationProvider.stream(
+      request: const SuperPaginationRequest(page: 1, pageSize: 15),
+      provider: SuperPaginationProvider.stream(
         (request) => _getStreamProvider(request),
       ),
       itemBuilder: (context, items, index) {
@@ -326,12 +326,12 @@ class _MultiStreamScreenState extends State<MultiStreamScreen> {
         );
       },
 
-      // Smart preloading: Load when 3 items from the end
+      // Super preloading: Load when 3 items from the end
       invisibleItemsThreshold: 3,
     );
   }
 
-  Stream<List<Product>> _getStreamProvider(PaginationRequest request) {
+  Stream<List<Product>> _getStreamProvider(SuperPaginationRequest request) {
     switch (_selectedTabIndex) {
       case 0:
         return ExampleDependencies.catalog.regularProductsStream(request);

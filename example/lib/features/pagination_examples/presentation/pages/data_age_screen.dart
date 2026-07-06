@@ -24,7 +24,7 @@ class DataAgeScreen extends StatefulWidget {
 class _DataAgeScreenState extends State<DataAgeScreen> {
   // Cubit with 30 second data age for demo purposes
   // In real apps, you might use Duration(minutes: 5) or longer
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   // Track selected data age
   Duration _selectedDataAge = const Duration(seconds: 30);
@@ -36,11 +36,11 @@ class _DataAgeScreenState extends State<DataAgeScreen> {
   }
 
   void _createCubit() {
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 10),
-      provider: PaginationProvider.future(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 10),
+      provider: SuperPaginationProvider.future(
         (request) => ExampleDependencies.catalog.fetchProducts(
-          PaginationRequest(
+          SuperPaginationRequest(
             page: request.page,
             pageSize: request.pageSize ?? 10,
           ),

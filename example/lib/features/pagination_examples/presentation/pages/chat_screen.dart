@@ -89,16 +89,16 @@ class _ChatScreenController {
 
     // Observer is now built-in! No need to create ListObserverController manually.
     // SuperPagination will automatically attach it to the cubit.
-    cubit = SuperPaginationCubit<Message, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 30),
-      provider: PaginationProvider.future(_fetchMessages),
+    cubit = SuperPaginationCubit<Message, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 30),
+      provider: SuperPaginationProvider.future(_fetchMessages),
     );
 
     // Simulate typing indicator
     _simulateTyping();
   }
 
-  late final SuperPaginationCubit<Message, PaginationRequest> cubit;
+  late final SuperPaginationCubit<Message, SuperPaginationRequest> cubit;
   final ScrollController scrollController = ScrollController();
 
   final TextEditingController messageController = TextEditingController();
@@ -142,7 +142,7 @@ class _ChatScreenController {
     });
   }
 
-  Future<List<Message>> _fetchMessages(PaginationRequest request) async {
+  Future<List<Message>> _fetchMessages(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     if (_disposed) return <Message>[];
 
@@ -620,7 +620,7 @@ class _ChatScreenView extends StatelessWidget {
 
                     // Messages list - ListViewObserver is now built-in!
                     SuperPagination<Message,
-                        PaginationRequest>.listViewWithCubit(
+                        SuperPaginationRequest>.listViewWithCubit(
                       cubit: controller.cubit,
                       scrollController: controller.scrollController,
                       physics: const BouncingScrollPhysics(),

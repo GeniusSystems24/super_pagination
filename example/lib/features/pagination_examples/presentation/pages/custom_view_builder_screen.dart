@@ -34,9 +34,9 @@ class CustomViewBuilderScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 20),
-              provider: PaginationProvider.future(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 20),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilderType: PaginateBuilderType.custom,
@@ -393,9 +393,9 @@ class CustomTableViewScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withProvider(
-              request: const PaginationRequest(page: 1, pageSize: 30),
-              provider: PaginationProvider.future(
+            child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
+              request: const SuperPaginationRequest(page: 1, pageSize: 30),
+              provider: SuperPaginationProvider.future(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilderType: PaginateBuilderType.custom,

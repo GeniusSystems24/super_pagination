@@ -8,9 +8,9 @@ Comprehensive examples for Super Pagination library v4.0.0.
 import 'package:super_pagination/super_pagination.dart';
 
 // Basic usage
-SuperPagination<Product, PaginationRequest>.listViewWithProvider(
-  request: const PaginationRequest(page: 1, pageSize: 20),
-  provider: PaginationProvider.future(fetchProducts),
+SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
+  request: const SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.future(fetchProducts),
   itemBuilder: (context, items, index) {
     return ListTile(title: Text(items[index].name));
   },
@@ -24,7 +24,7 @@ SuperPagination<Product, PaginationRequest>.listViewWithProvider(
 | **Basic** | Core pagination patterns (ListView, GridView, Pull-to-Refresh) | [docs/basic.md](docs/basic.md) |
 | **Streams** | Real-time data updates (Single, Multi, Merged streams) | [docs/streams.md](docs/streams.md) |
 | **Advanced** | Complex scenarios (Cursor, Scroll Control, Data Operations) | [docs/advanced.md](docs/advanced.md) |
-| **Search** | Smart search components (Dropdown, Multi-Select, Theming) | [docs/search.md](docs/search.md) |
+| **Search** | Super search components (Dropdown, Multi-Select, Theming) | [docs/search.md](docs/search.md) |
 | **Errors** | Error handling patterns (Retry, Recovery, Graceful Degradation) | [docs/errors.md](docs/errors.md) |
 | **Firebase** | Firebase integration (Firestore, Realtime DB, Offline) | [docs/firebase.md](docs/firebase.md) |
 
@@ -56,7 +56,7 @@ SuperPagination<Product, PaginationRequest>.listViewWithProvider(
 - Custom View Builder - Complete control with custom builder
 - Reorderable List - Drag and drop to reorder
 - State Separation - Different UI for page states
-- Smart Preloading - Load items before reaching end
+- Super Preloading - Load items before reaching end
 - Data Operations - Add, remove, update, clear items
 - Data Age & Expiration - Auto-refresh after expiration
 - Sorting - Programmatic sorting
@@ -72,7 +72,7 @@ SuperPagination<Product, PaginationRequest>.listViewWithProvider(
 ### Firebase (6 examples)
 - Firestore Pagination - Basic paginated queries
 - Firestore Real-time - Live data updates
-- Firestore Search - Search with SmartSearchDropdown
+- Firestore Search - Search with SuperSearchDropdown
 - Realtime Database - Firebase RTDB pagination
 - Firestore Filters - Advanced filtering
 - Offline Support - Offline persistence

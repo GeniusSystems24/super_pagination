@@ -18,7 +18,7 @@ class PerPageErrorScreen extends StatefulWidget {
 }
 
 class _PerPageErrorScreenState extends State<PerPageErrorScreen> {
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   @override
   void initState() {
@@ -26,11 +26,11 @@ class _PerPageErrorScreenState extends State<PerPageErrorScreen> {
     _cubit = _buildCubit();
   }
 
-  SuperPaginationCubit<Product, PaginationRequest> _buildCubit() =>
-      SuperPaginationCubit<Product, PaginationRequest>(
-        request: const PaginationRequest(page: 1, pageSize: 8),
+  SuperPaginationCubit<Product, SuperPaginationRequest> _buildCubit() =>
+      SuperPaginationCubit<Product, SuperPaginationRequest>(
+        request: const SuperPaginationRequest(page: 1, pageSize: 8),
         provider:
-            PaginationProvider.stream(ExampleDependencies.catalog.unreliablePageStream),
+            SuperPaginationProvider.stream(ExampleDependencies.catalog.unreliablePageStream),
       );
 
   @override
@@ -77,7 +77,7 @@ class _PerPageErrorScreenState extends State<PerPageErrorScreen> {
             },
           ),
           Expanded(
-            child: SuperPagination<Product, PaginationRequest>.withCubit(
+            child: SuperPagination<Product, SuperPaginationRequest>.withCubit(
               key: ValueKey(_cubit),
               cubit: _cubit,
               itemBuilderType: PaginateBuilderType.listView,

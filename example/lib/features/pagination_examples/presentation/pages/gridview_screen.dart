@@ -13,9 +13,9 @@ class GridViewScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('GridView Pagination'),
       ),
-      body: SuperPagination<Product, PaginationRequest>.gridViewWithProvider(
-        request: const PaginationRequest(page: 1, pageSize: 20),
-        provider: PaginationProvider.future(
+      body: SuperPagination<Product, SuperPaginationRequest>.gridViewWithProvider(
+        request: const SuperPaginationRequest(page: 1, pageSize: 20),
+        provider: SuperPaginationProvider.future(
           (request) => ExampleDependencies.catalog.fetchProducts(request),
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

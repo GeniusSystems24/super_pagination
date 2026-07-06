@@ -72,7 +72,7 @@ class _ManualRetryTab extends StatefulWidget {
 class _ManualRetryTabState extends State<_ManualRetryTab> {
   int _attemptCount = 0;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     _attemptCount++;
     throw Exception('Error occurred (Attempt #$_attemptCount)');
@@ -95,10 +95,10 @@ class _ManualRetryTabState extends State<_ManualRetryTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('manual_retry_$_attemptCount'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -133,7 +133,7 @@ class _AutoRetryTabState extends State<_AutoRetryTab> {
   int _countdown = 5;
   VoidCallback? _pendingRetry;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     _attemptCount++;
 
@@ -195,10 +195,10 @@ class _AutoRetryTabState extends State<_AutoRetryTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('auto_retry_$_attemptCount'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(
@@ -296,7 +296,7 @@ class _ExponentialBackoffTab extends StatefulWidget {
 class _ExponentialBackoffTabState extends State<_ExponentialBackoffTab> {
   int _attemptCount = 0;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     _attemptCount++;
 
     // Calculate exponential backoff delay: 1s, 2s, 4s, 8s
@@ -323,10 +323,10 @@ class _ExponentialBackoffTabState extends State<_ExponentialBackoffTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('exponential_backoff_$_attemptCount'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             retryConfig: const RetryConfig(
               maxAttempts: 4,
               initialDelay: Duration(seconds: 1),
@@ -366,7 +366,7 @@ class _LimitedAttemptsTabState extends State<_LimitedAttemptsTab> {
   int _attemptCount = 0;
   static const int maxAttempts = 3;
 
-  Future<List<Product>> _fetchProducts(PaginationRequest request) async {
+  Future<List<Product>> _fetchProducts(SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     _attemptCount++;
     throw Exception('Failed to load data');
@@ -392,10 +392,10 @@ class _LimitedAttemptsTabState extends State<_LimitedAttemptsTab> {
         ),
         Expanded(
           child:
-              SuperPagination<Product, PaginationRequest>.listViewWithProvider(
+              SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('limited_attempts_$_attemptCount'),
-            request: PaginationRequest(page: 1, pageSize: 20),
-            provider: PaginationProvider.future(_fetchProducts),
+            request: SuperPaginationRequest(page: 1, pageSize: 20),
+            provider: SuperPaginationProvider.future(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));

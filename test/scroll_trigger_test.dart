@@ -17,9 +17,9 @@ void main() {
     test('T27: simulated burst of scroll triggers produces one fetch',
         () async {
       var providerCalls = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 10),
-        provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 10),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
           providerCalls++;
           return List<int>.generate(10, (i) => (req.page - 1) * 10 + i);
         }),
@@ -35,7 +35,7 @@ void main() {
       await Future<void>.delayed(_settle);
 
       expect(providerCalls, 1);
-      final loaded = cubit.state as SmartPaginationLoaded<int>;
+      final loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items.length, 20);
 
       await cubit.close();
@@ -44,9 +44,9 @@ void main() {
     test('T28: scroll triggers after hasReachedEnd produce no fetch',
         () async {
       var providerCalls = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
-        provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
           providerCalls++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           return <int>[];
@@ -73,10 +73,10 @@ void main() {
     test('T29: scroll triggers after error allow retry on next attempt',
         () async {
       var attempt = 0;
-      final cubit = SmartPaginationCubit<int, PaginationRequest>(
-        request: PaginationRequest(page: 1, pageSize: 5),
+      final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
+        request: SuperPaginationRequest(page: 1, pageSize: 5),
         errorRetryStrategy: ErrorRetryStrategy.automatic,
-        provider: PaginationProvider<int, PaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
           attempt++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           if (attempt == 2) {
@@ -91,14 +91,14 @@ void main() {
 
       cubit.fetchPaginatedList();
       await Future<void>.delayed(_settle);
-      var loaded = cubit.state as SmartPaginationLoaded<int>;
+      var loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.loadMoreError, isNotNull);
       expect(loaded.hasReachedEnd, isFalse);
 
       cubit.fetchPaginatedList();
       await Future<void>.delayed(_settle);
 
-      loaded = cubit.state as SmartPaginationLoaded<int>;
+      loaded = cubit.state as SuperPaginationLoaded<int>;
       expect(loaded.items.length, 10);
       expect(loaded.loadMoreError, isNull);
 

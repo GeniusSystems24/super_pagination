@@ -55,7 +55,7 @@ Below is the cross-reference between every acceptance scenario in [spec.md](../s
 | US3 #2 / FR-003 — stale response after refresh | [future_provider_test.dart](future_provider_test.dart) | T037: stale response from a superseded request is discarded |
 | US3 #3 / FR-005 — disposal mid-flight | [future_provider_test.dart](future_provider_test.dart) | T038: in-flight request resolving after close does not throw |
 | US3 #4 / FR-002 — load-more error annotation | [future_provider_test.dart](future_provider_test.dart) | T039: load-more error annotates the existing Loaded state |
-| FR-002 — first-page error transitions to error state | [future_provider_test.dart](future_provider_test.dart) | T039b: first-page error transitions to SmartPaginationError |
+| FR-002 — first-page error transitions to error state | [future_provider_test.dart](future_provider_test.dart) | T039b: first-page error transitions to SuperPaginationError |
 
 ### US4 — Type-Safe Custom Request Subclasses (P2)
 

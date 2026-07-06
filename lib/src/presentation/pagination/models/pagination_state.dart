@@ -1,7 +1,7 @@
 part of '../pagination_feature.dart';
 
 @immutable
-abstract class SmartPaginationState<T> implements IPaginationInitialState<T> {
+abstract class SuperPaginationState<T> implements IPaginationInitialState<T> {
   @override
   bool get hasReachedEnd => false;
 
@@ -9,15 +9,15 @@ abstract class SmartPaginationState<T> implements IPaginationInitialState<T> {
   DateTime get lastUpdate => DateTime.now();
 
   @override
-  PaginationMeta? get meta => null;
+  SuperPaginationMeta? get meta => null;
 }
 
-class SmartPaginationInitial<T> extends SmartPaginationState<T> {}
+class SuperPaginationInitial<T> extends SuperPaginationState<T> {}
 
-class SmartPaginationError<T> extends SmartPaginationState<T>
+class SuperPaginationError<T> extends SuperPaginationState<T>
     implements IPaginationErrorState<T> {
   final Exception _error;
-  SmartPaginationError({required Exception error}) : _error = error;
+  SuperPaginationError({required Exception error}) : _error = error;
 
   @override
   Exception get error => _error;
@@ -26,7 +26,7 @@ class SmartPaginationError<T> extends SmartPaginationState<T>
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is SmartPaginationError<T> && other.error == error;
+    return other is SuperPaginationError<T> && other.error == error;
   }
 
   @override
@@ -75,9 +75,9 @@ class PaginationOperationReload extends PaginationOperation {
   const PaginationOperationReload();
 }
 
-class SmartPaginationLoaded<T> extends SmartPaginationState<T>
+class SuperPaginationLoaded<T> extends SuperPaginationState<T>
     implements IPaginationLoadedState<T> {
-  SmartPaginationLoaded({
+  SuperPaginationLoaded({
     required this.items,
     required this.allItems,
     required this.meta,
@@ -96,7 +96,7 @@ class SmartPaginationLoaded<T> extends SmartPaginationState<T>
   @override
   final List<T> allItems;
   @override
-  final PaginationMeta meta;
+  final SuperPaginationMeta meta;
   @override
   final bool hasReachedEnd;
   @override
@@ -131,11 +131,11 @@ class SmartPaginationLoaded<T> extends SmartPaginationState<T>
   /// no per-page error is in flight.
   final Map<int, Object> pageErrors;
 
-  SmartPaginationLoaded<T> copyWith({
+  SuperPaginationLoaded<T> copyWith({
     List<T>? items,
     List<T>? allItems,
     bool? hasReachedEnd,
-    PaginationMeta? meta,
+    SuperPaginationMeta? meta,
     DateTime? lastUpdate,
     bool? isLoadingMore,
     Exception? loadMoreError,
@@ -148,7 +148,7 @@ class SmartPaginationLoaded<T> extends SmartPaginationState<T>
     final updatedAllItems = allItems ?? this.allItems;
     final updatedItems = items ?? this.items;
 
-    return SmartPaginationLoaded<T>(
+    return SuperPaginationLoaded<T>(
       items: updatedItems,
       allItems: updatedAllItems,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
@@ -168,7 +168,7 @@ class SmartPaginationLoaded<T> extends SmartPaginationState<T>
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is SmartPaginationLoaded<T> &&
+    return other is SuperPaginationLoaded<T> &&
         other.hasReachedEnd == hasReachedEnd &&
         other.isLoadingMore == isLoadingMore &&
         other.loadMoreError == loadMoreError &&
@@ -250,7 +250,7 @@ enum _AnchorViewType {
 /// Snapshot of the visible viewport at the moment a load-more fetch is
 /// initiated. Captured by the widget layer (via the `scrollview_observer`
 /// integration) and passed to the cubit via
-/// [SmartPaginationCubit.captureAnchorBeforeLoadMore]. Consumed in a
+/// [SuperPaginationCubit.captureAnchorBeforeLoadMore]. Consumed in a
 /// post-frame callback after the new page is appended.
 ///
 /// Spec 004-scroll-anchor-preservation §4.3, data-model.md §1.

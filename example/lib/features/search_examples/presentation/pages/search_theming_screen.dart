@@ -4,7 +4,7 @@ import 'package:super_pagination/super_pagination.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
 
-/// Example screen demonstrating SmartSearchTheme customization.
+/// Example screen demonstrating SuperSearchTheme customization.
 ///
 /// This screen shows how to:
 /// - Use light and dark themes
@@ -97,7 +97,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                                 ),
                               ),
                               Text(
-                                'SmartSearchTheme auto-detects system theme when no explicit theme is set.',
+                                'SuperSearchTheme auto-detects system theme when no explicit theme is set.',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -125,25 +125,25 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 8),
-                SmartSearchDropdown<Product, Product>.withProvider(
-                  request: const PaginationRequest(page: 1, pageSize: 10),
-                  provider: PaginationProvider.future(
+                SuperSearchDropdown<Product, Product>.withProvider(
+                  request: const SuperPaginationRequest(page: 1, pageSize: 10),
+                  provider: SuperPaginationProvider.future(
                     (request) => ExampleDependencies.catalog.searchProducts(
                       request.searchQuery ?? '',
                       pageSize: request.pageSize ?? 10,
                     ),
                   ),
-                  searchRequestBuilder: (query) => PaginationRequest(
+                  searchRequestBuilder: (query) => SuperPaginationRequest(
                     page: 1,
                     pageSize: 10,
                     searchQuery: query,
                   ),
-                  searchConfig: const SmartSearchConfig(
+                  searchConfig: const SuperSearchConfig(
                     debounceDelay: Duration(milliseconds: 300),
                     minSearchLength: 0,
                     searchOnEmpty: true,
                   ),
-                  overlayConfig: const SmartSearchOverlayConfig(
+                  overlayConfig: const SuperSearchOverlayConfig(
                     maxHeight: 200,
                     borderRadius: 12,
                   ),
@@ -174,7 +174,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                 Theme(
                   data: Theme.of(context).copyWith(
                     extensions: [
-                      SmartSearchTheme(
+                      SuperSearchTheme(
                         searchBoxBackgroundColor: const Color(0xFFF3E8FF),
                         searchBoxTextColor: const Color(0xFF581C87),
                         searchBoxHintColor: const Color(0xFF9333EA),
@@ -190,25 +190,25 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                       ),
                     ],
                   ),
-                  child: SmartSearchDropdown<Product, Product>.withProvider(
-                    request: const PaginationRequest(page: 1, pageSize: 10),
-                    provider: PaginationProvider.future(
+                  child: SuperSearchDropdown<Product, Product>.withProvider(
+                    request: const SuperPaginationRequest(page: 1, pageSize: 10),
+                    provider: SuperPaginationProvider.future(
                       (request) => ExampleDependencies.catalog.searchProducts(
                         request.searchQuery ?? '',
                         pageSize: request.pageSize ?? 10,
                       ),
                     ),
-                    searchRequestBuilder: (query) => PaginationRequest(
+                    searchRequestBuilder: (query) => SuperPaginationRequest(
                       page: 1,
                       pageSize: 10,
                       searchQuery: query,
                     ),
-                    searchConfig: const SmartSearchConfig(
+                    searchConfig: const SuperSearchConfig(
                       debounceDelay: Duration(milliseconds: 300),
                       minSearchLength: 0,
                       searchOnEmpty: true,
                     ),
-                    overlayConfig: const SmartSearchOverlayConfig(
+                    overlayConfig: const SuperSearchOverlayConfig(
                       maxHeight: 200,
                       borderRadius: 16,
                     ),
@@ -244,7 +244,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                 Theme(
                   data: Theme.of(context).copyWith(
                     extensions: [
-                      SmartSearchTheme(
+                      SuperSearchTheme(
                         searchBoxBackgroundColor: const Color(0xFFDCFCE7),
                         searchBoxTextColor: const Color(0xFF14532D),
                         searchBoxHintColor: const Color(0xFF16A34A),
@@ -260,25 +260,25 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                       ),
                     ],
                   ),
-                  child: SmartSearchDropdown<Product, Product>.withProvider(
-                    request: const PaginationRequest(page: 1, pageSize: 10),
-                    provider: PaginationProvider.future(
+                  child: SuperSearchDropdown<Product, Product>.withProvider(
+                    request: const SuperPaginationRequest(page: 1, pageSize: 10),
+                    provider: SuperPaginationProvider.future(
                       (request) => ExampleDependencies.catalog.searchProducts(
                         request.searchQuery ?? '',
                         pageSize: request.pageSize ?? 10,
                       ),
                     ),
-                    searchRequestBuilder: (query) => PaginationRequest(
+                    searchRequestBuilder: (query) => SuperPaginationRequest(
                       page: 1,
                       pageSize: 10,
                       searchQuery: query,
                     ),
-                    searchConfig: const SmartSearchConfig(
+                    searchConfig: const SuperSearchConfig(
                       debounceDelay: Duration(milliseconds: 300),
                       minSearchLength: 0,
                       searchOnEmpty: true,
                     ),
-                    overlayConfig: const SmartSearchOverlayConfig(
+                    overlayConfig: const SuperSearchOverlayConfig(
                       maxHeight: 200,
                       borderRadius: 8,
                     ),

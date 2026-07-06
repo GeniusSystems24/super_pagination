@@ -8,9 +8,9 @@ part of '../../pagination_feature.dart';
 ///
 /// Example usage:
 /// ```dart
-/// SmartPaginationStaggeredGridView.withProvider(
-///   request: PaginationRequest(page: 1, pageSize: 20),
-///   provider: PaginationProvider.future((request) => fetchImages(request)),
+/// SuperPaginationStaggeredGridView.withProvider(
+///   request: SuperPaginationRequest(page: 1, pageSize: 20),
+///   provider: SuperPaginationProvider.future((request) => fetchImages(request)),
 ///   crossAxisCount: 2,
 ///   itemBuilder: (context, items, index) {
 ///     final image = items[index];
@@ -22,12 +22,12 @@ part of '../../pagination_feature.dart';
 ///   },
 /// )
 /// ```
-class SmartPaginationStaggeredGridView<T, R extends PaginationRequest> extends SmartPagination<T, R> {
-  /// Creates a SmartPaginationStaggeredGridView with a provider for data fetching.
+class SuperPaginationStaggeredGridView<T, R extends SuperPaginationRequest> extends SuperPagination<T, R> {
+  /// Creates a SuperPaginationStaggeredGridView with a provider for data fetching.
   ///
   /// The [request], [provider], and [crossAxisCount] are required to configure pagination.
   /// Use [itemBuilder] to define how each item should be rendered with StaggeredGridTile.
-  SmartPaginationStaggeredGridView.withProvider({
+  SuperPaginationStaggeredGridView.withProvider({
     super.key,
     required super.request,
     required super.provider,
@@ -83,11 +83,11 @@ class SmartPaginationStaggeredGridView<T, R extends PaginationRequest> extends S
     Duration? dataAge,
   }) : super.staggeredGridViewWithProvider();
 
-  /// Creates a SmartPaginationStaggeredGridView with an external cubit.
+  /// Creates a SuperPaginationStaggeredGridView with an external cubit.
   ///
   /// Use this constructor when you want to manage the cubit externally,
   /// such as when using it as a global variable or sharing it across screens.
-  SmartPaginationStaggeredGridView.withCubit({
+  SuperPaginationStaggeredGridView.withCubit({
     super.key,
     required super.cubit,
     required super.itemBuilder,

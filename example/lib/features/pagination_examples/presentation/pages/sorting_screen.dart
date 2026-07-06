@@ -20,7 +20,7 @@ class SortingScreen extends StatefulWidget {
 }
 
 class _SortingScreenState extends State<SortingScreen> {
-  late final SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late final SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
 
   @override
   void initState() {
@@ -68,11 +68,11 @@ class _SortingScreenState extends State<SortingScreen> {
     );
 
     // Create cubit with orders
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 15),
-      provider: PaginationProvider.future(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 15),
+      provider: SuperPaginationProvider.future(
         (request) => ExampleDependencies.catalog.fetchProducts(
-          PaginationRequest(
+          SuperPaginationRequest(
             page: request.page,
             pageSize: request.pageSize ?? 15,
           ),
@@ -132,7 +132,7 @@ class _SortingScreenState extends State<SortingScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: BlocBuilder<
-                      SuperPaginationCubit<Product, PaginationRequest>,
+                      SuperPaginationCubit<Product, SuperPaginationRequest>,
                       SuperPaginationState<Product>>(
                     bloc: _cubit,
                     builder: (context, state) {
@@ -168,7 +168,7 @@ class _SortingScreenState extends State<SortingScreen> {
           ),
 
           // Current order indicator
-          BlocBuilder<SuperPaginationCubit<Product, PaginationRequest>,
+          BlocBuilder<SuperPaginationCubit<Product, SuperPaginationRequest>,
               SuperPaginationState<Product>>(
             bloc: _cubit,
             builder: (context, state) {

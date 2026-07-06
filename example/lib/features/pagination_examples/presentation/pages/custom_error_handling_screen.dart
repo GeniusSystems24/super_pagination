@@ -80,10 +80,10 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           ),
         ),
         Expanded(
-          child: SuperPagination<Product, PaginationRequest>.withProvider(
+          child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('material_error'),
-            request: PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -132,10 +132,10 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           ),
         ),
         Expanded(
-          child: SuperPagination<Product, PaginationRequest>.withProvider(
+          child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('compact_error'),
-            request: PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -183,11 +183,11 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           ),
         ),
         Expanded(
-          child: SuperPagination<Product, PaginationRequest>.withProvider(
+          child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             itemBuilderType: PaginateBuilderType.gridView,
             key: const Key('card_error'),
-            request: PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -256,10 +256,10 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           ),
         ),
         Expanded(
-          child: SuperPagination<Product, PaginationRequest>.withProvider(
+          child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('minimal_error'),
-            request: PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -310,10 +310,10 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           ),
         ),
         Expanded(
-          child: SuperPagination<Product, PaginationRequest>.withProvider(
+          child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('custom_error'),
-            request: PaginationRequest(page: 1, pageSize: 10),
-            provider: PaginationProvider.future(
+            request: SuperPaginationRequest(page: 1, pageSize: 10),
+            provider: SuperPaginationProvider.future(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {

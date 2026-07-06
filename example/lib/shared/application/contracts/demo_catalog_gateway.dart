@@ -7,26 +7,26 @@ import 'package:super_pagination_example/shared/domain/entities/product.dart';
 /// source without changing the presentation examples.
 abstract interface class DemoCatalogGateway {
   Future<List<Product>> fetchProducts(
-    PaginationRequest request, {
+    SuperPaginationRequest request, {
     bool simulateError = false,
   });
 
-  Future<List<Product>> fetchProductsWithError(PaginationRequest request);
+  Future<List<Product>> fetchProductsWithError(SuperPaginationRequest request);
 
   Future<List<Product>> searchProducts(
     String query, {
     int pageSize = 20,
   });
 
-  Stream<List<Product>> productsStream(PaginationRequest request);
+  Stream<List<Product>> productsStream(SuperPaginationRequest request);
 
-  Stream<List<Product>> regularProductsStream(PaginationRequest request);
+  Stream<List<Product>> regularProductsStream(SuperPaginationRequest request);
 
-  Stream<List<Product>> featuredProductsStream(PaginationRequest request);
+  Stream<List<Product>> featuredProductsStream(SuperPaginationRequest request);
 
-  Stream<List<Product>> saleProductsStream(PaginationRequest request);
+  Stream<List<Product>> saleProductsStream(SuperPaginationRequest request);
 
-  Stream<List<Product>> accumulatingProductsStream(PaginationRequest request);
+  Stream<List<Product>> accumulatingProductsStream(SuperPaginationRequest request);
 
-  Stream<List<Product>> unreliablePageStream(PaginationRequest request);
+  Stream<List<Product>> unreliablePageStream(SuperPaginationRequest request);
 }

@@ -12,16 +12,16 @@ class ScrollControlScreen extends StatefulWidget {
 }
 
 class _ScrollControlScreenState extends State<ScrollControlScreen> {
-  late SuperPaginationCubit<Product, PaginationRequest> _cubit;
+  late SuperPaginationCubit<Product, SuperPaginationRequest> _cubit;
   final TextEditingController _indexController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     // Create a cubit with built-in scroll navigation support
-    _cubit = SuperPaginationCubit<Product, PaginationRequest>(
-      request: const PaginationRequest(page: 1, pageSize: 100),
-      provider: PaginationProvider.future(
+    _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+      request: const SuperPaginationRequest(page: 1, pageSize: 100),
+      provider: SuperPaginationProvider.future(
         (request) => ExampleDependencies.catalog.fetchProducts(request),
       ),
     );
@@ -206,7 +206,7 @@ class _ScrollControlScreenState extends State<ScrollControlScreen> {
           // Product List
           Expanded(
             child:
-                SuperPagination<Product, PaginationRequest>.listViewWithCubit(
+                SuperPagination<Product, SuperPaginationRequest>.listViewWithCubit(
               cubit: _cubit,
               itemBuilder: (context, items, index) {
                 return _buildProductCard(items[index], index);
@@ -396,7 +396,7 @@ class _ScrollControlScreenState extends State<ScrollControlScreen> {
                 );
               },
 
-              // Smart preloading: Load when 3 items from the end
+              // Super preloading: Load when 3 items from the end
               invisibleItemsThreshold: 3,
             ),
           ),

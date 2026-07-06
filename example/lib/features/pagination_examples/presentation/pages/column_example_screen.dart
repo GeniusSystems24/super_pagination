@@ -32,9 +32,9 @@ class _ColumnExampleScreenState extends State<ColumnExampleScreen> {
               const SizedBox(height: 16),
 
               // SuperPagination.column example
-              SuperPagination<Product, PaginationRequest>.columnWithProvider(
-                request: const PaginationRequest(page: 1, pageSize: 3),
-                provider: PaginationProvider.future(
+              SuperPagination<Product, SuperPaginationRequest>.columnWithProvider(
+                request: const SuperPaginationRequest(page: 1, pageSize: 3),
+                provider: SuperPaginationProvider.future(
                   (request) => ExampleDependencies.catalog.fetchProducts(
                     request,
                   ),

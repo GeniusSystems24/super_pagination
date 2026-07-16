@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:super_core/super_core.dart';
 
 /// Helper class for managing error illustration images
 ///
@@ -43,7 +44,7 @@ class ErrorImages {
         return Icon(
           fallbackIcon,
           size: fallbackSize,
-          color: fallbackColor ?? Colors.grey[400],
+          color: fallbackColor ?? SuperPalette.grayPalette.shade400,
         );
       },
     );
@@ -58,7 +59,7 @@ class ErrorImages {
     return buildImage(
       imagePath: generalError,
       fallbackIcon: Icons.error_outline,
-      fallbackColor: fallbackColor ?? Colors.red,
+      fallbackColor: fallbackColor ?? SuperTokens.danger,
       width: width,
       height: height,
     );
@@ -73,7 +74,7 @@ class ErrorImages {
     return buildImage(
       imagePath: networkError,
       fallbackIcon: Icons.wifi_off,
-      fallbackColor: fallbackColor ?? Colors.orange,
+      fallbackColor: fallbackColor ?? SuperTokens.warning,
       width: width,
       height: height,
     );
@@ -88,7 +89,7 @@ class ErrorImages {
     return buildImage(
       imagePath: error404,
       fallbackIcon: Icons.search_off,
-      fallbackColor: fallbackColor ?? Colors.grey,
+      fallbackColor: fallbackColor ?? SuperPalette.grayPalette.shade500,
       width: width,
       height: height,
     );
@@ -103,7 +104,7 @@ class ErrorImages {
     return buildImage(
       imagePath: error500,
       fallbackIcon: Icons.dns_outlined,
-      fallbackColor: fallbackColor ?? Colors.red,
+      fallbackColor: fallbackColor ?? SuperTokens.danger,
       width: width,
       height: height,
     );
@@ -118,7 +119,7 @@ class ErrorImages {
     return buildImage(
       imagePath: timeoutError,
       fallbackIcon: Icons.access_time,
-      fallbackColor: fallbackColor ?? Colors.amber,
+      fallbackColor: fallbackColor ?? SuperTokens.warning,
       width: width,
       height: height,
     );
@@ -133,7 +134,7 @@ class ErrorImages {
     return buildImage(
       imagePath: authError,
       fallbackIcon: Icons.lock_outline,
-      fallbackColor: fallbackColor ?? Colors.orange,
+      fallbackColor: fallbackColor ?? SuperTokens.warning,
       width: width,
       height: height,
     );
@@ -148,7 +149,7 @@ class ErrorImages {
     return buildImage(
       imagePath: offlineError,
       fallbackIcon: Icons.cloud_off,
-      fallbackColor: fallbackColor ?? Colors.grey,
+      fallbackColor: fallbackColor ?? SuperPalette.grayPalette.shade500,
       width: width,
       height: height,
     );
@@ -163,7 +164,7 @@ class ErrorImages {
     return buildImage(
       imagePath: emptyState,
       fallbackIcon: Icons.inbox_outlined,
-      fallbackColor: fallbackColor ?? Colors.grey,
+      fallbackColor: fallbackColor ?? SuperPalette.grayPalette.shade500,
       width: width,
       height: height,
     );
@@ -178,7 +179,7 @@ class ErrorImages {
     return buildImage(
       imagePath: retryIcon,
       fallbackIcon: Icons.refresh,
-      fallbackColor: fallbackColor ?? Colors.blue,
+      fallbackColor: fallbackColor ?? SuperTokens.accent,
       width: width,
       height: height,
       fallbackSize: 48,
@@ -194,7 +195,7 @@ class ErrorImages {
     return buildImage(
       imagePath: recoveryIcon,
       fallbackIcon: Icons.restore,
-      fallbackColor: fallbackColor ?? Colors.green,
+      fallbackColor: fallbackColor ?? SuperTokens.success,
       width: width,
       height: height,
       fallbackSize: 48,
@@ -210,7 +211,7 @@ class ErrorImages {
     return buildImage(
       imagePath: loadingError,
       fallbackIcon: Icons.error_outline,
-      fallbackColor: fallbackColor ?? Colors.orange,
+      fallbackColor: fallbackColor ?? SuperTokens.warning,
       width: width,
       height: height,
     );
@@ -225,7 +226,7 @@ class ErrorImages {
     return buildImage(
       imagePath: customError,
       fallbackIcon: Icons.widgets_outlined,
-      fallbackColor: fallbackColor ?? Colors.purple,
+      fallbackColor: fallbackColor ?? SuperPalette.purplePalette.shade500,
       width: width,
       height: height,
     );

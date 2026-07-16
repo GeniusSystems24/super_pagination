@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:super_core/super_core.dart';
 
 /// A widget that displays text with highlighted search matches.
 ///
@@ -40,7 +41,7 @@ class HighlightedText extends StatelessWidget {
     required this.text,
     this.searchQueries = const [],
     this.style,
-    this.highlightColor = Colors.yellow,
+    this.highlightColor = SuperTokens.warning,
     this.highlightStyle,
     this.maxLines,
     this.overflow,
@@ -55,7 +56,7 @@ class HighlightedText extends StatelessWidget {
     required String text,
     required String searchQuery,
     TextStyle? style,
-    Color highlightColor = Colors.yellow,
+    Color highlightColor = SuperTokens.warning,
     TextStyle? highlightStyle,
     int? maxLines,
     TextOverflow? overflow,
@@ -93,7 +94,7 @@ class HighlightedText extends StatelessWidget {
 
   /// The background color for highlighted text.
   ///
-  /// Defaults to [Colors.yellow]. This is ignored if [highlightStyle]
+  /// Defaults to the GeniusLink warning token. This is ignored if [highlightStyle]
   /// is provided.
   final Color highlightColor;
 

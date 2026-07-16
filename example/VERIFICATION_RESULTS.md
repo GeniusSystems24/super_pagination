@@ -2,37 +2,41 @@
 
 ## Static verification completed
 
-- Example Dart files inspected: **146**
-- Feature page implementations: **56**
-- Typed route classes preserved: **60 / 60**
-- Route path declarations preserved: **60 / 60**
-- Baseline public declarations: **142**
-- Current public declarations: **149**
-- Missing baseline public declarations: **0**
-- Compatibility export files: **65**
-- Missing local import/export/part targets: **0**
-- Local import cycles: **0**
-- Shared Domain/Application boundary violations: **0**
-- Direct infrastructure imports from non-Firebase presentation: **0**
-- Old `package:super_pagination/pagination.dart` imports in example source: **0**
-- Old `package:smart_pagination/...` imports in example source: **0**
+- Example Dart source files: **147**
+- Typed `GoRouteData` classes: **60**
+- Typed shell route classes: **1**
+- `TypedGoRoute` declarations: **60**
+- Detail route parent navigator declarations targeting the shell: **54**
+- Missing local package import targets: **0**
+- Dart files with syntax errors under the Tree-sitter Dart parser: **0 / 219**
+- Duplicate named arguments detected in Dart invocation lists: **0**
+- YAML parse failures: **0**
+- Stale root-navigator references inside the detail-route section: **0**
 
 ## Automated checks added
 
 - `test/architecture_boundary_test.dart`
 - `test/compatibility_exports_test.dart`
 - `test/controllers_test.dart`
-- `tool/verify_example_architecture.py`
+- `test/typed_shell_route_test.dart`
 
-## Commands run in this environment
+## Checks run in this environment
 
-```text
-python tool/verify_architecture.py
-python example/tool/verify_example_architecture.py
-```
-
-Both static architecture verifiers completed successfully.
+- Parsed `pubspec.yaml` and `example/pubspec.yaml` successfully.
+- Parsed package, test, example source, and example test Dart files with the Tree-sitter Dart grammar.
+- Inspected every invocation AST for duplicate named arguments.
+- Verified all local `package:super_pagination_example/...` and `package:super_pagination/...` import targets.
+- Verified that `HomeShellRouteData` builds `ExampleShell` and all detail route parent keys use `_shellNavigatorKey`.
+- Verified the generated `app_router.g.dart` remains present and compatible with the unchanged annotation topology.
 
 ## SDK limitation
 
-Flutter and Dart executables are not installed in the execution environment, so `flutter analyze`, `dart format`, and `flutter test` could not be run here. The generated GoRouter file was preserved beside its owning router library, and tests were added for execution in the target Flutter workspace.
+Flutter and Dart executables are not installed in the execution environment, so `flutter analyze`, `dart format`, `flutter test`, and `build_runner` could not be executed here. Run the following in a Flutter 3.32+ workspace before publishing:
+
+```bash
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+dart format .
+flutter analyze
+flutter test
+```

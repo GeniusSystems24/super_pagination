@@ -65,4 +65,9 @@ continues to expose the same `HomeScreen` class, while new code should use:
 import 'package:super_pagination_example/features/home/presentation/pages/home_screen.dart';
 ```
 
-All 60 typed route classes and all route path declarations are preserved.
+All typed route classes and route locations are preserved. The route tree is rooted in `@TypedShellRoute<HomeShellRouteData>`:
+
+- `HomeShellRouteData` builds `ExampleShell` around the generated nested navigator.
+- Desktop uses a full navigation sidebar; tablet uses a compact rail; mobile lets each page use the full viewport.
+- Detail routes target the shell navigator through `$parentNavigatorKey`, so shell chrome persists instead of being replaced by the root navigator.
+- Section navigation remains deep-linkable through `/basic`, `/streams`, `/advanced`, `/search`, `/errors`, and `/firebase`.

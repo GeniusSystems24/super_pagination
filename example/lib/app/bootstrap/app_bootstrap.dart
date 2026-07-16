@@ -9,6 +9,6 @@ abstract final class AppBootstrap {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    runApp(const PaginationExampleApp());
+    runApp(PaginationExampleApp(key: PaginationExampleApp.appKey));
   }
 }

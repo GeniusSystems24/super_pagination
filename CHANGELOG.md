@@ -1,4 +1,48 @@
-## 4.0.0
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [4.1.4] - 2026-07-16
+
+- Rebuilt the chat pagination example around the shared `super_core` design system.
+- Replaced WhatsApp-specific surfaces and fixed colors with `SuperThemeData`, `SuperText`, `SuperCard`, shared radii, spacing, semantic colors, and the active Material color scheme.
+- Redesigned the conversation header, search field, quick-navigation toolbar, message composer, state views, message actions, date separators, typing indicator, and message bubbles.
+- Updated attachment cards to use shared surfaces, borders, and typography while preserving media-specific semantic accents.
+- Made simulated typing/reply timers cancellable when the chat screen is disposed.
+
+## [4.1.3] - 2026-07-16
+
+- Replaced the example application's hand-built navigation panel with `super_navigation_sidebar` 2.3.0.
+- Integrated the package's typed `NavigationSidebarController`, `NavigationShell`, responsive expanded/rail/drawer modes, breadcrumb/filter app bar, command palette, favorites, recents, and keyboard shortcut binder.
+- Kept `TypedShellRoute` and GoRouter as the route source of truth while synchronizing the sidebar selection with every category and detail route.
+- Derived sidebar colors and responsive metrics from the existing `super_core` theme rather than maintaining another local navigation theme.
+
+## [4.1.2] - 2026-07-16
+
+- Fixed the example dashboard card layout crash caused by an `Expanded` child receiving unbounded vertical constraints inside `SuperCard`.
+- Increased the adaptive example-grid row extent and reserved a bounded description area so cards remain uniform without RenderFlex overflow.
+- Added desktop and mobile widget coverage for the home dashboard layout.
+
+## [4.1.1] - 2026-07-16
+
+- Turned the example router shell into a functional `TypedShellRoute` with a persistent responsive navigation surface.
+- Kept all category and detail routes on the shell navigator instead of escaping to the root navigator.
+- Rebuilt the example landing experience as a responsive dashboard with a showcase hero, section switcher, metrics, search, and adaptive example grid.
+- Aligned route transitions and navigation chrome with `super_core` motion, surfaces, borders, typography, and spacing tokens.
+- Fixed duplicate named arguments in the generated-route source implementation.
+
+## [4.1.0] - 2026-07-16
+
+- Adopted `super_core` 1.2.0 as the package-wide GeniusLink design-system source.
+- Added `SuperPaginationTheme` for loaders, empty states, errors, and retry actions.
+- Reworked `SuperSearchTheme` so its defaults derive from `SuperThemeData`, the active `ColorScheme`, and shared radii instead of duplicated color constants.
+- Updated built-in error builders and search fallbacks to use shared surfaces, typography, spacing, semantic colors, and responsive metrics.
+- Rebuilt the example app theme, home catalog, product cards, and search-theming demo with `SuperMaterialThemeData`, `SuperDeviceMode`, and Super Core widgets.
+
+## [4.0.0]
 
 - Renamed the package to `super_pagination` and introduced the canonical
   `SuperPagination*` API aliases.
@@ -9,13 +53,6 @@
 - Refactored the example application into feature-first Clean Architecture
   modules with MVC controllers, application contracts, a composition root, and
   compatibility exports for all former example import paths.
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [3.5.0] - 2026-05-06
 

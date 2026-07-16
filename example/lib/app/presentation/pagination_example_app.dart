@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:super_core/super_core.dart';
 import 'package:super_pagination_example/app/controllers/app_theme_controller.dart';
 import 'package:super_pagination_example/app/routing/app_router.dart';
 import 'package:super_pagination_example/app/theme/app_theme.dart';
@@ -47,14 +48,20 @@ class PaginationExampleAppState extends State<PaginationExampleApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      key: PaginationExampleApp.appKey,
-      routerConfig: appRouter,
-      title: 'SuperPagination Examples',
-      debugShowCheckedModeBanner: false,
-      themeMode: _themeController.themeMode,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final mode = SuperDeviceMode.forWidth(constraints.maxWidth);
+        return MaterialApp.router(
+          routerConfig: appRouter,
+          title: 'SuperPagination Examples',
+          debugShowCheckedModeBanner: false,
+          themeMode: _themeController.themeMode,
+          theme: AppTheme.light(mode),
+          darkTheme: AppTheme.dark(mode),
+          themeAnimationDuration: SuperTokens.durExpand,
+          themeAnimationCurve: SuperTokens.curveStandard,
+        );
+      },
     );
   }
 }

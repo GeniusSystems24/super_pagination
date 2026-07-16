@@ -17,6 +17,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:super_core/super_core.dart';
 
 import '../../application/contracts/pagination_listeners.dart';
 import '../../application/contracts/pagination_provider.dart';
@@ -39,6 +40,8 @@ part 'controllers/pagination_listeners.dart';
 part 'controllers/pagination_controller_contract.dart';
 part 'controllers/smart_pagination_controller.dart';
 part 'controllers/scroll_to_message_mixin.dart';
+
+part 'views/theme/super_pagination_theme.dart';
 
 part 'views/smart_pagination_view.dart';
 part 'views/widgets/bottom_loader.dart';

@@ -5,8 +5,22 @@ class InitialLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Padding(
+          padding: superTheme.padding.card,
+          child: SizedBox.square(
+            dimension: 28,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: paginationTheme.loadingIndicatorColor,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

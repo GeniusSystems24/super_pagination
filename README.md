@@ -7,7 +7,7 @@
 
 [![pub package](https://img.shields.io/pub/v/super_pagination.svg)](https://pub.dev/packages/super_pagination)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Flutter](https://img.shields.io/badge/Flutter-3.9+-02569B?logo=flutter)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-3.32+-02569B?logo=flutter)](https://flutter.dev)
 [![Platform](https://img.shields.io/badge/Platform-All-blueviolet)](https://flutter.dev)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-View-success)](https://geniussystems24.github.io/super_pagination)
 
@@ -31,6 +31,36 @@ SuperPaginationListView.withProvider(
 - **Data Operations** - Insert, remove, update, replace, and refresh items with first/last/at targeting
 - **Auto Expiration** - Configurable data age for global cubits
 - **Load-More Safety** - Rapid scrolling can never trigger duplicate concurrent page requests; optional cross-page deduplication via `identityKey`
+
+## GeniusLink Design System
+
+`super_pagination` now consumes [`super_core`](https://github.com/GeniusSystems24/super_core) as its visual source of truth. Built-in loaders, empty states, error styles, search fields, overlays, focus states, radii, and spacing follow the active `SuperMaterialThemeData` automatically.
+
+```dart
+MaterialApp(
+  theme: SuperMaterialThemeData.light(
+    palette: SuperPalette.bluePalette,
+  ),
+  darkTheme: SuperMaterialThemeData.dark(
+    palette: SuperPalette.bluePalette,
+  ),
+);
+```
+
+No package-specific extension is required for the default appearance. `SuperSearchTheme.of(context)` and `SuperPaginationTheme.of(context)` derive their values from the ambient `SuperThemeData` and `ColorScheme`. Register either extension only when you need a focused override:
+
+```dart
+final base = SuperSearchTheme.light();
+
+SuperMaterialThemeData.light(
+  extensions: [
+    base.copyWith(searchBoxElevation: 0),
+    SuperPaginationTheme.light(),
+  ],
+);
+```
+
+The example application also uses the responsive `SuperDeviceMode` breakpoints and the shared `SuperCard`, `SectionHeader`, `StatusPill`, typography, spacing, radii, and semantic colors.
 
 ## Load-More Safety Behaviour
 
@@ -131,7 +161,7 @@ SuperPaginationListView<Product, SuperPaginationRequest>.withProvider(
 
 ```yaml
 dependencies:
-  super_pagination: ^4.0.0
+  super_pagination: ^4.1.3
 ```
 
 ```dart
@@ -911,33 +941,35 @@ cubit.jumpFirstWhere((item) => item.isUnread);
 
 ## Theming
 
-### Pagination Theme
-
-Use standard Flutter theming with custom loading/empty/error builders.
-
-### Search Theme
+Install `SuperMaterialThemeData` once. Pagination states and search surfaces then
+read the active GeniusLink palette, brightness, typography, spacing, radii, and
+responsive mode automatically.
 
 ```dart
 MaterialApp(
-  theme: ThemeData.light().copyWith(
-    extensions: [SuperSearchTheme.light()],
+  theme: SuperMaterialThemeData.light(
+    palette: SuperPalette.bluePalette,
   ),
-  darkTheme: ThemeData.dark().copyWith(
-    extensions: [SuperSearchTheme.dark()],
+  darkTheme: SuperMaterialThemeData.dark(
+    palette: SuperPalette.bluePalette,
   ),
 )
 ```
 
-Custom theme:
+Use the package extensions only for focused overrides. Their default factories
+are still generated from the same `super_core` palette:
 
 ```dart
-SuperSearchTheme(
-  searchBoxBackgroundColor: Colors.grey[100],
-  searchBoxBorderRadius: BorderRadius.circular(12),
-  overlayBackgroundColor: Colors.white,
-  overlayElevation: 8,
-  itemHoverColor: Colors.grey[100],
-  itemFocusedColor: Colors.blue.withValues(alpha:0.1),
+SuperMaterialThemeData.light(
+  palette: SuperPalette.greenPalette,
+  extensions: [
+    SuperSearchTheme.light(
+      palette: SuperPalette.greenPalette,
+    ).copyWith(searchBoxElevation: 0),
+    SuperPaginationTheme.light(
+      palette: SuperPalette.greenPalette,
+    ).copyWith(errorTitleColor: SuperTokens.danger),
+  ],
 )
 ```
 
@@ -949,7 +981,10 @@ The [example app](example/) preserves all existing demonstrations and typed
 routes while using a feature-first Clean Architecture layout. Application
 bootstrap, routing, theme control, domain entities, application contracts,
 infrastructure adapters, controllers, and views are separated explicitly.
-Legacy example paths remain available as compatibility exports.
+Legacy example paths remain available as compatibility exports. The application
+chrome is provided by `super_navigation_sidebar`: the same typed route tree
+adapts to expanded desktop navigation, a tablet rail, and a mobile drawer while
+`TypedShellRoute` keeps the nested navigator alive.
 
 ```bash
 cd example

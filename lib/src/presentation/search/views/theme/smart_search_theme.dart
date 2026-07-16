@@ -7,18 +7,17 @@ part of '../../search_feature.dart';
 ///
 /// ## Usage
 ///
-/// Add the theme extension to your app's theme:
+/// Install the shared GeniusLink Material theme and the search widgets derive
+/// their defaults automatically:
 ///
 /// ```dart
 /// MaterialApp(
-///   theme: ThemeData.light().copyWith(
-///     extensions: [SuperSearchTheme.light()],
-///   ),
-///   darkTheme: ThemeData.dark().copyWith(
-///     extensions: [SuperSearchTheme.dark()],
-///   ),
+///   theme: SuperMaterialThemeData.light(),
+///   darkTheme: SuperMaterialThemeData.dark(),
 /// )
 /// ```
+///
+/// Register a [SuperSearchTheme] extension only when a local override is needed.
 ///
 /// Or create a custom theme:
 ///
@@ -195,113 +194,100 @@ class SuperSearchTheme extends ThemeExtension<SuperSearchTheme> {
   // Factory Constructors
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Creates a light theme for SuperSearch widgets.
-  factory SuperSearchTheme.light() {
-    return SuperSearchTheme(
-      // Search Box
-      searchBoxBackgroundColor: Colors.white,
-      searchBoxTextColor: const Color(0xFF1F2937),
-      searchBoxHintColor: const Color(0xFF9CA3AF),
-      searchBoxBorderColor: const Color(0xFFE5E7EB),
-      searchBoxFocusedBorderColor: const Color(0xFF6366F1),
-      searchBoxIconColor: const Color(0xFF9CA3AF),
-      searchBoxCursorColor: const Color(0xFF6366F1),
-      searchBoxBorderRadius: BorderRadius.circular(12),
-      searchBoxElevation: 0,
-      searchBoxShadowColor: Colors.black.withValues(alpha: 0.05),
-
-      // Overlay
-      overlayBackgroundColor: Colors.white,
-      overlayBorderColor: const Color(0xFFE5E7EB),
-      overlayBorderRadius: BorderRadius.circular(12),
-      overlayElevation: 8,
-      overlayShadowColor: Colors.black.withValues(alpha: 0.1),
-
-      // Items
-      itemBackgroundColor: Colors.transparent,
-      itemHoverColor: const Color(0xFFF3F4F6),
-      itemFocusedColor: const Color(0xFFEEF2FF),
-      itemSelectedColor: const Color(0xFFE0E7FF),
-      itemTextColor: const Color(0xFF1F2937),
-      itemSubtitleColor: const Color(0xFF6B7280),
-      itemIconColor: const Color(0xFF6B7280),
-      itemDividerColor: const Color(0xFFF3F4F6),
-
-      // States
-      loadingIndicatorColor: const Color(0xFF6366F1),
-      emptyStateIconColor: const Color(0xFFD1D5DB),
-      emptyStateTextColor: const Color(0xFF9CA3AF),
-      errorIconColor: const Color(0xFFEF4444),
-      errorTextColor: const Color(0xFF6B7280),
-      errorButtonColor: const Color(0xFF6366F1),
-
-      // Scrollbar
-      scrollbarColor: const Color(0xFFD1D5DB),
-      scrollbarThickness: 6,
-      scrollbarRadius: const Radius.circular(3),
-    );
-  }
-
-  /// Creates a dark theme for SuperSearch widgets.
-  factory SuperSearchTheme.dark() {
-    return SuperSearchTheme(
-      // Search Box
-      searchBoxBackgroundColor: const Color(0xFF1F2937),
-      searchBoxTextColor: const Color(0xFFF9FAFB),
-      searchBoxHintColor: const Color(0xFF6B7280),
-      searchBoxBorderColor: const Color(0xFF374151),
-      searchBoxFocusedBorderColor: const Color(0xFF818CF8),
-      searchBoxIconColor: const Color(0xFF6B7280),
-      searchBoxCursorColor: const Color(0xFF818CF8),
-      searchBoxBorderRadius: BorderRadius.circular(12),
-      searchBoxElevation: 0,
-      searchBoxShadowColor: Colors.black.withValues(alpha: 0.2),
-
-      // Overlay
-      overlayBackgroundColor: const Color(0xFF1F2937),
-      overlayBorderColor: const Color(0xFF374151),
-      overlayBorderRadius: BorderRadius.circular(12),
-      overlayElevation: 8,
-      overlayShadowColor: Colors.black.withValues(alpha: 0.3),
-
-      // Items
-      itemBackgroundColor: Colors.transparent,
-      itemHoverColor: const Color(0xFF374151),
-      itemFocusedColor: const Color(0xFF312E81),
-      itemSelectedColor: const Color(0xFF3730A3),
-      itemTextColor: const Color(0xFFF9FAFB),
-      itemSubtitleColor: const Color(0xFF9CA3AF),
-      itemIconColor: const Color(0xFF9CA3AF),
-      itemDividerColor: const Color(0xFF374151),
-
-      // States
-      loadingIndicatorColor: const Color(0xFF818CF8),
-      emptyStateIconColor: const Color(0xFF4B5563),
-      emptyStateTextColor: const Color(0xFF6B7280),
-      errorIconColor: const Color(0xFFF87171),
-      errorTextColor: const Color(0xFF9CA3AF),
-      errorButtonColor: const Color(0xFF818CF8),
-
-      // Scrollbar
-      scrollbarColor: const Color(0xFF4B5563),
-      scrollbarThickness: 6,
-      scrollbarRadius: const Radius.circular(3),
-    );
-  }
-
-  /// Gets the SuperSearchTheme from the current context.
+  /// Creates search tokens from the shared GeniusLink design system.
   ///
-  /// Falls back to light or dark theme based on the system brightness
-  /// if no theme extension is found.
-  static SuperSearchTheme of(BuildContext context) {
-    final theme = Theme.of(context).extension<SuperSearchTheme>();
-    if (theme != null) return theme;
+  /// The resulting extension follows the active `super_core` surfaces, text
+  /// ramp, primary palette, semantic error color, radii, and overlay treatment.
+  factory SuperSearchTheme.geniusLink({
+    required SuperThemeData superTheme,
+    required ColorScheme colorScheme,
+  }) {
+    final selectedFill = Color.alphaBlend(
+      colorScheme.primary.withValues(alpha: 0.16),
+      superTheme.surface,
+    );
+    final focusedFill = Color.alphaBlend(
+      colorScheme.primary.withValues(alpha: 0.10),
+      superTheme.surface,
+    );
 
-    // Fall back to system theme based on brightness
-    final brightness = Theme.of(context).brightness;
-    return brightness == Brightness.dark
-        ? SuperSearchTheme.dark()
-        : SuperSearchTheme.light();
+    return SuperSearchTheme(
+      // Search box
+      searchBoxBackgroundColor: superTheme.inputBg,
+      searchBoxTextColor: superTheme.fg1,
+      searchBoxHintColor: superTheme.fg4,
+      searchBoxBorderColor: superTheme.border,
+      searchBoxFocusedBorderColor: colorScheme.primary,
+      searchBoxIconColor: superTheme.fg3,
+      searchBoxCursorColor: colorScheme.primary,
+      searchBoxBorderRadius:
+          BorderRadius.circular(SuperTokens.radiusControl),
+      searchBoxElevation: 0,
+      searchBoxShadowColor: Colors.transparent,
+
+      // Overlay
+      overlayBackgroundColor: superTheme.surface,
+      overlayBorderColor: superTheme.borderStrong,
+      overlayBorderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+      overlayElevation: 0,
+      overlayShadowColor: SuperThemeData.popShadow.first.color,
+
+      // Items
+      itemBackgroundColor: Colors.transparent,
+      itemHoverColor: superTheme.hover,
+      itemFocusedColor: focusedFill,
+      itemSelectedColor: selectedFill,
+      itemTextColor: superTheme.fg1,
+      itemSubtitleColor: superTheme.fg3,
+      itemIconColor: superTheme.fg3,
+      itemDividerColor: superTheme.border,
+
+      // States
+      loadingIndicatorColor: colorScheme.primary,
+      emptyStateIconColor: superTheme.fg4,
+      emptyStateTextColor: superTheme.fg3,
+      errorIconColor: colorScheme.error,
+      errorTextColor: superTheme.fg3,
+      errorButtonColor: colorScheme.primary,
+
+      // Scrollbar
+      scrollbarColor: superTheme.borderStrong,
+      scrollbarThickness: 6,
+      scrollbarRadius: const Radius.circular(SuperTokens.radiusControl),
+    );
+  }
+
+  /// Creates the default GeniusLink light search theme.
+  factory SuperSearchTheme.light({
+    SuperPalette palette = SuperPalette.bluePalette,
+  }) {
+    return SuperSearchTheme.geniusLink(
+      superTheme: SuperThemeData.light,
+      colorScheme: palette.toLightColorScheme(),
+    );
+  }
+
+  /// Creates the default GeniusLink dark search theme.
+  factory SuperSearchTheme.dark({
+    SuperPalette palette = SuperPalette.bluePalette,
+  }) {
+    return SuperSearchTheme.geniusLink(
+      superTheme: SuperThemeData.dark,
+      colorScheme: palette.toDarkColorScheme(),
+    );
+  }
+
+  /// Gets the [SuperSearchTheme] from the current context.
+  ///
+  /// When no explicit override is registered, values are derived from the
+  /// ambient [SuperMaterialThemeData] / [SuperThemeData] automatically.
+  static SuperSearchTheme of(BuildContext context) {
+    final materialTheme = Theme.of(context);
+    return materialTheme.extension<SuperSearchTheme>() ??
+        SuperSearchTheme.geniusLink(
+          superTheme: SuperThemeData.of(context),
+          colorScheme: materialTheme.colorScheme,
+        );
   }
 
   /// Gets the SuperSearchTheme from the current context, or null if not found.

@@ -499,7 +499,7 @@ class _DefaultSelectedItemDisplay<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(12);
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
 
     return Material(
       color: Colors.transparent,
@@ -508,10 +508,10 @@ class _DefaultSelectedItemDisplay<T> extends StatelessWidget {
         borderRadius: effectiveBorderRadius,
         child: Container(
           decoration: BoxDecoration(
-            color: backgroundColor ?? Theme.of(context).cardColor,
+            color: backgroundColor ?? SuperThemeData.of(context).surface,
             borderRadius: effectiveBorderRadius,
             border: Border.all(
-              color: borderColor ?? Colors.grey[300]!,
+              color: borderColor ?? SuperThemeData.of(context).border,
             ),
           ),
           child: Row(
@@ -524,7 +524,7 @@ class _DefaultSelectedItemDisplay<T> extends StatelessWidget {
                 child: Icon(
                   Icons.close,
                   size: 20,
-                  color: iconColor ?? Colors.grey[600],
+                  color: iconColor ?? SuperThemeData.of(context).fg3,
                 ),
               ),
             ],
@@ -555,7 +555,7 @@ class _DefaultPendingKeyDisplay<K> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(12);
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
 
     return Material(
       color: Colors.transparent,
@@ -564,10 +564,10 @@ class _DefaultPendingKeyDisplay<K> extends StatelessWidget {
         borderRadius: effectiveBorderRadius,
         child: Container(
           decoration: BoxDecoration(
-            color: backgroundColor ?? Theme.of(context).cardColor,
+            color: backgroundColor ?? SuperThemeData.of(context).surface,
             borderRadius: effectiveBorderRadius,
             border: Border.all(
-              color: borderColor ?? Colors.grey[300]!,
+              color: borderColor ?? SuperThemeData.of(context).border,
             ),
           ),
           child: Row(
@@ -607,7 +607,7 @@ class _DefaultPendingKeyDisplay<K> extends StatelessWidget {
                 child: Icon(
                   Icons.close,
                   size: 20,
-                  color: iconColor ?? Colors.grey[600],
+                  color: iconColor ?? SuperThemeData.of(context).fg3,
                 ),
               ),
             ],

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_core/super_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:super_pagination_example/app/controllers/app_theme_controller.dart';
+import 'package:super_pagination_example/app/routing/app_router.dart';
 import 'package:super_pagination_example/app/routing/app_routes.dart';
-
 import 'package:super_pagination_example/features/home/presentation/controllers/home_controller.dart';
 import 'package:super_pagination_example/features/home/presentation/models/example_catalog.dart';
 
-import '../../../../app/routing/app_router.dart';
-
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.initialIndex});
-  final int? initialIndex;
+  const HomeScreen({super.key, this.initialIndex = 0});
+
+  final int initialIndex;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late final TabController _tabController;
+class _HomeScreenState extends State<HomeScreen> {
   final HomeController _controller = HomeController();
 
   final List<ExampleCategory> _categories = [
@@ -31,49 +31,49 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Basic ListView',
           description: 'Simple paginated ListView with products',
           icon: Icons.list_alt_rounded,
-          color: Color(0xFF6366F1),
+          color: SuperTokens.accent,
           route: AppRoutes.basicListView,
         ),
         ExampleItem(
           title: 'GridView',
           description: 'Paginated GridView with product cards',
           icon: Icons.grid_view_rounded,
-          color: Color(0xFF10B981),
+          color: SuperTokens.success,
           route: AppRoutes.gridView,
         ),
         ExampleItem(
           title: 'Column Layout',
           description: 'Non-scrollable column inside scroll view',
           icon: Icons.view_agenda_rounded,
-          color: Color(0xFF14B8A6),
+          color: SuperTokens.success,
           route: AppRoutes.columnLayout,
         ),
         ExampleItem(
           title: 'Row Layout',
           description: 'Non-scrollable row inside scroll view',
           icon: Icons.view_week_rounded,
-          color: Color(0xFFEC4899),
+          color: SuperTokens.danger,
           route: AppRoutes.rowLayout,
         ),
         ExampleItem(
           title: 'Pull to Refresh',
           description: 'Swipe down to refresh content',
           icon: Icons.refresh_rounded,
-          color: Color(0xFFF59E0B),
+          color: SuperTokens.warning,
           route: AppRoutes.pullToRefresh,
         ),
         ExampleItem(
           title: 'Filter & Search',
           description: 'Paginated list with filtering',
           icon: Icons.filter_list_rounded,
-          color: Color(0xFF8B5CF6),
+          color: SuperTokens.accent,
           route: AppRoutes.filterSearch,
         ),
         ExampleItem(
           title: 'Retry Mechanism',
           description: 'Auto-retry with exponential backoff',
           icon: Icons.replay_rounded,
-          color: Color(0xFFF97316),
+          color: SuperTokens.warning,
           route: AppRoutes.retryMechanism,
         ),
       ],
@@ -87,42 +87,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Single Stream',
           description: 'Real-time updates from single stream',
           icon: Icons.bolt_rounded,
-          color: Color(0xFF06B6D4),
+          color: SuperTokens.accent,
           route: AppRoutes.singleStream,
         ),
         ExampleItem(
           title: 'Multi Stream',
           description: 'Multiple streams with different rates',
           icon: Icons.cable_rounded,
-          color: Color(0xFF4F46E5),
+          color: SuperTokens.accent,
           route: AppRoutes.multiStream,
         ),
         ExampleItem(
           title: 'Merged Streams',
           description: 'Merge streams into one unified stream',
           icon: Icons.merge_rounded,
-          color: Color(0xFF7C3AED),
+          color: SuperTokens.accent,
           route: AppRoutes.mergedStreams,
         ),
         ExampleItem(
           title: 'Stream Accumulation',
           description: 'Each page keeps its own live subscription',
           icon: Icons.layers_rounded,
-          color: Color(0xFF0D9488),
+          color: SuperTokens.success,
           route: AppRoutes.streamAccumulation,
         ),
         ExampleItem(
           title: 'Per-Page Error',
           description: 'state.pageErrors isolates failing streams',
           icon: Icons.error_outline_rounded,
-          color: Color(0xFFEF4444),
+          color: SuperTokens.danger,
           route: AppRoutes.perPageError,
         ),
         ExampleItem(
           title: 'Dynamic End-of-Pagination',
           description: 'End re-evaluated when page count changes',
           icon: Icons.dynamic_form_rounded,
-          color: Color(0xFFF59E0B),
+          color: SuperTokens.warning,
           route: AppRoutes.dynamicEndOfPagination,
         ),
       ],
@@ -136,112 +136,112 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Chat Example',
           description: 'Scroll navigation with chat UI',
           icon: Icons.chat_bubble_rounded,
-          color: Color(0xFF06B6D4),
+          color: SuperTokens.accent,
           route: AppRoutes.chat,
         ),
         ExampleItem(
           title: 'Cursor Pagination',
           description: 'Cursor-based pagination for real-time',
           icon: Icons.navigate_next_rounded,
-          color: Color(0xFF0D9488),
+          color: SuperTokens.success,
           route: AppRoutes.cursorPagination,
         ),
         ExampleItem(
           title: 'Horizontal Scroll',
           description: 'Horizontal scrolling with pagination',
           icon: Icons.swap_horiz_rounded,
-          color: Color(0xFFEA580C),
+          color: SuperTokens.warning,
           route: AppRoutes.horizontalScroll,
         ),
         ExampleItem(
           title: 'PageView',
           description: 'Swipeable pages with auto pagination',
           icon: Icons.auto_stories_rounded,
-          color: Color(0xFFDB2777),
+          color: SuperTokens.danger,
           route: AppRoutes.pageView,
         ),
         ExampleItem(
           title: 'Staggered Grid',
           description: 'Pinterest-like masonry layout',
           icon: Icons.dashboard_rounded,
-          color: Color(0xFF7C3AED),
+          color: SuperTokens.accent,
           route: AppRoutes.staggeredGrid,
         ),
         ExampleItem(
           title: 'Custom States',
           description: 'Custom loading, empty, error states',
           icon: Icons.palette_rounded,
-          color: Color(0xFF64748B),
+          color: SuperTokens.accent,
           route: AppRoutes.customStates,
         ),
         ExampleItem(
           title: 'Scroll Control',
           description: 'Programmatic scrolling to items',
           icon: Icons.open_in_full_rounded,
-          color: Color(0xFF4F46E5),
+          color: SuperTokens.accent,
           route: AppRoutes.scrollControl,
         ),
         ExampleItem(
           title: 'beforeBuild Hook',
           description: 'Execute logic before rendering',
           icon: Icons.code_rounded,
-          color: Color(0xFF78350F),
+          color: SuperTokens.warning,
           route: AppRoutes.beforeBuildHook,
         ),
         ExampleItem(
           title: 'hasReachedEnd',
           description: 'Detect when pagination ends',
           icon: Icons.check_circle_rounded,
-          color: Color(0xFFF97316),
+          color: SuperTokens.warning,
           route: AppRoutes.hasReachedEnd,
         ),
         ExampleItem(
           title: 'Custom View Builder',
           description: 'Complete control with custom builder',
           icon: Icons.construction_rounded,
-          color: Color(0xFF14B8A6),
+          color: SuperTokens.success,
           route: AppRoutes.customViewBuilder,
         ),
         ExampleItem(
           title: 'Reorderable List',
           description: 'Drag and drop to reorder items',
           icon: Icons.drag_indicator_rounded,
-          color: Color(0xFF8B5CF6),
+          color: SuperTokens.accent,
           route: AppRoutes.reorderableList,
         ),
         ExampleItem(
           title: 'State Separation',
           description: 'Different UI for page states',
           icon: Icons.call_split_rounded,
-          color: Color(0xFF4F46E5),
+          color: SuperTokens.accent,
           route: AppRoutes.stateSeparation,
         ),
         ExampleItem(
           title: 'Super Preloading',
           description: 'Load items before reaching end',
           icon: Icons.speed_rounded,
-          color: Color(0xFF7C3AED),
+          color: SuperTokens.accent,
           route: AppRoutes.smartPreloading,
         ),
         ExampleItem(
           title: 'Data Operations',
           description: 'Add, remove, update, clear items',
           icon: Icons.data_object_rounded,
-          color: Color(0xFF06B6D4),
+          color: SuperTokens.accent,
           route: AppRoutes.dataOperations,
         ),
         ExampleItem(
           title: 'Data Age & Expiration',
           description: 'Auto-refresh after expiration',
           icon: Icons.timer_rounded,
-          color: Color(0xFFEA580C),
+          color: SuperTokens.warning,
           route: AppRoutes.dataAge,
         ),
         ExampleItem(
           title: 'Sorting & Orders',
           description: 'Programmatic sorting with orders',
           icon: Icons.sort_rounded,
-          color: Color(0xFF4F46E5),
+          color: SuperTokens.accent,
           route: AppRoutes.sorting,
         ),
       ],
@@ -255,77 +255,77 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Search Dropdown',
           description: 'Search with auto-positioning overlay',
           icon: Icons.search_rounded,
-          color: Color(0xFF7C3AED),
+          color: SuperTokens.accent,
           route: AppRoutes.searchDropdown,
         ),
         ExampleItem(
           title: 'Multi-Select Search',
           description: 'Search and select multiple items',
           icon: Icons.checklist_rounded,
-          color: Color(0xFFDC2626),
+          color: SuperTokens.danger,
           route: AppRoutes.multiSelectSearch,
         ),
         ExampleItem(
           title: 'Bottom Sheet Search',
           description: 'Fullscreen bottom sheet mode',
           icon: Icons.vertical_align_bottom_rounded,
-          color: Color(0xFF0891B2),
+          color: SuperTokens.accent,
           route: AppRoutes.bottomSheetSearch,
         ),
         ExampleItem(
           title: 'Form Validation',
           description: 'Search with validators & formatters',
           icon: Icons.fact_check_rounded,
-          color: Color(0xFF059669),
+          color: SuperTokens.success,
           route: AppRoutes.formValidation,
         ),
         ExampleItem(
           title: 'Keyboard Navigation',
           description: 'Arrow keys, Enter, Escape shortcuts',
           icon: Icons.keyboard_rounded,
-          color: Color(0xFF2563EB),
+          color: SuperTokens.accent,
           route: AppRoutes.keyboardNavigation,
         ),
         ExampleItem(
           title: 'Search Theming',
           description: 'Light, dark & custom themes',
           icon: Icons.palette_rounded,
-          color: Color(0xFFEC4899),
+          color: SuperTokens.danger,
           route: AppRoutes.searchTheming,
         ),
         ExampleItem(
           title: 'Async States',
           description: 'Loading, empty & error states',
           icon: Icons.hourglass_empty_rounded,
-          color: Color(0xFFF59E0B),
+          color: SuperTokens.warning,
           route: AppRoutes.asyncStates,
         ),
         ExampleItem(
           title: 'Overlay Animations',
           description: '13 animation types & overlay values',
           icon: Icons.animation_rounded,
-          color: Color(0xFF8B5CF6),
+          color: SuperTokens.accent,
           route: AppRoutes.overlayAnimations,
         ),
         ExampleItem(
           title: 'Key-Based Selection',
           description: 'Select by key/ID instead of object',
           icon: Icons.key_rounded,
-          color: Color(0xFF14B8A6),
+          color: SuperTokens.success,
           route: AppRoutes.keyBasedSelection,
         ),
         ExampleItem(
           title: 'Initial Selection',
           description: 'Pre-populate with initial values',
           icon: Icons.playlist_add_check_rounded,
-          color: Color(0xFFEA580C),
+          color: SuperTokens.warning,
           route: AppRoutes.initialSelection,
         ),
         ExampleItem(
           title: 'Realistic Examples',
           description: 'E-commerce, team, country, tags',
           icon: Icons.auto_awesome_rounded,
-          color: Color(0xFF6366F1),
+          color: SuperTokens.accent,
           route: AppRoutes.realisticSearchExamples,
         ),
       ],
@@ -339,49 +339,49 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Basic Error Handling',
           description: 'Simple error display with retry',
           icon: Icons.error_outline_rounded,
-          color: Color(0xFFEF4444),
+          color: SuperTokens.danger,
           route: AppRoutes.basicError,
         ),
         ExampleItem(
           title: 'Network Errors',
           description: 'Timeout, 404, 500 error types',
           icon: Icons.wifi_off_rounded,
-          color: Color(0xFFF97316),
+          color: SuperTokens.warning,
           route: AppRoutes.networkErrors,
         ),
         ExampleItem(
           title: 'Retry Patterns',
           description: 'Auto, exponential, limited retries',
           icon: Icons.autorenew_rounded,
-          color: Color(0xFF3B82F6),
+          color: SuperTokens.accent,
           route: AppRoutes.retryPatterns,
         ),
         ExampleItem(
           title: 'Custom Error Widgets',
           description: 'Pre-built error widget styles',
           icon: Icons.widgets_rounded,
-          color: Color(0xFF8B5CF6),
+          color: SuperTokens.accent,
           route: AppRoutes.customErrorWidgets,
         ),
         ExampleItem(
           title: 'Error Recovery',
           description: 'Cached data, fallback strategies',
           icon: Icons.healing_rounded,
-          color: Color(0xFF10B981),
+          color: SuperTokens.success,
           route: AppRoutes.errorRecovery,
         ),
         ExampleItem(
           title: 'Graceful Degradation',
           description: 'Offline mode, placeholders',
           icon: Icons.layers_clear_rounded,
-          color: Color(0xFFF59E0B),
+          color: SuperTokens.warning,
           route: AppRoutes.gracefulDegradation,
         ),
         ExampleItem(
           title: 'Load More Errors',
           description: 'Handle errors loading more pages',
           icon: Icons.expand_more_rounded,
-          color: Color(0xFF4F46E5),
+          color: SuperTokens.accent,
           route: AppRoutes.loadMoreErrors,
         ),
       ],
@@ -395,69 +395,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           title: 'Firestore Pagination',
           description: 'Cursor-based Firestore queries',
           icon: Icons.storage_rounded,
-          color: Color(0xFFFF9800),
+          color: SuperTokens.warning,
           route: AppRoutes.firestorePagination,
         ),
         ExampleItem(
           title: 'Firestore Real-time',
           description: 'Live data with snapshots',
           icon: Icons.sync_rounded,
-          color: Color(0xFF4CAF50),
+          color: SuperTokens.success,
           route: AppRoutes.firestoreRealtime,
         ),
         ExampleItem(
           title: 'Firestore Search',
           description: 'Search with array-contains',
           icon: Icons.manage_search_rounded,
-          color: Color(0xFF2196F3),
+          color: SuperTokens.accent,
           route: AppRoutes.firestoreSearch,
         ),
         ExampleItem(
           title: 'Realtime Database',
           description: 'Firebase RTDB pagination',
           icon: Icons.data_object_rounded,
-          color: Color(0xFFFFCA28),
+          color: SuperTokens.warning,
           route: AppRoutes.realtimeDatabase,
         ),
         ExampleItem(
           title: 'Firestore Filters',
           description: 'Advanced composite queries',
           icon: Icons.filter_alt_rounded,
-          color: Color(0xFF9C27B0),
+          color: SuperTokens.accent,
           route: AppRoutes.firestoreFilters,
         ),
         ExampleItem(
           title: 'Offline Support',
           description: 'Cache & offline persistence',
           icon: Icons.cloud_off_rounded,
-          color: Color(0xFF607D8B),
+          color: SuperTokens.accent,
           route: AppRoutes.offlineSupport,
         ),
         ExampleItem(
           title: 'Seed Data Manager',
           description: 'Populate Firebase with demo data',
           icon: Icons.dataset_rounded,
-          color: Color(0xFF00BCD4),
+          color: SuperTokens.accent,
           route: AppRoutes.seedData,
         ),
       ],
     ),
   ];
 
+  int get _selectedIndex {
+    if (widget.initialIndex < 0) return 0;
+    if (widget.initialIndex >= _categories.length) return _categories.length - 1;
+    return widget.initialIndex;
+  }
+
+  ExampleCategory get _activeCategory => _categories[_selectedIndex];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-      length: _categories.length,
-      vsync: this,
-      initialIndex: widget.initialIndex ?? 0,
-    );
     _controller.addListener(_onControllerChanged);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     _controller
       ..removeListener(_onControllerChanged)
       ..dispose();
@@ -468,399 +470,664 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (mounted) setState(() {});
   }
 
-  List<ExampleItem> _getFilteredItems(ExampleCategory category) =>
-      _controller.filterItems(category);
-
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryGradient = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+    final t = SuperThemeData.of(context);
+    final category = _activeCategory;
+    final items = _controller.filterItems(category);
+    final allExamples = _categories.fold<int>(
+      0,
+      (total, entry) => total + entry.items.length,
     );
 
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              expandedHeight: 180,
-              floating: false,
-              pinned: true,
-              elevation: 0,
-              backgroundColor: Color(0xFF6366F1),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: BoxDecoration(gradient: primaryGradient),
-                  child: SafeArea(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 16, 20, 80),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Icon(
-                                  Icons.auto_awesome_rounded,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                              SizedBox(width: 12),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Super Pagination',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Examples & Demos',
-                                        style: TextStyle(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.8,
-                                          ),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          // open package pub.dev link
-                                          launchUrl(Uri.parse(
-                                              'https://pub.dev/packages/super_pagination'));
-                                        },
-                                        child: Text(
-                                          'Flutter Package',
-                                          style: TextStyle(
-                                            color: Colors.white.withValues(
-                                              alpha: 0.8,
-                                            ),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+      backgroundColor: t.bg,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _PageFrame(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: t.spacing.lg,
+                  bottom: t.spacing.section,
+                ),
+                child: _HeroPanel(
+                  category: category,
+                  categoryCount: category.items.length,
+                  allExamples: allExamples,
                 ),
               ),
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(60),
-                child: Container(
-                  height: 60,
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
-                  decoration: BoxDecoration(gradient: primaryGradient),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _controller.searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search examples...',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: Colors.grey[400],
-                        ),
-                        suffixIcon: _controller.searchQuery.isNotEmpty
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.close_rounded,
-                                  color: Colors.grey[400],
-                                ),
-                                onPressed: () => _controller.clearSearch(),
-                              )
-                            : null,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _PageFrame(
+              child: _CategorySwitcher(
+                categories: _categories,
+                selectedIndex: _selectedIndex,
+                onSelected: _navigateToCategory,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _PageFrame(
+              child: Padding(
+                padding: EdgeInsets.only(top: t.spacing.lg),
+                child: _DashboardStats(
+                  allExamples: allExamples,
+                  categoryExamples: category.items.length,
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _PageFrame(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: t.spacing.xl,
+                  bottom: t.spacing.lg,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: SectionHeader(
+                        title: category.title,
+                        subtitle: category.subtitle,
+                        marker: _markerFor(_selectedIndex),
+                        trailing: StatusPill(
+                          '${items.length} demos',
+                          tone: PillTone.accent,
                         ),
                       ),
                     ),
+                    if (!t.mode.isMobile) ...[
+                      SizedBox(width: t.spacing.lg),
+                      SizedBox(
+                        width: 320,
+                        child: _SearchField(controller: _controller),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (t.mode.isMobile)
+            SliverToBoxAdapter(
+              child: _PageFrame(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: t.spacing.lg),
+                  child: _SearchField(controller: _controller),
+                ),
+              ),
+            ),
+          if (items.isEmpty)
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: _EmptyState(onClear: _controller.clearSearch),
+            )
+          else
+            SliverToBoxAdapter(
+              child: _PageFrame(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: t.padding.page.bottom + t.spacing.xl,
+                  ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final columns = constraints.maxWidth >= 1050
+                          ? 3
+                          : constraints.maxWidth >= 680
+                              ? 2
+                              : 1;
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: items.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: columns,
+                          crossAxisSpacing: t.spacing.lg,
+                          mainAxisSpacing: t.spacing.lg,
+                          mainAxisExtent: _ExampleCard.extent,
+                        ),
+                        itemBuilder: (context, index) =>
+                            _ExampleCard(item: items[index]),
+                      );
+                    },
                   ),
                 ),
               ),
             ),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _TabBarDelegate(
-                tabBar: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.start,
-                  labelColor: Color(0xFF6366F1),
-                  unselectedLabelColor: Colors.grey[600],
-                  indicatorColor: Color(0xFF6366F1),
-                  indicatorWeight: 3,
-                  labelStyle: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                  onTap: (value) {
-                    Future.delayed(Duration(milliseconds: 400), () {
-                      // Categories order: 0-Basic, 1-Streams, 2-Advanced, 3-Search, 4-Errors, 5-Firebase
-                      switch (value) {
-                        case 0:
-                          const BasicRoute().go(context);
-                          break;
-                        case 1:
-                          const StreamRoute().go(context);
-                          break;
-                        case 2:
-                          const AdvancedRoute().go(context);
-                          break;
-                        case 3:
-                          const SearchRoute().go(context);
-                          break;
-                        case 4:
-                          const ErrorRoute().go(context);
-                          break;
-                        case 5:
-                          const FirebaseRoute().go(context);
-                          break;
-                      }
-                    });
-                  },
-                  tabs: _categories.map((category) {
-                    return Tab(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(category.icon, size: 18),
-                          SizedBox(width: 8),
-                          Text(category.title),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ),
-                isDark: isDark,
-              ),
-            ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: _categories.map((category) {
-            final items = _getFilteredItems(category);
-            if (items.isEmpty) {
-              return _buildEmptyState();
-            }
-            return _buildCategoryContent(category, items);
-          }).toList(),
+        ],
+      ),
+    );
+  }
+
+  void _navigateToCategory(int index) {
+    switch (index) {
+      case 0:
+        const BasicRoute().go(context);
+        return;
+      case 1:
+        const StreamRoute().go(context);
+        return;
+      case 2:
+        const AdvancedRoute().go(context);
+        return;
+      case 3:
+        const SearchRoute().go(context);
+        return;
+      case 4:
+        const ErrorRoute().go(context);
+        return;
+      case 5:
+        const FirebaseRoute().go(context);
+        return;
+    }
+  }
+
+  static SuperMarker _markerFor(int index) => switch (index % 3) {
+        1 => SuperMarker.ledger,
+        2 => SuperMarker.notes,
+        _ => SuperMarker.identity,
+      };
+}
+
+class _PageFrame extends StatelessWidget {
+  const _PageFrame({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: t.padding.page.left),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1280),
+          child: child,
         ),
       ),
     );
   }
+}
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+class _HeroPanel extends StatelessWidget {
+  const _HeroPanel({
+    required this.category,
+    required this.categoryCount,
+    required this.allExamples,
+  });
+
+  final ExampleCategory category;
+  final int categoryCount;
+  final int allExamples;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    final cs = Theme.of(context).colorScheme;
+
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: t.surface,
+        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        border: Border.all(color: t.border),
+        boxShadow: t.cardShadow,
+      ),
+      child: Stack(
         children: [
-          Icon(Icons.search_off_rounded, size: 64, color: Colors.grey[300]),
-          SizedBox(height: 16),
-          Text(
-            'No examples found',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[600],
+          PositionedDirectional(
+            end: -80,
+            top: -130,
+            child: Container(
+              width: 320,
+              height: 320,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: cs.primary.withValues(alpha: 0.10),
+              ),
             ),
           ),
-          SizedBox(height: 8),
-          Text(
-            'Try a different search term',
-            style: TextStyle(fontSize: 14, color: Colors.grey[400]),
+          PositionedDirectional(
+            end: 120,
+            bottom: -110,
+            child: Container(
+              width: 220,
+              height: 220,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: SuperTokens.success.withValues(alpha: 0.07),
+              ),
+            ),
+          ),
+          Padding(
+            padding: t.mode.isMobile
+                ? const EdgeInsets.all(20)
+                : const EdgeInsets.all(32),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final stack = constraints.maxWidth < 760;
+                final introduction = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: SuperTokens.markerWidth,
+                          height: SuperTokens.markerHeight,
+                          decoration: BoxDecoration(
+                            color: cs.primary,
+                            borderRadius: BorderRadius.circular(
+                              SuperTokens.radiusPill,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: t.spacing.md),
+                        StatusPill(
+                          'GeniusLink design system',
+                          tone: PillTone.accent,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: t.spacing.lg),
+                    Text(
+                      'Explore pagination\nwithout the boilerplate.',
+                      style: SuperText.h1.copyWith(
+                        color: t.fg1,
+                        fontSize: t.mode.isMobile ? 30 : 40,
+                        height: 1.08,
+                      ),
+                    ),
+                    SizedBox(height: t.spacing.md),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 640),
+                      child: Text(
+                        'A focused gallery of production-ready pagination, streaming, search, error recovery, and Firebase patterns.',
+                        style: SuperText.body.copyWith(
+                          color: t.fg3,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: t.spacing.lg),
+                    Wrap(
+                      spacing: t.spacing.sm,
+                      runSpacing: t.spacing.sm,
+                      children: [
+                        FilledButton.icon(
+                          onPressed: () => launchUrl(
+                            Uri.parse(
+                              'https://pub.dev/packages/super_pagination',
+                            ),
+                            mode: LaunchMode.externalApplication,
+                          ),
+                          icon: const Icon(Icons.open_in_new_rounded, size: 18),
+                          label: const Text('View package'),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: AppThemeController.instance.toggleTheme,
+                          icon: Icon(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Icons.light_mode_outlined
+                                : Icons.dark_mode_outlined,
+                            size: 18,
+                          ),
+                          label: const Text('Toggle theme'),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+                final snapshot = _CategorySnapshot(
+                  category: category,
+                  categoryCount: categoryCount,
+                  allExamples: allExamples,
+                );
+                if (stack) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      introduction,
+                      SizedBox(height: t.spacing.xl),
+                      snapshot,
+                    ],
+                  );
+                }
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(flex: 3, child: introduction),
+                    SizedBox(width: t.spacing.xl),
+                    Expanded(flex: 2, child: snapshot),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildCategoryContent(
-    ExampleCategory category,
-    List<ExampleItem> items,
-  ) {
-    return ListView.builder(
-      padding: EdgeInsets.all(16),
-      itemCount: items.length + 1,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF6366F1).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    category.icon,
-                    color: Color(0xFF6366F1),
-                    size: 20,
-                  ),
-                ),
-                SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      category.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    Text(
-                      category.subtitle,
-                      style: TextStyle(fontSize: 13, color: Colors.grey[500]),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${items.length} examples',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-              ],
+class _CategorySnapshot extends StatelessWidget {
+  const _CategorySnapshot({
+    required this.category,
+    required this.categoryCount,
+    required this.allExamples,
+  });
+
+  final ExampleCategory category;
+  final int categoryCount;
+  final int allExamples;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      padding: t.padding.card,
+      decoration: BoxDecoration(
+        color: t.bg.withValues(alpha: 0.88),
+        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        border: Border.all(color: t.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: t.selectionFill(0.12),
+              borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
             ),
+            child: Icon(category.icon, color: cs.primary),
+          ),
+          SizedBox(height: t.spacing.lg),
+          Text(category.title, style: SuperText.heading.copyWith(color: t.fg1)),
+          SizedBox(height: t.spacing.xs),
+          Text(category.subtitle, style: SuperText.body.copyWith(color: t.fg3)),
+          SizedBox(height: t.spacing.lg),
+          Hairline(color: t.border),
+          SizedBox(height: t.spacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: _SnapshotValue(label: 'IN SECTION', value: '$categoryCount'),
+              ),
+              Expanded(
+                child: _SnapshotValue(label: 'TOTAL DEMOS', value: '$allExamples'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SnapshotValue extends StatelessWidget {
+  const _SnapshotValue({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: SuperText.label.copyWith(color: t.fg4)),
+        SizedBox(height: t.spacing.xs),
+        Text(value, style: SuperText.mono.copyWith(color: t.fg1, fontSize: 22)),
+      ],
+    );
+  }
+}
+
+class _CategorySwitcher extends StatelessWidget {
+  const _CategorySwitcher({
+    required this.categories,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  final List<ExampleCategory> categories;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    return SizedBox(
+      height: 46,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        separatorBuilder: (_, __) => SizedBox(width: t.spacing.sm),
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          return ChoiceChip(
+            selected: selectedIndex == index,
+            onSelected: (_) => onSelected(index),
+            avatar: Icon(category.icon, size: 17),
+            label: Text(category.title),
           );
-        }
-        return _buildExampleCard(context, items[index - 1]);
+        },
+      ),
+    );
+  }
+}
+
+class _DashboardStats extends StatelessWidget {
+  const _DashboardStats({
+    required this.allExamples,
+    required this.categoryExamples,
+  });
+
+  final int allExamples;
+  final int categoryExamples;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    final stats = [
+      _StatData('All examples', '$allExamples', Icons.dashboard_outlined),
+      _StatData('Current section', '$categoryExamples', Icons.view_module_outlined),
+      const _StatData('Responsive modes', '3', Icons.devices_rounded),
+      const _StatData('Routing', 'Typed', Icons.route_rounded),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth >= 900
+            ? 4
+            : constraints.maxWidth >= 520
+                ? 2
+                : 1;
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: stats.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            crossAxisSpacing: t.spacing.md,
+            mainAxisSpacing: t.spacing.md,
+            mainAxisExtent: 92,
+          ),
+          itemBuilder: (context, index) => _StatCard(data: stats[index]),
+        );
       },
     );
   }
+}
 
-  Widget _buildExampleCard(BuildContext context, ExampleItem item) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: Offset(0, 4),
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.data});
+
+  final _StatData data;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    final cs = Theme.of(context).colorScheme;
+    return SuperCard(
+      padding: EdgeInsets.all(t.spacing.md),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: t.selectionFill(0.08),
+              borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            ),
+            child: Icon(data.icon, color: cs.primary, size: 20),
+          ),
+          SizedBox(width: t.spacing.md),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(data.value, style: SuperText.heading.copyWith(color: t.fg1)),
+                SizedBox(height: t.spacing.xs),
+                Text(data.label, style: SuperText.caption.copyWith(color: t.fg3)),
+              ],
+            ),
           ),
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          onTap: () => context.go(item.route),
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [item.color, item.color.withValues(alpha: 0.7)],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: item.color.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Icon(item.icon, color: Colors.white, size: 24),
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.controller});
+
+  final HomeController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller.searchController,
+      decoration: InputDecoration(
+        hintText: 'Search this section…',
+        prefixIcon: const Icon(Icons.search_rounded),
+        suffixIcon: controller.searchQuery.isEmpty
+            ? null
+            : IconButton(
+                tooltip: 'Clear search',
+                onPressed: controller.clearSearch,
+                icon: const Icon(Icons.close_rounded),
+              ),
+      ),
+    );
+  }
+}
+
+class _ExampleCard extends StatelessWidget {
+  const _ExampleCard({required this.item});
+
+  /// Fixed grid extent with enough room for desktop spacing and three
+  /// description lines. The card content itself deliberately contains no
+  /// vertical flex because [SuperCard] shrink-wraps its child column.
+  static const double extent = 252;
+
+  final ExampleItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    return SuperCard(
+      onTap: () => context.go(item.route),
+      padding: EdgeInsets.all(t.spacing.lg),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: t.tintFill(item.color, 0.14),
+                  borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
                 ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.title,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        item.description,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[500],
-                          height: 1.3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 8),
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 14,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ],
+                child: Icon(item.icon, color: item.color, size: 21),
+              ),
+              const Spacer(),
+              const StatusPill('Demo', tone: PillTone.neutral),
+            ],
+          ),
+          SizedBox(height: t.spacing.lg),
+          Text(
+            item.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: SuperText.heading.copyWith(color: t.fg1),
+          ),
+          SizedBox(height: t.spacing.sm),
+          SizedBox(
+            height: 64,
+            child: Text(
+              item.description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: SuperText.body.copyWith(color: t.fg3),
             ),
+          ),
+          SizedBox(height: t.spacing.md),
+          Row(
+            children: [
+              Text(
+                'OPEN EXAMPLE',
+                style: SuperText.label.copyWith(color: item.color),
+              ),
+              SizedBox(width: t.spacing.sm),
+              Icon(Icons.arrow_forward_rounded, size: 17, color: item.color),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({required this.onClear});
+
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
+    return Center(
+      child: Padding(
+        padding: t.padding.page,
+        child: SuperCard(
+          padding: EdgeInsets.all(t.spacing.xl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.search_off_rounded, size: 42, color: t.fg4),
+              SizedBox(height: t.spacing.md),
+              Text('No matching examples', style: SuperText.heading.copyWith(color: t.fg1)),
+              SizedBox(height: t.spacing.xs),
+              Text('Clear the query and explore the complete section.', style: SuperText.body.copyWith(color: t.fg3)),
+              SizedBox(height: t.spacing.lg),
+              OutlinedButton.icon(
+                onPressed: onClear,
+                icon: const Icon(Icons.close_rounded),
+                label: const Text('Clear search'),
+              ),
+            ],
           ),
         ),
       ),
@@ -868,32 +1135,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
-class _TabBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabBar;
-  final bool isDark;
+@immutable
+class _StatData {
+  const _StatData(this.label, this.value, this.icon);
 
-  _TabBarDelegate({required this.tabBar, required this.isDark});
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(
-      color: isDark ? Colors.grey[900] : Colors.white,
-      child: tabBar,
-    );
-  }
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  bool shouldRebuild(covariant _TabBarDelegate oldDelegate) {
-    return tabBar != oldDelegate.tabBar || isDark != oldDelegate.isDark;
-  }
+  final String label;
+  final String value;
+  final IconData icon;
 }

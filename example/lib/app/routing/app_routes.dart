@@ -1,5 +1,11 @@
 /// Route locations shared with views without importing the router library.
 abstract final class AppRoutes {
+  static const String basic = '/basic';
+  static const String streams = '/streams';
+  static const String advanced = '/advanced';
+  static const String search = '/search';
+  static const String errors = '/errors';
+  static const String firebase = '/firebase';
   static const String asyncStates = '/search/async-states';
   static const String basicError = '/errors/basic';
   static const String basicListView = '/basic/list-view';

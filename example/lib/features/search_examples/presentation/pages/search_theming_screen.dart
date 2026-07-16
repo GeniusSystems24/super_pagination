@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:super_core/super_core.dart';
 import 'package:super_pagination/super_pagination.dart';
 
-import 'package:super_pagination_example/shared/domain/entities/product.dart';
 import 'package:super_pagination_example/app/dependencies/example_dependencies.dart';
+import 'package:super_pagination_example/shared/domain/entities/product.dart';
 
-/// Example screen demonstrating SuperSearchTheme customization.
-///
-/// This screen shows how to:
-/// - Use light and dark themes
-/// - Auto-detect system theme
-/// - Create custom themed search
-/// - Customize individual theme properties
+/// Demonstrates how SuperSearchTheme follows the same palette, brightness, and
+/// responsive tokens as the rest of the GeniusLink design system.
 class SearchThemingScreen extends StatefulWidget {
   const SearchThemingScreen({super.key});
 
@@ -23,417 +19,329 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mode = SuperDeviceMode.forWidth(MediaQuery.sizeOf(context).width);
+
     return Theme(
-      data: _getThemeData(context),
+      data: _themeFor(
+        context,
+        palette: SuperPalette.bluePalette,
+        mode: mode,
+      ),
       child: Builder(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text('Search Theming'),
-            actions: [
-              PopupMenuButton<ThemeMode>(
-                icon: Icon(_getThemeIcon()),
-                onSelected: (mode) => setState(() => _themeMode = mode),
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: ThemeMode.system,
-                    child: Row(
-                      children: [
-                        Icon(Icons.brightness_auto),
-                        SizedBox(width: 8),
-                        Text('System'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: ThemeMode.light,
-                    child: Row(
-                      children: [
-                        Icon(Icons.light_mode),
-                        SizedBox(width: 8),
-                        Text('Light'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: ThemeMode.dark,
-                    child: Row(
-                      children: [
-                        Icon(Icons.dark_mode),
-                        SizedBox(width: 8),
-                        Text('Dark'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Theme info card
-                Card(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Icon(
-                          _getThemeIcon(),
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Current Theme: ${_themeMode.name.toUpperCase()}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                              Text(
-                                'SuperSearchTheme auto-detects system theme when no explicit theme is set.',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Default themed search
-                Text(
-                  'Auto Theme Detection',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Uses system brightness to select light/dark theme',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                SuperSearchDropdown<Product, Product>.withProvider(
-                  request: const SuperPaginationRequest(page: 1, pageSize: 10),
-                  provider: SuperPaginationProvider.future(
-                    (request) => ExampleDependencies.catalog.searchProducts(
-                      request.searchQuery ?? '',
-                      pageSize: request.pageSize ?? 10,
-                    ),
-                  ),
-                  searchRequestBuilder: (query) => SuperPaginationRequest(
-                    page: 1,
-                    pageSize: 10,
-                    searchQuery: query,
-                  ),
-                  searchConfig: const SuperSearchConfig(
-                    debounceDelay: Duration(milliseconds: 300),
-                    minSearchLength: 0,
-                    searchOnEmpty: true,
-                  ),
-                  overlayConfig: const SuperSearchOverlayConfig(
-                    maxHeight: 200,
-                    borderRadius: 12,
-                  ),
-                  itemBuilder: (context, product) => ListTile(
-                    leading: CircleAvatar(
-                      child: Text(product.name[0].toUpperCase()),
-                    ),
-                    title: Text(product.name),
-                    subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-                  ),
-                  onSelected: (product, _) {},
-                ),
-                const SizedBox(height: 32),
-
-                // Custom themed search
-                Text(
-                  'Custom Theme',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Purple accent with custom colors',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    extensions: [
-                      SuperSearchTheme(
-                        searchBoxBackgroundColor: const Color(0xFFF3E8FF),
-                        searchBoxTextColor: const Color(0xFF581C87),
-                        searchBoxHintColor: const Color(0xFF9333EA),
-                        searchBoxBorderColor: const Color(0xFFD8B4FE),
-                        searchBoxFocusedBorderColor: const Color(0xFF9333EA),
-                        searchBoxIconColor: const Color(0xFF9333EA),
-                        searchBoxCursorColor: const Color(0xFF9333EA),
-                        overlayBackgroundColor: Colors.white,
-                        overlayBorderColor: const Color(0xFFD8B4FE),
-                        itemHoverColor: const Color(0xFFF3E8FF),
-                        itemFocusedColor: const Color(0xFFE9D5FF),
-                        loadingIndicatorColor: const Color(0xFF9333EA),
-                      ),
-                    ],
-                  ),
-                  child: SuperSearchDropdown<Product, Product>.withProvider(
-                    request: const SuperPaginationRequest(page: 1, pageSize: 10),
-                    provider: SuperPaginationProvider.future(
-                      (request) => ExampleDependencies.catalog.searchProducts(
-                        request.searchQuery ?? '',
-                        pageSize: request.pageSize ?? 10,
+        builder: (context) {
+          final superTheme = SuperThemeData.of(context);
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Search Theming'),
+              actions: [
+                PopupMenuButton<ThemeMode>(
+                  icon: Icon(_themeIcon),
+                  onSelected: (value) => setState(() => _themeMode = value),
+                  itemBuilder: (context) => const [
+                    PopupMenuItem(
+                      value: ThemeMode.system,
+                      child: _ThemeModeItem(
+                        icon: Icons.brightness_auto,
+                        label: 'System',
                       ),
                     ),
-                    searchRequestBuilder: (query) => SuperPaginationRequest(
-                      page: 1,
-                      pageSize: 10,
-                      searchQuery: query,
-                    ),
-                    searchConfig: const SuperSearchConfig(
-                      debounceDelay: Duration(milliseconds: 300),
-                      minSearchLength: 0,
-                      searchOnEmpty: true,
-                    ),
-                    overlayConfig: const SuperSearchOverlayConfig(
-                      maxHeight: 200,
-                      borderRadius: 16,
-                    ),
-                    itemBuilder: (context, product) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: const Color(0xFF9333EA),
-                        child: Text(
-                          product.name[0].toUpperCase(),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      title: Text(product.name),
-                      subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-                    ),
-                    onSelected: (product, _) {},
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Green themed search
-                Text(
-                  'Green Success Theme',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Green accent for success states',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    extensions: [
-                      SuperSearchTheme(
-                        searchBoxBackgroundColor: const Color(0xFFDCFCE7),
-                        searchBoxTextColor: const Color(0xFF14532D),
-                        searchBoxHintColor: const Color(0xFF16A34A),
-                        searchBoxBorderColor: const Color(0xFFBBF7D0),
-                        searchBoxFocusedBorderColor: const Color(0xFF16A34A),
-                        searchBoxIconColor: const Color(0xFF16A34A),
-                        searchBoxCursorColor: const Color(0xFF16A34A),
-                        overlayBackgroundColor: Colors.white,
-                        overlayBorderColor: const Color(0xFFBBF7D0),
-                        itemHoverColor: const Color(0xFFDCFCE7),
-                        itemFocusedColor: const Color(0xFFBBF7D0),
-                        loadingIndicatorColor: const Color(0xFF16A34A),
-                      ),
-                    ],
-                  ),
-                  child: SuperSearchDropdown<Product, Product>.withProvider(
-                    request: const SuperPaginationRequest(page: 1, pageSize: 10),
-                    provider: SuperPaginationProvider.future(
-                      (request) => ExampleDependencies.catalog.searchProducts(
-                        request.searchQuery ?? '',
-                        pageSize: request.pageSize ?? 10,
+                    PopupMenuItem(
+                      value: ThemeMode.light,
+                      child: _ThemeModeItem(
+                        icon: Icons.light_mode,
+                        label: 'Light',
                       ),
                     ),
-                    searchRequestBuilder: (query) => SuperPaginationRequest(
-                      page: 1,
-                      pageSize: 10,
-                      searchQuery: query,
-                    ),
-                    searchConfig: const SuperSearchConfig(
-                      debounceDelay: Duration(milliseconds: 300),
-                      minSearchLength: 0,
-                      searchOnEmpty: true,
-                    ),
-                    overlayConfig: const SuperSearchOverlayConfig(
-                      maxHeight: 200,
-                      borderRadius: 8,
-                    ),
-                    itemBuilder: (context, product) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: const Color(0xFF16A34A),
-                        child: Text(
-                          product.name[0].toUpperCase(),
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                    PopupMenuItem(
+                      value: ThemeMode.dark,
+                      child: _ThemeModeItem(
+                        icon: Icons.dark_mode,
+                        label: 'Dark',
                       ),
-                      title: Text(product.name),
-                      subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
                     ),
-                    onSelected: (product, _) {},
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Theme properties info
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Available Theme Properties',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        const Divider(),
-                        _PropertyGroup(
-                          title: 'Search Box',
-                          properties: [
-                            'searchBoxBackgroundColor',
-                            'searchBoxTextColor',
-                            'searchBoxHintColor',
-                            'searchBoxBorderColor',
-                            'searchBoxFocusedBorderColor',
-                            'searchBoxIconColor',
-                            'searchBoxCursorColor',
-                          ],
-                        ),
-                        _PropertyGroup(
-                          title: 'Overlay',
-                          properties: [
-                            'overlayBackgroundColor',
-                            'overlayBorderColor',
-                            'overlayBorderRadius',
-                            'overlayElevation',
-                          ],
-                        ),
-                        _PropertyGroup(
-                          title: 'Items',
-                          properties: [
-                            'itemBackgroundColor',
-                            'itemHoverColor',
-                            'itemFocusedColor',
-                            'itemSelectedColor',
-                            'itemTextColor',
-                          ],
-                        ),
-                        _PropertyGroup(
-                          title: 'States',
-                          properties: [
-                            'loadingIndicatorColor',
-                            'emptyStateIconColor',
-                            'errorIconColor',
-                            'errorButtonColor',
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          ),
-        ),
+            body: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: superTheme.sizing.contentColumn,
+                ),
+                child: ListView(
+                  padding: superTheme.padding.page,
+                  children: [
+                    SuperCard(
+                      child: SectionHeader(
+                        title: 'Shared theme source',
+                        subtitle:
+                            'Search surfaces are generated from SuperMaterialThemeData and SuperPalette.',
+                        trailing: StatusPill(
+                          _themeMode.name,
+                          tone: PillTone.accent,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: superTheme.spacing.section),
+                    _PaletteSearchSection(
+                      title: 'GeniusLink Blue',
+                      subtitle: 'Default package theme and automatic fallback.',
+                      marker: SuperMarker.identity,
+                      palette: SuperPalette.bluePalette,
+                      theme: _themeFor(
+                        context,
+                        palette: SuperPalette.bluePalette,
+                        mode: mode,
+                      ),
+                      child: _buildDropdown(),
+                    ),
+                    SizedBox(height: superTheme.spacing.section),
+                    _PaletteSearchSection(
+                      title: 'Purple Palette',
+                      subtitle:
+                          'A complete palette swap without manually copying search colors.',
+                      marker: SuperMarker.notes,
+                      palette: SuperPalette.purplePalette,
+                      theme: _themeFor(
+                        context,
+                        palette: SuperPalette.purplePalette,
+                        mode: mode,
+                      ),
+                      child: _buildDropdown(),
+                    ),
+                    SizedBox(height: superTheme.spacing.section),
+                    _PaletteSearchSection(
+                      title: 'Success Green',
+                      subtitle:
+                          'Search fields, overlay, focus, selection, and loaders stay synchronized.',
+                      marker: SuperMarker.ledger,
+                      palette: SuperPalette.greenPalette,
+                      theme: _themeFor(
+                        context,
+                        palette: SuperPalette.greenPalette,
+                        mode: mode,
+                      ),
+                      child: _buildDropdown(),
+                    ),
+                    SizedBox(height: superTheme.spacing.section),
+                    const SuperCard(
+                      header: SectionHeader(
+                        title: 'Override surface',
+                        subtitle:
+                            'All existing SuperSearchTheme properties remain available for focused overrides.',
+                      ),
+                      child: _PropertyGroups(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  ThemeData _getThemeData(BuildContext context) {
-    final brightness = MediaQuery.platformBrightnessOf(context);
-
-    switch (_themeMode) {
-      case ThemeMode.light:
-        return ThemeData.light(useMaterial3: true);
-      case ThemeMode.dark:
-        return ThemeData.dark(useMaterial3: true);
-      case ThemeMode.system:
-        return brightness == Brightness.dark
-            ? ThemeData.dark(useMaterial3: true)
-            : ThemeData.light(useMaterial3: true);
-    }
+  Widget _buildDropdown() {
+    return SuperSearchDropdown<Product, Product>.withProvider(
+      request: const SuperPaginationRequest(page: 1, pageSize: 10),
+      provider: SuperPaginationProvider.future(
+        (request) => ExampleDependencies.catalog.searchProducts(
+          request.searchQuery ?? '',
+          pageSize: request.pageSize ?? 10,
+        ),
+      ),
+      searchRequestBuilder: (query) => SuperPaginationRequest(
+        page: 1,
+        pageSize: 10,
+        searchQuery: query,
+      ),
+      searchConfig: const SuperSearchConfig(
+        debounceDelay: Duration(milliseconds: 300),
+        minSearchLength: 0,
+        searchOnEmpty: true,
+      ),
+      overlayConfig: const SuperSearchOverlayConfig(maxHeight: 220),
+      itemBuilder: (context, product) {
+        final superTheme = SuperThemeData.of(context);
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundColor: superTheme.selectionFill(0.14),
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            child: Text(product.name[0].toUpperCase()),
+          ),
+          title: Text(product.name),
+          subtitle: Text(
+            '\$${product.price.toStringAsFixed(2)}',
+            style: SuperText.mono.copyWith(color: SuperTokens.success),
+          ),
+        );
+      },
+      onSelected: (product, _) {},
+    );
   }
 
-  IconData _getThemeIcon() {
-    switch (_themeMode) {
-      case ThemeMode.light:
-        return Icons.light_mode;
-      case ThemeMode.dark:
-        return Icons.dark_mode;
-      case ThemeMode.system:
-        return Icons.brightness_auto;
-    }
+  ThemeData _themeFor(
+    BuildContext context, {
+    required SuperPalette palette,
+    required SuperDeviceMode mode,
+  }) {
+    final brightness = switch (_themeMode) {
+      ThemeMode.light => Brightness.light,
+      ThemeMode.dark => Brightness.dark,
+      ThemeMode.system => MediaQuery.platformBrightnessOf(context),
+    };
+
+    return brightness == Brightness.dark
+        ? SuperMaterialThemeData.dark(
+            palette: palette,
+            mode: mode,
+            extensions: [SuperSearchTheme.dark(palette: palette)],
+          )
+        : SuperMaterialThemeData.light(
+            palette: palette,
+            mode: mode,
+            extensions: [SuperSearchTheme.light(palette: palette)],
+          );
   }
+
+  IconData get _themeIcon => switch (_themeMode) {
+        ThemeMode.light => Icons.light_mode,
+        ThemeMode.dark => Icons.dark_mode,
+        ThemeMode.system => Icons.brightness_auto,
+      };
 }
 
-class _PropertyGroup extends StatelessWidget {
-  final String title;
-  final List<String> properties;
-
-  const _PropertyGroup({
+class _PaletteSearchSection extends StatelessWidget {
+  const _PaletteSearchSection({
     required this.title,
-    required this.properties,
+    required this.subtitle,
+    required this.marker,
+    required this.palette,
+    required this.theme,
+    required this.child,
   });
+
+  final String title;
+  final String subtitle;
+  final SuperMarker marker;
+  final SuperPalette palette;
+  final ThemeData theme;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: properties.map((prop) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  prop,
-                  style: const TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 10,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+    return Theme(
+      data: theme,
+      child: Builder(
+        builder: (context) {
+          final superTheme = SuperThemeData.of(context);
+          return SuperCard(
+            header: SectionHeader(
+              title: title,
+              subtitle: subtitle,
+              marker: marker,
+              trailing: StatusPill(palette.name, tone: PillTone.accent),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: superTheme.spacing.xs),
+              child: child,
+            ),
+          );
+        },
       ),
+    );
+  }
+}
+
+class _ThemeModeItem extends StatelessWidget {
+  const _ThemeModeItem({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon),
+        const SizedBox(width: SuperTokens.space2),
+        Text(label),
+      ],
+    );
+  }
+}
+
+class _PropertyGroups extends StatelessWidget {
+  const _PropertyGroups();
+
+  static const groups = <String, List<String>>{
+    'Search box': [
+      'searchBoxBackgroundColor',
+      'searchBoxTextColor',
+      'searchBoxBorderColor',
+      'searchBoxFocusedBorderColor',
+    ],
+    'Overlay and items': [
+      'overlayBackgroundColor',
+      'overlayBorderColor',
+      'itemHoverColor',
+      'itemSelectedColor',
+    ],
+    'States': [
+      'loadingIndicatorColor',
+      'emptyStateIconColor',
+      'errorIconColor',
+      'errorButtonColor',
+    ],
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final superTheme = SuperThemeData.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: groups.entries.map((entry) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: superTheme.spacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                entry.key.toUpperCase(),
+                style: SuperText.label.copyWith(color: superTheme.fg2),
+              ),
+              SizedBox(height: superTheme.spacing.sm),
+              Wrap(
+                spacing: superTheme.spacing.xs,
+                runSpacing: superTheme.spacing.xs,
+                children: entry.value.map((property) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: SuperTokens.space2,
+                      vertical: SuperTokens.space1,
+                    ),
+                    decoration: BoxDecoration(
+                      color: superTheme.inputBg,
+                      borderRadius: BorderRadius.circular(
+                        SuperTokens.radiusControl,
+                      ),
+                      border: Border.all(color: superTheme.border),
+                    ),
+                    child: Text(
+                      property,
+                      style: SuperText.mono.copyWith(
+                        color: superTheme.fg3,
+                        fontSize: 10,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

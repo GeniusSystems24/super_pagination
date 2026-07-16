@@ -5,7 +5,11 @@ description: >
   Column, Row, Custom), advanced error handling (6 pre-built error styles),
   smart preloading, real-time stream support, automatic retry with exponential
   backoff, SuperSearchBox with auto-positioning overlay dropdown, keyboard navigation, and production-ready UI components..
-version: 4.0.0
+
+# package version
+version: 4.1.4
+
+# package homepage, repository and issue tracker urls
 homepage: https://github.com/GeniusSystems24/super_pagination
 repository: https://github.com/GeniusSystems24/super_pagination
 issue_tracker: https://github.com/GeniusSystems24/super_pagination/issues
@@ -21,7 +25,7 @@ false_secrets:
 
 environment:
   sdk: ">=3.10.0 <4.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.32.0"
 
 dependencies:
   flutter:
@@ -31,6 +35,7 @@ dependencies:
   logger: ^2.6.2
   provider: ^6.1.5+1
   scrollview_observer: ^1.26.2
+  super_core: ">=1.2.0 <2.0.0"
 
 dev_dependencies:
   flutter_lints: ^5.0.0

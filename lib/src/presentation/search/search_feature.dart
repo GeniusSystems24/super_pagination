@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:super_pagination/data/data.dart';
+import 'package:super_core/super_core.dart';
 
 import '../../application/contracts/pagination_provider.dart';
 import '../../application/contracts/retry_config.dart';

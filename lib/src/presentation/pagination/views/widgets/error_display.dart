@@ -11,51 +11,77 @@ class ErrorDisplay extends StatelessWidget {
   final Exception exception;
   final VoidCallback? onRetry;
 
-  /// Custom builder for complete control over error UI
-  /// If provided, this takes precedence over the default error display
-  final Widget Function(BuildContext context, Exception exception, VoidCallback? onRetry)? customBuilder;
+  /// Custom builder for complete control over error UI.
+  /// If provided, this takes precedence over the default error display.
+  final Widget Function(
+    BuildContext context,
+    Exception exception,
+    VoidCallback? onRetry,
+  )? customBuilder;
 
   @override
   Widget build(BuildContext context) {
-    // Use custom builder if provided
     if (customBuilder != null) {
       return customBuilder!(context, exception, onRetry);
     }
 
-    // Default error display with retry button
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 48,
+        padding: superTheme.padding.card,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: superTheme.sizing.contentColumn),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: paginationTheme.errorContainerColor,
+              borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+              border: Border.all(color: paginationTheme.errorBorderColor),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Error occurred',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              exception.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
+            child: Padding(
+              padding: superTheme.padding.card,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_outline_rounded,
+                    color: paginationTheme.errorIconColor,
+                    size: 40,
                   ),
-            ),
-            if (onRetry != null) ...[
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                  SizedBox(height: superTheme.spacing.md),
+                  Text(
+                    'Error occurred',
+                    textAlign: TextAlign.center,
+                    style: SuperText.heading.copyWith(
+                      color: paginationTheme.errorTitleColor,
+                    ),
+                  ),
+                  SizedBox(height: superTheme.spacing.sm),
+                  Text(
+                    exception.toString(),
+                    textAlign: TextAlign.center,
+                    style: SuperText.body.copyWith(
+                      color: paginationTheme.errorMessageColor,
+                    ),
+                  ),
+                  if (onRetry != null) ...[
+                    SizedBox(height: superTheme.spacing.lg),
+                    FilledButton.icon(
+                      onPressed: onRetry,
+                      icon: const Icon(Icons.refresh_rounded),
+                      label: const Text('Retry'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: paginationTheme.retryButtonColor,
+                        foregroundColor:
+                            paginationTheme.retryButtonForegroundColor,
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ],
-          ],
+            ),
+          ),
         ),
       ),
     );

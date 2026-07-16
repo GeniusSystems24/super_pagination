@@ -442,7 +442,7 @@ class _SuperSearchMultiDropdownState<T, K>
   Widget _buildBottomSheetTrigger(BuildContext context) {
     final searchTheme = SuperSearchTheme.of(context);
     final effectiveBorderRadius =
-        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
+        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
 
     final selectedCount = _searchController!.selectedItems.length +
         _searchController!.pendingKeys.length;
@@ -456,14 +456,14 @@ class _SuperSearchMultiDropdownState<T, K>
           color: searchTheme.searchBoxBackgroundColor,
           borderRadius: effectiveBorderRadius,
           border: Border.all(
-            color: searchTheme.searchBoxBorderColor ?? Colors.grey[300]!,
+            color: searchTheme.searchBoxBorderColor ?? SuperThemeData.of(context).border,
           ),
         ),
         child: Row(
           children: [
             Icon(
               Icons.search,
-              color: searchTheme.searchBoxIconColor ?? Colors.grey[600],
+              color: searchTheme.searchBoxIconColor ?? SuperThemeData.of(context).fg3,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -474,14 +474,14 @@ class _SuperSearchMultiDropdownState<T, K>
                 style: TextStyle(
                   color: selectedCount > 0
                       ? searchTheme.searchBoxTextColor
-                      : searchTheme.searchBoxHintColor ?? Colors.grey[500],
+                      : searchTheme.searchBoxHintColor ?? SuperThemeData.of(context).fg4,
                   fontSize: 16,
                 ),
               ),
             ),
             Icon(
               Icons.arrow_drop_down,
-              color: searchTheme.searchBoxIconColor ?? Colors.grey[600],
+              color: searchTheme.searchBoxIconColor ?? SuperThemeData.of(context).fg3,
             ),
           ],
         ),
@@ -682,7 +682,7 @@ class _DefaultMultiSelectedItemChip<T> extends StatelessWidget {
           ),
           InkWell(
             onTap: onRemove,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(SuperTokens.radiusControl),
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: Icon(
@@ -916,7 +916,7 @@ class _SuperSearchMultiBox<T, K> extends StatelessWidget {
     final searchTheme = SuperSearchTheme.of(context);
 
     final effectiveBorderRadius =
-        borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
+        borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
 
     final effectiveDecoration = decoration ??
         InputDecoration(
@@ -930,13 +930,13 @@ class _SuperSearchMultiBox<T, K> extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: effectiveBorderRadius,
             borderSide: BorderSide(
-              color: searchTheme.searchBoxBorderColor ?? Colors.grey[300]!,
+              color: searchTheme.searchBoxBorderColor ?? SuperThemeData.of(context).border,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: effectiveBorderRadius,
             borderSide: BorderSide(
-              color: searchTheme.searchBoxBorderColor ?? Colors.grey[300]!,
+              color: searchTheme.searchBoxBorderColor ?? SuperThemeData.of(context).border,
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -1388,7 +1388,7 @@ class _ThemedMultiOverlayContainer extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: maxHeight),
         decoration: overlayDecoration ??
             BoxDecoration(
-              color: searchTheme.overlayBackgroundColor ?? Theme.of(context).cardColor,
+              color: searchTheme.overlayBackgroundColor ?? SuperThemeData.of(context).surface,
               borderRadius: effectiveBorderRadius,
               border: searchTheme.overlayBorderColor != null
                   ? Border.all(color: searchTheme.overlayBorderColor!)
@@ -1520,7 +1520,7 @@ class _DefaultPendingKeyChip<K> extends StatelessWidget {
           ),
           InkWell(
             onTap: onRemove,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(SuperTokens.radiusControl),
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: Icon(
@@ -1712,7 +1712,7 @@ class _SuperSearchBottomSheetContentState<T, K>
 
   Widget _buildSearchBox(BuildContext context, SuperSearchTheme searchTheme) {
     final effectiveBorderRadius =
-        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(12);
+        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
 
     return TextField(
       controller: _textController,
@@ -1737,13 +1737,13 @@ class _SuperSearchBottomSheetContentState<T, K>
             border: OutlineInputBorder(
               borderRadius: effectiveBorderRadius,
               borderSide: BorderSide(
-                color: searchTheme.searchBoxBorderColor ?? Colors.grey[300]!,
+                color: searchTheme.searchBoxBorderColor ?? SuperThemeData.of(context).border,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: effectiveBorderRadius,
               borderSide: BorderSide(
-                color: searchTheme.searchBoxBorderColor ?? Colors.grey[300]!,
+                color: searchTheme.searchBoxBorderColor ?? SuperThemeData.of(context).border,
               ),
             ),
             focusedBorder: OutlineInputBorder(

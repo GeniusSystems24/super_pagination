@@ -629,13 +629,29 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  super_core:
+    dependency: "direct main"
+    description:
+      name: super_core
+      sha256: d8a68d70dae8fa35eb3eb8a163d1987297258999ad1befd9d41e944505473d33
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+  super_navigation_sidebar:
+    dependency: "direct main"
+    description:
+      name: super_navigation_sidebar
+      sha256: "8720e25838c2cea25194e0c3c12486184a3dbfc4b9088f7d97db17d6dbd1faf3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   super_pagination:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "4.0.0"
+    version: "4.1.4"
   term_glyph:
     dependency: transitive
     description:

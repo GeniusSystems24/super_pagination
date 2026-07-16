@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:super_core/super_core.dart';
 import 'package:super_pagination_example/shared/domain/entities/product.dart';
+
 import 'highlighted_text.dart';
 
-/// A reusable product card widget with optional search query highlighting
+/// A reusable product card that follows the shared GeniusLink visual system.
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
@@ -17,70 +19,70 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    final superTheme = SuperThemeData.of(context);
+
+    return SuperCard(
+      margin: EdgeInsets.only(bottom: superTheme.spacing.md),
+      padding: EdgeInsets.all(superTheme.spacing.md),
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          product.imageUrl,
-          width: 60,
-          height: 60,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            child: Image.network(
+              product.imageUrl,
               width: 60,
               height: 60,
-              color: Colors.grey[300],
-              child: const Icon(Icons.image_not_supported),
-            );
-          },
-        ),
-      ),
-      title: HighlightedText.single(
-        text: product.name,
-        searchQuery: searchQuery,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: Colors.black,
-        ),
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 4),
-          Text(
-            product.description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 13, color: Colors.grey[600]),
-          ),
-          const SizedBox(height: 4),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(4),
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 60,
+                  height: 60,
+                  color: superTheme.inputBg,
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.image_not_supported_outlined,
+                    color: superTheme.fg4,
+                  ),
+                );
+              },
             ),
-            child: Text(
-              product.category,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.blue,
-                fontWeight: FontWeight.w500,
-              ),
+          ),
+          SizedBox(width: superTheme.spacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HighlightedText.single(
+                  text: product.name,
+                  searchQuery: searchQuery,
+                  style: SuperText.heading.copyWith(color: superTheme.fg1),
+                  highlightColor: superTheme.tintFill(
+                    Theme.of(context).colorScheme.primary,
+                    0.22,
+                  ),
+                ),
+                SizedBox(height: superTheme.spacing.xs),
+                Text(
+                  product.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: SuperText.caption.copyWith(color: superTheme.fg3),
+                ),
+                SizedBox(height: superTheme.spacing.sm),
+                StatusPill(product.category, tone: PillTone.accent),
+              ],
+            ),
+          ),
+          SizedBox(width: superTheme.spacing.md),
+          Text(
+            '\$${product.price.toStringAsFixed(2)}',
+            style: SuperText.mono.copyWith(
+              color: SuperTokens.success,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
-      ),
-      trailing: Text(
-        '\$${product.price.toStringAsFixed(2)}',
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.green,
-        ),
       ),
     );
   }

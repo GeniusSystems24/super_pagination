@@ -2,38 +2,9 @@ part of '../../pagination_feature.dart';
 
 /// A customizable error widget builder for pagination errors.
 ///
-/// Provides pre-built error UI styles that can be used with error builders
-/// in pagination widgets.
-///
-/// ## Example Usage
-///
-/// ```dart
-/// SuperPaginatedListView<Product>(
-///   request: SuperPaginationRequest(page: 1, pageSize: 20),
-///   provider: SuperPaginationProvider.future(fetchProducts),
-///   childBuilder: (context, product, index) => ProductCard(product: product),
-///   firstPageErrorBuilder: (context, error, retry) {
-///     return CustomErrorBuilder.material(
-///       context: context,
-///       error: error,
-///       onRetry: retry,
-///       title: 'Failed to load products',
-///       message: 'Please check your internet connection',
-///     );
-///   },
-///   loadMoreErrorBuilder: (context, error, retry) {
-///     return CustomErrorBuilder.compact(
-///       context: context,
-///       error: error,
-///       onRetry: retry,
-///     );
-///   },
-/// )
-/// ```
+/// Every built-in style reads [SuperPaginationTheme] and the shared
+/// GeniusLink tokens. Existing parameters remain available as local overrides.
 class CustomErrorBuilder {
-  /// Creates a Material Design style error widget with full details
-  ///
-  /// Best suited for first page errors where you have full screen space
   static Widget material({
     required BuildContext context,
     required Exception error,
@@ -44,54 +15,51 @@ class CustomErrorBuilder {
     Color? iconColor,
     String? retryButtonText,
   }) {
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon ?? Icons.error_outline,
-              color: iconColor ?? Colors.red,
-              size: 64,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              title ?? 'Something went wrong',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              message ?? error.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
-              label: Text(retryButtonText ?? 'Try Again'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
+        padding: superTheme.padding.card,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: superTheme.sizing.contentColumn),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon ?? Icons.error_outline_rounded,
+                color: iconColor ?? paginationTheme.errorIconColor,
+                size: 48,
+              ),
+              SizedBox(height: superTheme.spacing.lg),
+              Text(
+                title ?? 'Something went wrong',
+                style: SuperText.heading.copyWith(
+                  color: paginationTheme.errorTitleColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: superTheme.spacing.sm),
+              Text(
+                message ?? error.toString(),
+                textAlign: TextAlign.center,
+                style: SuperText.body.copyWith(
+                  color: paginationTheme.errorMessageColor,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: superTheme.spacing.lg),
+              FilledButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh_rounded),
+                label: Text(retryButtonText ?? 'Try Again'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  /// Creates a compact error widget for inline errors (like load more errors)
-  ///
-  /// Best suited for bottom loading errors where space is limited
   static Widget compact({
     required BuildContext context,
     required Exception error,
@@ -100,84 +68,72 @@ class CustomErrorBuilder {
     Color? backgroundColor,
     Color? textColor,
   }) {
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+    final effectiveTextColor = textColor ?? paginationTheme.errorIconColor;
+
     return Container(
-      margin: const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.all(16.0),
+      margin: EdgeInsets.all(superTheme.spacing.md),
+      padding: EdgeInsets.all(superTheme.spacing.md),
       decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.red[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Colors.red[200]!,
-          width: 1,
-        ),
+        color: backgroundColor ?? paginationTheme.errorContainerColor,
+        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        border: Border.all(color: paginationTheme.errorBorderColor),
       ),
       child: Row(
         children: [
           Icon(
-            Icons.error_outline,
-            color: textColor ?? Colors.red[700],
-            size: 24,
+            Icons.error_outline_rounded,
+            color: effectiveTextColor,
+            size: superTheme.sizing.icon,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: superTheme.spacing.md),
           Expanded(
             child: Text(
               message ?? 'Failed to load more items',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: textColor ?? Colors.red[700],
-                  ),
+              style: SuperText.body.copyWith(color: effectiveTextColor),
             ),
           ),
-          const SizedBox(width: 12),
-          TextButton(
-            onPressed: onRetry,
-            child: Text(
-              'Retry',
-              style: TextStyle(
-                color: textColor ?? Colors.red[700],
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          SizedBox(width: superTheme.spacing.sm),
+          TextButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
   }
 
-  /// Creates a minimal error widget with just a message and retry icon button
-  ///
-  /// Best suited for very limited space scenarios
   static Widget minimal({
     required BuildContext context,
     required Exception error,
     required VoidCallback onRetry,
     String? message,
   }) {
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(superTheme.spacing.sm),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            message ?? 'Error occurred',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
+          Flexible(
+            child: Text(
+              message ?? 'Error occurred',
+              style: SuperText.caption.copyWith(
+                color: paginationTheme.errorMessageColor,
+              ),
+            ),
           ),
+          SizedBox(width: superTheme.spacing.xs),
           IconButton(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh),
-            iconSize: 20,
-            padding: const EdgeInsets.all(8),
-            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.refresh_rounded),
+            tooltip: 'Retry',
           ),
         ],
       ),
     );
   }
 
-  /// Creates a custom error widget with complete control
-  ///
-  /// Use this when you need a specific layout or design
   static Widget custom({
     required BuildContext context,
     required Exception error,
@@ -191,9 +147,6 @@ class CustomErrorBuilder {
     return builder(context, error, onRetry);
   }
 
-  /// Creates a card-style error widget with shadow and rounded corners
-  ///
-  /// Good for grid views or when you want a distinct error card
   static Widget card({
     required BuildContext context,
     required Exception error,
@@ -202,50 +155,62 @@ class CustomErrorBuilder {
     String? message,
     double? elevation,
   }) {
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final superTheme = SuperThemeData.of(context);
+
     return Center(
-      child: Card(
-        margin: const EdgeInsets.all(16.0),
-        elevation: elevation ?? 4,
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.warning_amber_rounded,
-                color: Colors.orange,
-                size: 48,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                title ?? 'Error Loading Data',
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                message ?? 'An error occurred while loading the data.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton.icon(
-                onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
-              ),
-            ],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: superTheme.sizing.contentColumn),
+        child: Card(
+          elevation: elevation ?? 0,
+          margin: EdgeInsets.all(superTheme.spacing.md),
+          color: superTheme.surface,
+          shadowColor: Theme.of(context).shadowColor,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+            side: BorderSide(color: superTheme.border),
+          ),
+          child: Padding(
+            padding: superTheme.padding.card,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: SuperTokens.warning,
+                  size: 40,
+                ),
+                SizedBox(height: superTheme.spacing.md),
+                Text(
+                  title ?? 'Error Loading Data',
+                  style: SuperText.heading.copyWith(
+                    color: paginationTheme.errorTitleColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: superTheme.spacing.sm),
+                Text(
+                  message ?? 'An error occurred while loading the data.',
+                  textAlign: TextAlign.center,
+                  style: SuperText.body.copyWith(
+                    color: paginationTheme.errorMessageColor,
+                  ),
+                ),
+                SizedBox(height: superTheme.spacing.lg),
+                OutlinedButton.icon(
+                  onPressed: onRetry,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  /// Creates a snackbar-style error widget that appears at the bottom
-  ///
-  /// Best for non-intrusive error messages that don't block content
   static Widget snackbar({
     required BuildContext context,
     required Exception error,
@@ -253,40 +218,39 @@ class CustomErrorBuilder {
     String? message,
     Color? backgroundColor,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final superTheme = SuperThemeData.of(context);
+    final foreground = colorScheme.onInverseSurface;
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        margin: EdgeInsets.all(superTheme.spacing.md),
+        padding: EdgeInsets.symmetric(
+          horizontal: superTheme.spacing.md,
+          vertical: superTheme.spacing.sm,
+        ),
         decoration: BoxDecoration(
-          color: backgroundColor ?? Colors.grey[900],
-          borderRadius: BorderRadius.circular(8),
+          color: backgroundColor ?? colorScheme.inverseSurface,
+          borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+          boxShadow: SuperThemeData.popShadow,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.white,
-              size: 20,
-            ),
-            const SizedBox(width: 12),
+            Icon(Icons.error_outline_rounded, color: foreground, size: 20),
+            SizedBox(width: superTheme.spacing.sm),
             Flexible(
               child: Text(
                 message ?? 'Failed to load',
-                style: const TextStyle(color: Colors.white),
+                style: SuperText.body.copyWith(color: foreground),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: superTheme.spacing.sm),
             TextButton(
               onPressed: onRetry,
-              child: const Text(
-                'RETRY',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              style: TextButton.styleFrom(foregroundColor: foreground),
+              child: const Text('RETRY'),
             ),
           ],
         ),

@@ -5,13 +5,18 @@ class BottomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final paginationTheme = SuperPaginationTheme.of(context);
+    final spacing = SuperThemeData.of(context).spacing;
+
+    return Center(
       child: Padding(
-        padding: EdgeInsets.only(top: 16, bottom: 24),
-        child: SizedBox(
-          height: 16,
-          width: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
+        padding: EdgeInsets.only(top: spacing.md, bottom: spacing.xl),
+        child: SizedBox.square(
+          dimension: 16,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: paginationTheme.loadingIndicatorColor,
+          ),
         ),
       ),
     );

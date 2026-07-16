@@ -1382,10 +1382,6 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
     return ErrorDisplay(exception: state.error);
   }
 
-  Widget _buildFirstPageEmptyWidget(BuildContext context) {
-    return widget.firstPageEmptyBuilder?.call(context) ?? widget.emptyWidget;
-  }
-
   /// Default [buildWhen] used when the user does not supply one.
   /// Rebuilds the top-level widget only when something visually relevant
   /// changes:

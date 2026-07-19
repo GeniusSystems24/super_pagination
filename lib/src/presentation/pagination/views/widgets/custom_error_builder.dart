@@ -77,7 +77,7 @@ class CustomErrorBuilder {
       padding: EdgeInsets.all(superTheme.spacing.md),
       decoration: BoxDecoration(
         color: backgroundColor ?? paginationTheme.errorContainerColor,
-        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        borderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
         border: Border.all(color: paginationTheme.errorBorderColor),
       ),
       child: Row(
@@ -168,7 +168,7 @@ class CustomErrorBuilder {
           shadowColor: Theme.of(context).shadowColor,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+            borderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
             side: BorderSide(color: superTheme.border),
           ),
           child: Padding(
@@ -178,7 +178,7 @@ class CustomErrorBuilder {
               children: [
                 Icon(
                   Icons.warning_amber_rounded,
-                  color: SuperTokens.warning,
+                  color: superTheme.tokens.warning,
                   size: 40,
                 ),
                 SizedBox(height: superTheme.spacing.md),
@@ -232,7 +232,7 @@ class CustomErrorBuilder {
         ),
         decoration: BoxDecoration(
           color: backgroundColor ?? colorScheme.inverseSurface,
-          borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+          borderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
           boxShadow: SuperThemeData.popShadow,
         ),
         child: Row(

@@ -499,7 +499,7 @@ class _DefaultSelectedItemDisplay<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     return Material(
       color: Colors.transparent,
@@ -555,7 +555,7 @@ class _DefaultPendingKeyDisplay<K> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     return Material(
       color: Colors.transparent,

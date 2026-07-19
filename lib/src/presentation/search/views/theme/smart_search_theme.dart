@@ -221,14 +221,14 @@ class SuperSearchTheme extends ThemeExtension<SuperSearchTheme> {
       searchBoxIconColor: superTheme.fg3,
       searchBoxCursorColor: colorScheme.primary,
       searchBoxBorderRadius:
-          BorderRadius.circular(SuperTokens.radiusControl),
+          BorderRadius.circular(superTheme.tokens.radiusControl),
       searchBoxElevation: 0,
       searchBoxShadowColor: Colors.transparent,
 
       // Overlay
       overlayBackgroundColor: superTheme.surface,
       overlayBorderColor: superTheme.borderStrong,
-      overlayBorderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+      overlayBorderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
       overlayElevation: 0,
       overlayShadowColor: SuperThemeData.popShadow.first.color,
 
@@ -253,7 +253,7 @@ class SuperSearchTheme extends ThemeExtension<SuperSearchTheme> {
       // Scrollbar
       scrollbarColor: superTheme.borderStrong,
       scrollbarThickness: 6,
-      scrollbarRadius: const Radius.circular(SuperTokens.radiusControl),
+      scrollbarRadius: Radius.circular(superTheme.tokens.radiusControl),
     );
   }
 

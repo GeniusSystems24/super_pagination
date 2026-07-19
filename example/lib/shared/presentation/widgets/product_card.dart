@@ -28,7 +28,7 @@ class ProductCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            borderRadius: BorderRadius.circular(superTheme.tokens.radiusMd),
             child: Image.network(
               product.imageUrl,
               width: 60,
@@ -78,7 +78,7 @@ class ProductCard extends StatelessWidget {
           Text(
             '\$${product.price.toStringAsFixed(2)}',
             style: SuperText.mono.copyWith(
-              color: SuperTokens.success,
+              color: superTheme.tokens.success,
               fontWeight: FontWeight.w700,
             ),
           ),

@@ -59,7 +59,7 @@ class ErrorImages {
     return buildImage(
       imagePath: generalError,
       fallbackIcon: Icons.error_outline,
-      fallbackColor: fallbackColor ?? SuperTokens.danger,
+      fallbackColor: fallbackColor ?? const Color(0xFFEF4444),
       width: width,
       height: height,
     );
@@ -74,7 +74,7 @@ class ErrorImages {
     return buildImage(
       imagePath: networkError,
       fallbackIcon: Icons.wifi_off,
-      fallbackColor: fallbackColor ?? SuperTokens.warning,
+      fallbackColor: fallbackColor ?? const Color(0xFFF97316),
       width: width,
       height: height,
     );
@@ -104,7 +104,7 @@ class ErrorImages {
     return buildImage(
       imagePath: error500,
       fallbackIcon: Icons.dns_outlined,
-      fallbackColor: fallbackColor ?? SuperTokens.danger,
+      fallbackColor: fallbackColor ?? const Color(0xFFEF4444),
       width: width,
       height: height,
     );
@@ -119,7 +119,7 @@ class ErrorImages {
     return buildImage(
       imagePath: timeoutError,
       fallbackIcon: Icons.access_time,
-      fallbackColor: fallbackColor ?? SuperTokens.warning,
+      fallbackColor: fallbackColor ?? const Color(0xFFF97316),
       width: width,
       height: height,
     );
@@ -134,7 +134,7 @@ class ErrorImages {
     return buildImage(
       imagePath: authError,
       fallbackIcon: Icons.lock_outline,
-      fallbackColor: fallbackColor ?? SuperTokens.warning,
+      fallbackColor: fallbackColor ?? const Color(0xFFF97316),
       width: width,
       height: height,
     );
@@ -179,7 +179,7 @@ class ErrorImages {
     return buildImage(
       imagePath: retryIcon,
       fallbackIcon: Icons.refresh,
-      fallbackColor: fallbackColor ?? SuperTokens.accent,
+      fallbackColor: fallbackColor ?? const Color(0xFF4A7CFF),
       width: width,
       height: height,
       fallbackSize: 48,
@@ -195,7 +195,7 @@ class ErrorImages {
     return buildImage(
       imagePath: recoveryIcon,
       fallbackIcon: Icons.restore,
-      fallbackColor: fallbackColor ?? SuperTokens.success,
+      fallbackColor: fallbackColor ?? const Color(0xFF1DB88A),
       width: width,
       height: height,
       fallbackSize: 48,
@@ -211,7 +211,7 @@ class ErrorImages {
     return buildImage(
       imagePath: loadingError,
       fallbackIcon: Icons.error_outline,
-      fallbackColor: fallbackColor ?? SuperTokens.warning,
+      fallbackColor: fallbackColor ?? const Color(0xFFF97316),
       width: width,
       height: height,
     );

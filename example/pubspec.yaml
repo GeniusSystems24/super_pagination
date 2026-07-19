@@ -14,7 +14,7 @@ dependencies:
   # Super Pagination Library
   super_pagination:
     path: ../
-  super_core: ">=1.2.0 <2.0.0"
+  super_core: ">=2.1.0 <3.0.0"
   super_navigation_sidebar: ^2.3.0
 
   # For date formatting in grouped messages

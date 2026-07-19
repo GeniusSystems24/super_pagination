@@ -15,7 +15,7 @@ void main() {
       expect(theme.searchBoxFocusedBorderColor, colors.primary);
       expect(
         theme.searchBoxBorderRadius,
-        BorderRadius.circular(SuperTokens.radiusControl),
+        BorderRadius.circular(SuperThemeData.light.tokens.radiusControl),
       );
     });
 

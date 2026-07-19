@@ -478,7 +478,7 @@ class _ChatScreenController {
         success
             ? 'تم العثور على أول رسالة غير مقروءة'
             : 'لا توجد رسائل غير مقروءة',
-        success ? SuperTokens.success : SuperTokens.warning,
+        success ? SuperThemeData.of(context).tokens.success : SuperThemeData.of(context).tokens.warning,
       );
     }
   }
@@ -506,7 +506,7 @@ class _ChatScreenController {
         success
             ? 'تم العثور على الرسالة رقم ${index + 1}'
             : 'لم يتم العثور على "$query"',
-        success ? SuperTokens.success : SuperTokens.warning,
+        success ? SuperThemeData.of(context).tokens.success : SuperThemeData.of(context).tokens.warning,
       );
     }
 
@@ -529,7 +529,7 @@ class _ChatScreenController {
         success
             ? 'تم الانتقال للرسالة #${index + 1}'
             : 'لا يمكن الانتقال للرسالة #${index + 1}',
-        success ? SuperTokens.accent : SuperTokens.danger,
+        success ? SuperThemeData.of(context).tokens.accent : SuperThemeData.of(context).tokens.danger,
       );
     }
   }
@@ -582,7 +582,7 @@ class _ChatScreenController {
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
         ),
         margin: const EdgeInsets.all(16),
         duration: const Duration(seconds: 2),
@@ -684,7 +684,7 @@ class _ChatScreenView extends StatelessWidget {
                                 title: 'تعذر تحميل الرسائل',
                                 description:
                                     'تحقق من الاتصال ثم أعد محاولة تحميل المحادثة.',
-                                tone: SuperTokens.danger,
+                                tone: SuperThemeData.of(context).tokens.danger,
                                 action: FilledButton.icon(
                                   onPressed: retry,
                                   icon: const Icon(Icons.refresh_rounded),
@@ -758,7 +758,7 @@ class _ChatScreenView extends StatelessWidget {
               height: 42,
               decoration: BoxDecoration(
                 color: t.inputBg,
-                borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+                borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
                 border: Border.all(color: t.border),
               ),
               child: TextField(
@@ -796,7 +796,7 @@ class _ChatScreenView extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: t.tintFill(primary, 0.14),
                           borderRadius:
-                              BorderRadius.circular(SuperTokens.radiusMd),
+                              BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
                           border: Border.all(color: t.border),
                         ),
                         child: Icon(
@@ -811,7 +811,7 @@ class _ChatScreenView extends StatelessWidget {
                           width: 12,
                           height: 12,
                           decoration: BoxDecoration(
-                            color: SuperTokens.success,
+                            color: t.tokens.success,
                             shape: BoxShape.circle,
                             border: Border.all(color: t.surface, width: 2),
                           ),
@@ -840,7 +840,7 @@ class _ChatScreenView extends StatelessWidget {
                                   ? Icons.more_horiz_rounded
                                   : Icons.circle,
                               size: uiState.isTyping ? 16 : 7,
-                              color: SuperTokens.success,
+                              color: t.tokens.success,
                             ),
                             SizedBox(width: t.spacing.xs),
                             Flexible(
@@ -919,7 +919,7 @@ class _ChatScreenView extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 300),
       decoration: BoxDecoration(
         color: t.surface,
-        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
         border: Border.all(color: t.border),
       ),
       child: Column(
@@ -930,7 +930,7 @@ class _ChatScreenView extends StatelessWidget {
             height: 72,
             decoration: BoxDecoration(
               color: t.tintFill(primary, 0.14),
-              borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
               border: Border.all(color: t.border),
             ),
             child: Icon(Icons.person_outline_rounded, size: 36, color: primary),
@@ -977,7 +977,7 @@ class _ChatScreenView extends StatelessWidget {
           height: 42,
           decoration: BoxDecoration(
             color: t.tintFill(primary, 0.1),
-            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
           ),
           child: IconButton(
             onPressed: () {},
@@ -1010,7 +1010,7 @@ class _ChatScreenView extends StatelessWidget {
             height: 34,
             decoration: BoxDecoration(
               color: t.tintFill(primary, 0.1),
-              borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
             ),
             child: Icon(Icons.near_me_outlined, color: primary, size: 18),
           ),
@@ -1035,13 +1035,13 @@ class _ChatScreenView extends StatelessWidget {
                     label: 'رقم 10',
                     icon: Icons.filter_1_outlined,
                     onTap: () => controller.jumpToIndex(context, 9),
-                    color: SuperTokens.success,
+                    color: t.tokens.success,
                   ),
                   _NavigationChip(
                     label: 'رقم 20',
                     icon: Icons.filter_2_outlined,
                     onTap: () => controller.jumpToIndex(context, 19),
-                    color: SuperTokens.warning,
+                    color: t.tokens.warning,
                   ),
                   _NavigationChip(
                     label: 'المشروع',
@@ -1053,25 +1053,25 @@ class _ChatScreenView extends StatelessWidget {
                     label: 'الاجتماع',
                     icon: Icons.event_outlined,
                     onTap: () => controller.searchAndScroll(context, 'الاجتماع'),
-                    color: SuperTokens.warning,
+                    color: t.tokens.warning,
                   ),
                   _NavigationChip(
                     label: 'وسائط',
                     icon: Icons.perm_media_outlined,
                     onTap: () => controller.searchAndScroll(context, 'media'),
-                    color: SuperTokens.accent,
+                    color: t.tokens.accent,
                   ),
                   _NavigationChip(
                     label: 'موقع',
                     icon: Icons.location_on_outlined,
                     onTap: () => controller.searchAndScroll(context, 'location'),
-                    color: SuperTokens.danger,
+                    color: t.tokens.danger,
                   ),
                   _NavigationChip(
                     label: 'جهة اتصال',
                     icon: Icons.person_add_alt_outlined,
                     onTap: () => controller.searchAndScroll(context, 'contact'),
-                    color: SuperTokens.success,
+                    color: t.tokens.success,
                   ),
                   _NavigationChip(
                     label: 'استطلاع',
@@ -1118,7 +1118,7 @@ class _ChatScreenView extends StatelessWidget {
                 constraints: const BoxConstraints(minHeight: 46),
                 decoration: BoxDecoration(
                   color: t.inputBg,
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
                   border: Border.all(color: t.border),
                 ),
                 child: TextField(
@@ -1164,7 +1164,7 @@ class _ChatScreenView extends StatelessWidget {
                 height: 46,
                 decoration: BoxDecoration(
                   color: primary,
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
                 ),
                 child: IconButton(
                   tooltip: 'إرسال',
@@ -1208,7 +1208,7 @@ class _ChatScreenView extends StatelessWidget {
             backgroundColor: t.surface,
             foregroundColor: t.fg2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
               side: BorderSide(color: t.border),
             ),
             child: const Icon(Icons.keyboard_double_arrow_down_rounded),
@@ -1221,7 +1221,7 @@ class _ChatScreenView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
                   color: primary,
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
                   border: Border.all(color: t.surface, width: 2),
                 ),
                 constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
@@ -1266,7 +1266,7 @@ class _ChatScreenView extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   color: t.tintFill(color, 0.12),
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
                 ),
                 child: loading
                     ? Padding(
@@ -1321,7 +1321,7 @@ class _ChatScreenView extends StatelessWidget {
           decoration: BoxDecoration(
             color: t.surface,
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(SuperTokens.radiusCard),
+              top: Radius.circular(t.tokens.radiusCard),
             ),
             border: Border(top: BorderSide(color: t.border)),
           ),
@@ -1334,7 +1334,7 @@ class _ChatScreenView extends StatelessWidget {
                 height: 4,
                 decoration: BoxDecoration(
                   color: t.borderStrong,
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
                 ),
               ),
               SizedBox(height: t.spacing.lg),
@@ -1351,7 +1351,7 @@ class _ChatScreenView extends StatelessWidget {
                 padding: EdgeInsets.all(t.spacing.md),
                 decoration: BoxDecoration(
                   color: t.inputBg,
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
                   border: Border.all(color: t.border),
                 ),
                 child: Text(
@@ -1376,7 +1376,7 @@ class _ChatScreenView extends StatelessWidget {
                       controller.showSnackBar(
                         hostContext,
                         'تم النسخ',
-                        SuperTokens.success,
+                        t.tokens.success,
                       );
                     },
                   ),
@@ -1406,7 +1406,7 @@ class _ChatScreenView extends StatelessWidget {
                   _MessageActionChip(
                     icon: Icons.delete_outline_rounded,
                     label: 'حذف',
-                    color: SuperTokens.danger,
+                    color: t.tokens.danger,
                     onTap: () => Navigator.pop(sheetContext),
                   ),
                 ],
@@ -1470,7 +1470,7 @@ class _HeaderIconButton extends StatelessWidget {
         style: IconButton.styleFrom(
           backgroundColor: t.inputBg,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
             side: BorderSide(color: t.border),
           ),
         ),
@@ -1503,7 +1503,7 @@ class _ComposerIconButton extends StatelessWidget {
         style: IconButton.styleFrom(
           backgroundColor: t.inputBg,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
             side: BorderSide(color: t.border),
           ),
         ),
@@ -1566,7 +1566,7 @@ class _DateSeparator extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: t.surface,
-                borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+                borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
                 border: Border.all(color: t.border),
               ),
               child: Text(
@@ -1596,7 +1596,7 @@ class _TypingIndicator extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: t.surface,
-        borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
         border: Border.all(color: t.border),
       ),
       child: Row(
@@ -1651,7 +1651,7 @@ class _NavigationChip extends StatelessWidget {
           backgroundColor: t.tintFill(color, 0.1),
           side: BorderSide(color: t.tintFill(color, 0.28)),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
           ),
           padding: EdgeInsets.symmetric(horizontal: t.spacing.xs),
         ),
@@ -1685,7 +1685,7 @@ class _MessageActionChip extends StatelessWidget {
       backgroundColor: t.tintFill(chipColor, 0.08),
       side: BorderSide(color: t.border),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
       ),
     );
   }
@@ -1732,7 +1732,7 @@ class _MessageAttachment {
     this.caption,
     this.mediaUrl,
     this.icon = Icons.insert_drive_file,
-    this.color = SuperTokens.accent,
+    this.color = const Color(0xFF4A7CFF),
     this.actionLabel,
     this.duration,
     this.pollOptions = const [],
@@ -1806,7 +1806,7 @@ class _MessageAttachmentView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
           child: Stack(
             children: [
               Image.network(
@@ -1895,7 +1895,7 @@ class _MessageAttachmentView extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               color: attachment.color.withValues(alpha: isDark ? 0.24 : 0.12),
-              borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
             ),
             child: Stack(
               children: [
@@ -1999,7 +1999,7 @@ class _MessageAttachmentView extends StatelessWidget {
       decoration: BoxDecoration(
         color: SuperThemeData.of(context).inputBg,
         border: Border.all(color: SuperThemeData.of(context).border),
-        borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2117,7 +2117,7 @@ class _MessageAttachmentView extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             color: attachment.color.withValues(alpha: isDark ? 0.24 : 0.12),
-            borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
             border: Border.all(
               color: attachment.color.withValues(alpha: 0.28),
             ),
@@ -2210,7 +2210,7 @@ class _MessageAttachmentView extends StatelessWidget {
       decoration: BoxDecoration(
         color: SuperThemeData.of(context).inputBg,
         border: Border.all(color: SuperThemeData.of(context).border),
-        borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2358,7 +2358,7 @@ class _AttachmentBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.52),
-        borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
         border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
       ),
       child: Row(
@@ -2399,7 +2399,7 @@ class _InlineAction extends StatelessWidget {
     final t = SuperThemeData.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+      borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: t.spacing.sm,
@@ -2407,7 +2407,7 @@ class _InlineAction extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: t.tintFill(color, 0.1),
-          borderRadius: BorderRadius.circular(SuperTokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
           border: Border.all(color: t.tintFill(color, 0.25)),
         ),
         child: Row(
@@ -2453,7 +2453,7 @@ class _AudioWaveform extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 1.5),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: isDark ? 0.72 : 0.82),
-                  borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
                 ),
               ),
             ),
@@ -2511,7 +2511,7 @@ class _PollOptionTile extends StatelessWidget {
           ),
           SizedBox(height: t.spacing.xs),
           ClipRRect(
-            borderRadius: BorderRadius.circular(SuperTokens.radiusPill),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
             child: LinearProgressIndicator(
               value: percentage,
               minHeight: 7,
@@ -2571,9 +2571,9 @@ class _MessageBubble extends StatelessWidget {
           padding: isHighlighted ? const EdgeInsets.all(3) : EdgeInsets.zero,
           decoration: BoxDecoration(
             color: isHighlighted
-                ? t.tintFill(SuperTokens.warning, 0.28)
+                ? t.tintFill(t.tokens.warning, 0.28)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
           ),
           child: GestureDetector(
             onLongPress: onLongPress,
@@ -2587,17 +2587,17 @@ class _MessageBubble extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: bubbleColor,
                   borderRadius: BorderRadiusDirectional.only(
-                    topStart: Radius.circular(SuperTokens.radiusCard),
-                    topEnd: Radius.circular(SuperTokens.radiusCard),
+                    topStart: Radius.circular(t.tokens.radiusCard),
+                    topEnd: Radius.circular(t.tokens.radiusCard),
                     bottomStart: Radius.circular(
                       isCurrentUser
-                          ? SuperTokens.radiusCard
-                          : SuperTokens.radiusMd,
+                          ? t.tokens.radiusCard
+                          : t.tokens.radiusMd,
                     ),
                     bottomEnd: Radius.circular(
                       isCurrentUser
-                          ? SuperTokens.radiusMd
-                          : SuperTokens.radiusCard,
+                          ? t.tokens.radiusMd
+                          : t.tokens.radiusCard,
                     ),
                   ),
                   border: Border.all(color: bubbleBorder),

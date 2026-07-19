@@ -173,7 +173,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
           title: Text(product.name),
           subtitle: Text(
             '\$${product.price.toStringAsFixed(2)}',
-            style: SuperText.mono.copyWith(color: SuperTokens.success),
+            style: SuperText.mono.copyWith(color: superTheme.tokens.success),
           ),
         );
       },
@@ -265,7 +265,7 @@ class _ThemeModeItem extends StatelessWidget {
     return Row(
       children: [
         Icon(icon),
-        const SizedBox(width: SuperTokens.space2),
+        SizedBox(width: SuperThemeData.of(context).tokens.space2),
         Text(label),
       ],
     );
@@ -317,14 +317,14 @@ class _PropertyGroups extends StatelessWidget {
                 runSpacing: superTheme.spacing.xs,
                 children: entry.value.map((property) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: SuperTokens.space2,
-                      vertical: SuperTokens.space1,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: superTheme.tokens.space2,
+                      vertical: superTheme.tokens.space1,
                     ),
                     decoration: BoxDecoration(
                       color: superTheme.inputBg,
                       borderRadius: BorderRadius.circular(
-                        SuperTokens.radiusControl,
+                        superTheme.tokens.radiusControl,
                       ),
                       border: Border.all(color: superTheme.border),
                     ),

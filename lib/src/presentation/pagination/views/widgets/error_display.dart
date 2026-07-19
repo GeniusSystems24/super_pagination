@@ -36,7 +36,7 @@ class ErrorDisplay extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: paginationTheme.errorContainerColor,
-              borderRadius: BorderRadius.circular(SuperTokens.radiusCard),
+              borderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
               border: Border.all(color: paginationTheme.errorBorderColor),
             ),
             child: Padding(

@@ -58,8 +58,8 @@ class PaginationExampleAppState extends State<PaginationExampleApp> {
           themeMode: _themeController.themeMode,
           theme: AppTheme.light(mode),
           darkTheme: AppTheme.dark(mode),
-          themeAnimationDuration: SuperTokens.durExpand,
-          themeAnimationCurve: SuperTokens.curveStandard,
+          themeAnimationDuration: const Duration(milliseconds: 200),
+          themeAnimationCurve: const Cubic(0.4, 0, 0.2, 1),
         );
       },
     );

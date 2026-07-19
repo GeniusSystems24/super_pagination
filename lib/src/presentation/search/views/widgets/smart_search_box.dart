@@ -228,7 +228,7 @@ class SuperSearchBox<T, K> extends StatelessWidget {
     final effectiveBorderRadius =
         borderRadius ??
         searchTheme.searchBoxBorderRadius ??
-        BorderRadius.circular(SuperTokens.radiusControl);
+        BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     final defaultBorder = OutlineInputBorder(
       borderRadius: effectiveBorderRadius,

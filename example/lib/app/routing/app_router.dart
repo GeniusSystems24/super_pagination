@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:super_core/super_core.dart';
 
 import 'package:super_pagination_example/features/home/presentation/pages/home_screen.dart';
 import 'package:super_pagination_example/app/presentation/example_shell.dart';
@@ -94,13 +93,13 @@ CustomTransitionPage<void> _buildPageWithTransition({
   return CustomTransitionPage<void>(
     key: state.pageKey,
     child: child,
-    transitionDuration: SuperTokens.durExpand,
-    reverseTransitionDuration: SuperTokens.durBase,
+    transitionDuration: const Duration(milliseconds: 200),
+    reverseTransitionDuration: const Duration(milliseconds: 150),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final curved = CurvedAnimation(
         parent: animation,
-        curve: SuperTokens.curveOut,
-        reverseCurve: SuperTokens.curveStandard,
+        curve: const Cubic(0, 0, 0.2, 1),
+        reverseCurve: const Cubic(0.4, 0, 0.2, 1),
       );
       return FadeTransition(
         opacity: curved,

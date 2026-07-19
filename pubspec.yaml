@@ -7,7 +7,7 @@ description: >
   backoff, SuperSearchBox with auto-positioning overlay dropdown, keyboard navigation, and production-ready UI components..
 
 # package version
-version: 4.1.4
+version: 4.1.6
 
 # package homepage, repository and issue tracker urls
 homepage: https://github.com/GeniusSystems24/super_pagination
@@ -35,7 +35,7 @@ dependencies:
   logger: ^2.6.2
   provider: ^6.1.5+1
   scrollview_observer: ^1.26.2
-  super_core: ">=1.2.0 <2.0.0"
+  super_core: ">=2.1.0 <3.0.0"
 
 dev_dependencies:
   flutter_lints: ^5.0.0

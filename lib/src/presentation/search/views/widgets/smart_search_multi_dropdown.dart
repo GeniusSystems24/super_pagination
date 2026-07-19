@@ -442,7 +442,7 @@ class _SuperSearchMultiDropdownState<T, K>
   Widget _buildBottomSheetTrigger(BuildContext context) {
     final searchTheme = SuperSearchTheme.of(context);
     final effectiveBorderRadius =
-        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
+        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     final selectedCount = _searchController!.selectedItems.length +
         _searchController!.pendingKeys.length;
@@ -682,7 +682,7 @@ class _DefaultMultiSelectedItemChip<T> extends StatelessWidget {
           ),
           InkWell(
             onTap: onRemove,
-            borderRadius: BorderRadius.circular(SuperTokens.radiusControl),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl),
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: Icon(
@@ -916,7 +916,7 @@ class _SuperSearchMultiBox<T, K> extends StatelessWidget {
     final searchTheme = SuperSearchTheme.of(context);
 
     final effectiveBorderRadius =
-        borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
+        borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     final effectiveDecoration = decoration ??
         InputDecoration(
@@ -1520,7 +1520,7 @@ class _DefaultPendingKeyChip<K> extends StatelessWidget {
           ),
           InkWell(
             onTap: onRemove,
-            borderRadius: BorderRadius.circular(SuperTokens.radiusControl),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl),
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: Icon(
@@ -1712,7 +1712,7 @@ class _SuperSearchBottomSheetContentState<T, K>
 
   Widget _buildSearchBox(BuildContext context, SuperSearchTheme searchTheme) {
     final effectiveBorderRadius =
-        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperTokens.radiusControl);
+        widget.borderRadius ?? searchTheme.searchBoxBorderRadius ?? BorderRadius.circular(SuperThemeData.of(context).tokens.radiusControl);
 
     return TextField(
       controller: _textController,

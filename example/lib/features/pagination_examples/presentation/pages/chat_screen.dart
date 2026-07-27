@@ -582,7 +582,7 @@ class _ChatScreenController {
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
         ),
         margin: const EdgeInsets.all(16),
         duration: const Duration(seconds: 2),
@@ -758,16 +758,16 @@ class _ChatScreenView extends StatelessWidget {
               height: 42,
               decoration: BoxDecoration(
                 color: t.inputBg,
-                borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+                borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
                 border: Border.all(color: t.border),
               ),
               child: TextField(
                 controller: controller.searchController,
                 autofocus: true,
-                style: SuperText.body.copyWith(color: t.fg1),
+                style: t.textTheme.body.copyWith(color: t.fg1),
                 decoration: InputDecoration(
                   hintText: 'ابحث في الرسائل…',
-                  hintStyle: SuperText.body.copyWith(color: t.fg4),
+                  hintStyle: t.textTheme.body.copyWith(color: t.fg4),
                   prefixIcon: Icon(Icons.search_rounded, color: t.fg3),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -796,7 +796,7 @@ class _ChatScreenView extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: t.tintFill(primary, 0.14),
                           borderRadius:
-                              BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+                              BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
                           border: Border.all(color: t.border),
                         ),
                         child: Icon(
@@ -829,7 +829,7 @@ class _ChatScreenView extends StatelessWidget {
                           _ChatScreenController._otherUser,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: SuperText.heading.copyWith(color: t.fg1),
+                          style: t.textTheme.heading.copyWith(color: t.fg1),
                         ),
                         SizedBox(height: t.spacing.xs),
                         Row(
@@ -848,7 +848,7 @@ class _ChatScreenView extends StatelessWidget {
                                 uiState.isTyping ? 'يكتب الآن…' : 'متصل الآن',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: SuperText.caption.copyWith(color: t.fg3),
+                                style: t.textTheme.caption.copyWith(color: t.fg3),
                               ),
                             ),
                           ],
@@ -919,7 +919,7 @@ class _ChatScreenView extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 300),
       decoration: BoxDecoration(
         color: t.surface,
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
         border: Border.all(color: t.border),
       ),
       child: Column(
@@ -930,7 +930,7 @@ class _ChatScreenView extends StatelessWidget {
             height: 72,
             decoration: BoxDecoration(
               color: t.tintFill(primary, 0.14),
-              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
               border: Border.all(color: t.border),
             ),
             child: Icon(Icons.person_outline_rounded, size: 36, color: primary),
@@ -938,12 +938,12 @@ class _ChatScreenView extends StatelessWidget {
           SizedBox(height: t.spacing.md),
           Text(
             _ChatScreenController._otherUser,
-            style: SuperText.heading.copyWith(color: t.fg1, fontSize: 20),
+            style: t.textTheme.heading.copyWith(color: t.fg1, fontSize: 20),
           ),
           SizedBox(height: t.spacing.xs),
           Text(
             '+966 50 XXX XXXX',
-            style: SuperText.mono.copyWith(color: t.fg3),
+            style: t.textTheme.mono.copyWith(color: t.fg3),
           ),
           SizedBox(height: t.spacing.lg),
           Row(
@@ -977,7 +977,7 @@ class _ChatScreenView extends StatelessWidget {
           height: 42,
           decoration: BoxDecoration(
             color: t.tintFill(primary, 0.1),
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
           ),
           child: IconButton(
             onPressed: () {},
@@ -985,7 +985,7 @@ class _ChatScreenView extends StatelessWidget {
           ),
         ),
         SizedBox(height: t.spacing.xs),
-        Text(label, style: SuperText.caption.copyWith(color: t.fg3)),
+        Text(label, style: t.textTheme.caption.copyWith(color: t.fg3)),
       ],
     );
   }
@@ -1010,14 +1010,14 @@ class _ChatScreenView extends StatelessWidget {
             height: 34,
             decoration: BoxDecoration(
               color: t.tintFill(primary, 0.1),
-              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
             ),
             child: Icon(Icons.near_me_outlined, color: primary, size: 18),
           ),
           SizedBox(width: t.spacing.sm),
           Text(
             'تنقل سريع',
-            style: SuperText.label.copyWith(color: t.fg2),
+            style: t.textTheme.label.copyWith(color: t.fg2),
           ),
           SizedBox(width: t.spacing.md),
           Expanded(
@@ -1118,7 +1118,7 @@ class _ChatScreenView extends StatelessWidget {
                 constraints: const BoxConstraints(minHeight: 46),
                 decoration: BoxDecoration(
                   color: t.inputBg,
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
                   border: Border.all(color: t.border),
                 ),
                 child: TextField(
@@ -1130,14 +1130,14 @@ class _ChatScreenView extends StatelessWidget {
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'اكتب رسالة…',
-                    hintStyle: SuperText.body.copyWith(color: t.fg4),
+                    hintStyle: t.textTheme.body.copyWith(color: t.fg4),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: t.spacing.md,
                       vertical: 12,
                     ),
                   ),
-                  style: SuperText.body.copyWith(color: t.fg1),
+                  style: t.textTheme.body.copyWith(color: t.fg1),
                   onSubmitted: (_) => controller.sendMessage(),
                 ),
               ),
@@ -1164,7 +1164,7 @@ class _ChatScreenView extends StatelessWidget {
                 height: 46,
                 decoration: BoxDecoration(
                   color: primary,
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
                 ),
                 child: IconButton(
                   tooltip: 'إرسال',
@@ -1208,7 +1208,7 @@ class _ChatScreenView extends StatelessWidget {
             backgroundColor: t.surface,
             foregroundColor: t.fg2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
               side: BorderSide(color: t.border),
             ),
             child: const Icon(Icons.keyboard_double_arrow_down_rounded),
@@ -1221,13 +1221,13 @@ class _ChatScreenView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
                   color: primary,
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
                   border: Border.all(color: t.surface, width: 2),
                 ),
                 constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
                 child: Text(
                   '${uiState.unreadCount}',
-                  style: SuperText.mono.copyWith(
+                  style: t.textTheme.mono.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
@@ -1256,44 +1256,46 @@ class _ChatScreenView extends StatelessWidget {
     return Center(
       child: Padding(
         padding: EdgeInsets.all(t.spacing.xl),
-        child: SuperCard(
-          padding: EdgeInsets.all(t.spacing.xl),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: t.tintFill(color, 0.12),
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+        child: SuperSectionCard(
+          child: Padding(
+            padding: EdgeInsets.all(t.spacing.xl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: t.tintFill(color, 0.12),
+                    borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
+                  ),
+                  child: loading
+                      ? Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: color,
+                          ),
+                        )
+                      : Icon(icon, color: color, size: 26),
                 ),
-                child: loading
-                    ? Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: color,
-                        ),
-                      )
-                    : Icon(icon, color: color, size: 26),
-              ),
-              SizedBox(height: t.spacing.lg),
-              Text(title, style: SuperText.heading.copyWith(color: t.fg1)),
-              SizedBox(height: t.spacing.sm),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 360),
-                child: Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: SuperText.body.copyWith(color: t.fg3),
-                ),
-              ),
-              if (action != null) ...[
                 SizedBox(height: t.spacing.lg),
-                action,
+                Text(title, style: t.textTheme.heading.copyWith(color: t.fg1)),
+                SizedBox(height: t.spacing.sm),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 360),
+                  child: Text(
+                    description,
+                    textAlign: TextAlign.center,
+                    style: t.textTheme.body.copyWith(color: t.fg3),
+                  ),
+                ),
+                if (action != null) ...[
+                  SizedBox(height: t.spacing.lg),
+                  action,
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -1321,7 +1323,7 @@ class _ChatScreenView extends StatelessWidget {
           decoration: BoxDecoration(
             color: t.surface,
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(t.tokens.radiusCard),
+              top: Radius.circular(t.spacing.radiusCard),
             ),
             border: Border(top: BorderSide(color: t.border)),
           ),
@@ -1334,7 +1336,7 @@ class _ChatScreenView extends StatelessWidget {
                 height: 4,
                 decoration: BoxDecoration(
                   color: t.borderStrong,
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
                 ),
               ),
               SizedBox(height: t.spacing.lg),
@@ -1342,7 +1344,7 @@ class _ChatScreenView extends StatelessWidget {
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   'إجراءات الرسالة',
-                  style: SuperText.heading.copyWith(color: t.fg1),
+                  style: t.textTheme.heading.copyWith(color: t.fg1),
                 ),
               ),
               SizedBox(height: t.spacing.md),
@@ -1351,7 +1353,7 @@ class _ChatScreenView extends StatelessWidget {
                 padding: EdgeInsets.all(t.spacing.md),
                 decoration: BoxDecoration(
                   color: t.inputBg,
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
                   border: Border.all(color: t.border),
                 ),
                 child: Text(
@@ -1359,7 +1361,7 @@ class _ChatScreenView extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textDirection: TextDirection.rtl,
-                  style: SuperText.body.copyWith(color: t.fg2),
+                  style: t.textTheme.body.copyWith(color: t.fg2),
                 ),
               ),
               SizedBox(height: t.spacing.lg),
@@ -1470,7 +1472,7 @@ class _HeaderIconButton extends StatelessWidget {
         style: IconButton.styleFrom(
           backgroundColor: t.inputBg,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
             side: BorderSide(color: t.border),
           ),
         ),
@@ -1503,7 +1505,7 @@ class _ComposerIconButton extends StatelessWidget {
         style: IconButton.styleFrom(
           backgroundColor: t.inputBg,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
             side: BorderSide(color: t.border),
           ),
         ),
@@ -1525,7 +1527,7 @@ class _MenuItem extends StatelessWidget {
       children: [
         Icon(icon, size: 19, color: t.fg3),
         SizedBox(width: t.spacing.sm),
-        Text(label, style: SuperText.body.copyWith(color: t.fg2)),
+        Text(label, style: t.textTheme.body.copyWith(color: t.fg2)),
       ],
     );
   }
@@ -1566,12 +1568,12 @@ class _DateSeparator extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: t.surface,
-                borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+                borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
                 border: Border.all(color: t.border),
               ),
               child: Text(
                 dateText,
-                style: SuperText.caption.copyWith(color: t.fg3),
+                style: t.textTheme.caption.copyWith(color: t.fg3),
               ),
             ),
           ),
@@ -1596,7 +1598,7 @@ class _TypingIndicator extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: t.surface,
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
         border: Border.all(color: t.border),
       ),
       child: Row(
@@ -1646,12 +1648,12 @@ class _NavigationChip extends StatelessWidget {
         ),
         child: ActionChip(
           avatar: Icon(icon, size: 16, color: color),
-          label: Text(label, style: SuperText.caption.copyWith(color: color)),
+          label: Text(label, style: t.textTheme.caption.copyWith(color: color)),
           onPressed: onTap,
           backgroundColor: t.tintFill(color, 0.1),
           side: BorderSide(color: t.tintFill(color, 0.28)),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
           ),
           padding: EdgeInsets.symmetric(horizontal: t.spacing.xs),
         ),
@@ -1680,12 +1682,12 @@ class _MessageActionChip extends StatelessWidget {
 
     return ActionChip(
       avatar: Icon(icon, size: 17, color: chipColor),
-      label: Text(label, style: SuperText.caption.copyWith(color: chipColor)),
+      label: Text(label, style: t.textTheme.caption.copyWith(color: chipColor)),
       onPressed: onTap,
       backgroundColor: t.tintFill(chipColor, 0.08),
       side: BorderSide(color: t.border),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
       ),
     );
   }
@@ -1800,13 +1802,14 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildImageContent(BuildContext context) {
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final t = SuperThemeData.of(context);
+    final mutedColor = t.fg3;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
           child: Stack(
             children: [
               Image.network(
@@ -1816,6 +1819,7 @@ class _MessageAttachmentView extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return _buildMediaFallback(
+                    context,
                     height: 170,
                     icon: Icons.broken_image_outlined,
                     label: 'تعذر تحميل الصورة',
@@ -1825,6 +1829,7 @@ class _MessageAttachmentView extends StatelessWidget {
                   if (loadingProgress == null) return child;
 
                   return _buildMediaFallback(
+                    context,
                     height: 170,
                     icon: Icons.image_outlined,
                     label: 'جاري تحميل الصورة',
@@ -1861,7 +1866,7 @@ class _MessageAttachmentView extends StatelessWidget {
                 bottom: 12,
                 child: Text(
                   attachment.title,
-                  style: SuperText.label.copyWith(
+                  style: t.textTheme.label.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
@@ -1875,7 +1880,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             attachment.caption!,
-            style: SuperText.caption.copyWith(color: mutedColor),
+            style: t.textTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -1884,7 +1889,8 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildVideoContent(BuildContext context) {
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final t = SuperThemeData.of(context);
+    final mutedColor = t.fg3;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1895,7 +1901,7 @@ class _MessageAttachmentView extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               color: attachment.color.withValues(alpha: isDark ? 0.24 : 0.12),
-              borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+              borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
             ),
             child: Stack(
               children: [
@@ -1955,7 +1961,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           attachment.title,
-          style: SuperText.label.copyWith(
+          style: t.textTheme.label.copyWith(
             color: textColor,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -1966,7 +1972,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.subtitle!,
-            style: SuperText.caption.copyWith(color: mutedColor),
+            style: t.textTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -1974,7 +1980,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             attachment.caption!,
-            style: SuperText.caption.copyWith(color: mutedColor),
+            style: t.textTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -1992,14 +1998,15 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildAudioContent(BuildContext context) {
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final t = SuperThemeData.of(context);
+    final mutedColor = t.fg3;
 
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: SuperThemeData.of(context).inputBg,
         border: Border.all(color: SuperThemeData.of(context).border),
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2021,7 +2028,7 @@ class _MessageAttachmentView extends StatelessWidget {
                   children: [
                     Text(
                       attachment.title,
-                      style: SuperText.label.copyWith(
+                      style: t.textTheme.label.copyWith(
                         color: textColor,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2035,7 +2042,7 @@ class _MessageAttachmentView extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 attachment.duration ?? '0:00',
-                style: SuperText.caption.copyWith(
+                style: t.textTheme.caption.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                 ),
@@ -2046,7 +2053,7 @@ class _MessageAttachmentView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               attachment.subtitle!,
-              style: SuperText.caption.copyWith(color: mutedColor),
+              style: t.textTheme.caption.copyWith(color: mutedColor),
               textDirection: TextDirection.rtl,
             ),
           ],
@@ -2054,7 +2061,7 @@ class _MessageAttachmentView extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               attachment.caption!,
-              style: SuperText.caption.copyWith(color: mutedColor),
+              style: t.textTheme.caption.copyWith(color: mutedColor),
               textDirection: TextDirection.rtl,
             ),
           ],
@@ -2072,12 +2079,14 @@ class _MessageAttachmentView extends StatelessWidget {
     );
   }
 
-  Widget _buildMediaFallback({
+  Widget _buildMediaFallback(
+    BuildContext context, {
     required double height,
     required IconData icon,
     required String label,
     bool showProgress = false,
   }) {
+    final t = SuperThemeData.of(context);
     return Container(
       height: height,
       width: double.infinity,
@@ -2089,7 +2098,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: SuperText.caption.copyWith(color: textColor),
+            style: t.textTheme.caption.copyWith(color: textColor),
             textDirection: TextDirection.rtl,
           ),
           if (showProgress) ...[
@@ -2108,7 +2117,8 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildLocationContent(BuildContext context) {
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final t = SuperThemeData.of(context);
+    final mutedColor = t.fg3;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2117,7 +2127,7 @@ class _MessageAttachmentView extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             color: attachment.color.withValues(alpha: isDark ? 0.24 : 0.12),
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
             border: Border.all(
               color: attachment.color.withValues(alpha: 0.28),
             ),
@@ -2155,7 +2165,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           attachment.title,
-          style: SuperText.label.copyWith(
+          style: t.textTheme.label.copyWith(
             color: textColor,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -2166,7 +2176,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.subtitle!,
-            style: SuperText.caption.copyWith(color: mutedColor),
+            style: t.textTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -2179,7 +2189,7 @@ class _MessageAttachmentView extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 attachment.caption!,
-                style: SuperText.caption.copyWith(
+                style: t.textTheme.caption.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                 ),
@@ -2203,14 +2213,15 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildContactContent(BuildContext context) {
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final t = SuperThemeData.of(context);
+    final mutedColor = t.fg3;
 
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: SuperThemeData.of(context).inputBg,
         border: Border.all(color: SuperThemeData.of(context).border),
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+        borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2229,7 +2240,7 @@ class _MessageAttachmentView extends StatelessWidget {
                   children: [
                     Text(
                       attachment.title,
-                      style: SuperText.label.copyWith(
+                      style: t.textTheme.label.copyWith(
                         color: textColor,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2238,12 +2249,12 @@ class _MessageAttachmentView extends StatelessWidget {
                     if (attachment.subtitle != null)
                       Text(
                         attachment.subtitle!,
-                        style: SuperText.caption.copyWith(color: mutedColor),
+                        style: t.textTheme.caption.copyWith(color: mutedColor),
                       ),
                     if (attachment.caption != null)
                       Text(
                         attachment.caption!,
-                        style: SuperText.caption.copyWith(
+                        style: t.textTheme.caption.copyWith(
                           color: mutedColor,
                           fontSize: 11,
                         ),
@@ -2280,11 +2291,12 @@ class _MessageAttachmentView extends StatelessWidget {
   }
 
   Widget _buildPollContent(BuildContext context) {
+    final t = SuperThemeData.of(context);
     final totalVotes = attachment.pollOptions.fold<int>(
       0,
       (total, option) => total + option.votes,
     );
-    final mutedColor = SuperThemeData.of(context).fg3;
+    final mutedColor = t.fg3;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2296,7 +2308,7 @@ class _MessageAttachmentView extends StatelessWidget {
             Expanded(
               child: Text(
                 attachment.title,
-                style: SuperText.label.copyWith(
+                style: t.textTheme.label.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w700,
                 ),
@@ -2319,7 +2331,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           attachment.subtitle ?? '$totalVotes صوتاً',
-          style: SuperText.caption.copyWith(
+          style: t.textTheme.caption.copyWith(
             color: mutedColor,
             fontSize: 11,
           ),
@@ -2329,7 +2341,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.caption!,
-            style: SuperText.caption.copyWith(
+            style: t.textTheme.caption.copyWith(
               color: mutedColor,
               fontSize: 11,
             ),
@@ -2354,11 +2366,12 @@ class _AttachmentBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = SuperThemeData.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.52),
-        borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+        borderRadius: BorderRadius.circular(t.spacing.radiusPill),
         border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
       ),
       child: Row(
@@ -2369,7 +2382,7 @@ class _AttachmentBadge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style: SuperText.caption.copyWith(
+            style: t.textTheme.caption.copyWith(
               color: Colors.white,
               fontSize: 10.5,
               fontWeight: FontWeight.w600,
@@ -2399,7 +2412,7 @@ class _InlineAction extends StatelessWidget {
     final t = SuperThemeData.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+      borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: t.spacing.sm,
@@ -2407,7 +2420,7 @@ class _InlineAction extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: t.tintFill(color, 0.1),
-          borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusMd),
+          borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusMd),
           border: Border.all(color: t.tintFill(color, 0.25)),
         ),
         child: Row(
@@ -2420,7 +2433,7 @@ class _InlineAction extends StatelessWidget {
               child: Text(
                 label,
                 overflow: TextOverflow.ellipsis,
-                style: SuperText.caption.copyWith(
+                style: t.textTheme.caption.copyWith(
                   color: color,
                   fontWeight: FontWeight.w700,
                 ),
@@ -2453,7 +2466,7 @@ class _AudioWaveform extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 1.5),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: isDark ? 0.72 : 0.82),
-                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+                  borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
                 ),
               ),
             ),
@@ -2495,13 +2508,13 @@ class _PollOptionTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   option.label,
-                  style: SuperText.caption.copyWith(color: textColor),
+                  style: t.textTheme.caption.copyWith(color: textColor),
                   textDirection: TextDirection.rtl,
                 ),
               ),
               Text(
                 '${(percentage * 100).round()}%',
-                style: SuperText.mono.copyWith(
+                style: t.textTheme.mono.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
@@ -2511,7 +2524,7 @@ class _PollOptionTile extends StatelessWidget {
           ),
           SizedBox(height: t.spacing.xs),
           ClipRRect(
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusPill),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusPill),
             child: LinearProgressIndicator(
               value: percentage,
               minHeight: 7,
@@ -2573,7 +2586,7 @@ class _MessageBubble extends StatelessWidget {
             color: isHighlighted
                 ? t.tintFill(t.tokens.warning, 0.28)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(SuperThemeData.of(context).tokens.radiusCard),
+            borderRadius: BorderRadius.circular(SuperThemeData.of(context).spacing.radiusCard),
           ),
           child: GestureDetector(
             onLongPress: onLongPress,
@@ -2587,17 +2600,17 @@ class _MessageBubble extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: bubbleColor,
                   borderRadius: BorderRadiusDirectional.only(
-                    topStart: Radius.circular(t.tokens.radiusCard),
-                    topEnd: Radius.circular(t.tokens.radiusCard),
+                    topStart: Radius.circular(t.spacing.radiusCard),
+                    topEnd: Radius.circular(t.spacing.radiusCard),
                     bottomStart: Radius.circular(
                       isCurrentUser
-                          ? t.tokens.radiusCard
-                          : t.tokens.radiusMd,
+                          ? t.spacing.radiusCard
+                          : t.spacing.radiusMd,
                     ),
                     bottomEnd: Radius.circular(
                       isCurrentUser
-                          ? t.tokens.radiusMd
-                          : t.tokens.radiusCard,
+                          ? t.spacing.radiusMd
+                          : t.spacing.radiusCard,
                     ),
                   ),
                   border: Border.all(color: bubbleBorder),
@@ -2608,7 +2621,7 @@ class _MessageBubble extends StatelessWidget {
                     if (attachment == null)
                       Text(
                         message.content,
-                        style: SuperText.body.copyWith(color: t.fg1),
+                        style: t.textTheme.body.copyWith(color: t.fg1),
                         textDirection: TextDirection.rtl,
                       )
                     else
@@ -2624,7 +2637,7 @@ class _MessageBubble extends StatelessWidget {
                       children: [
                         Text(
                           DateFormat('HH:mm').format(message.timestamp),
-                          style: SuperText.mono.copyWith(
+                          style: t.textTheme.mono.copyWith(
                             color: t.fg4,
                             fontSize: 10.5,
                           ),

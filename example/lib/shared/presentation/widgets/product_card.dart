@@ -21,68 +21,70 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final superTheme = SuperThemeData.of(context);
 
-    return SuperCard(
+    return SuperSectionCard(
       margin: EdgeInsets.only(bottom: superTheme.spacing.md),
-      padding: EdgeInsets.all(superTheme.spacing.md),
       onTap: onTap,
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(superTheme.tokens.radiusMd),
-            child: Image.network(
-              product.imageUrl,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 60,
-                  height: 60,
-                  color: superTheme.inputBg,
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.image_not_supported_outlined,
-                    color: superTheme.fg4,
+      child: Padding(
+        padding: EdgeInsets.all(superTheme.spacing.md),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(superTheme.spacing.radiusMd),
+              child: Image.network(
+                product.imageUrl,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 60,
+                    height: 60,
+                    color: superTheme.inputBg,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      color: superTheme.fg4,
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: superTheme.spacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HighlightedText.single(
+                    text: product.name,
+                    searchQuery: searchQuery,
+                    style: superTheme.textTheme.heading.copyWith(color: superTheme.fg1),
+                    highlightColor: superTheme.tintFill(
+                      Theme.of(context).colorScheme.primary,
+                      0.22,
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
-          SizedBox(width: superTheme.spacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HighlightedText.single(
-                  text: product.name,
-                  searchQuery: searchQuery,
-                  style: SuperText.heading.copyWith(color: superTheme.fg1),
-                  highlightColor: superTheme.tintFill(
-                    Theme.of(context).colorScheme.primary,
-                    0.22,
+                  SizedBox(height: superTheme.spacing.xs),
+                  Text(
+                    product.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: superTheme.textTheme.caption.copyWith(color: superTheme.fg3),
                   ),
-                ),
-                SizedBox(height: superTheme.spacing.xs),
-                Text(
-                  product.description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: SuperText.caption.copyWith(color: superTheme.fg3),
-                ),
-                SizedBox(height: superTheme.spacing.sm),
-                StatusPill(product.category, tone: PillTone.accent),
-              ],
+                  SizedBox(height: superTheme.spacing.sm),
+                  StatusPill(product.category, tone: PillTone.accent),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: superTheme.spacing.md),
-          Text(
-            '\$${product.price.toStringAsFixed(2)}',
-            style: SuperText.mono.copyWith(
-              color: superTheme.tokens.success,
-              fontWeight: FontWeight.w700,
+            SizedBox(width: superTheme.spacing.md),
+            Text(
+              '\$${product.price.toStringAsFixed(2)}',
+              style: superTheme.textTheme.mono.copyWith(
+                color: superTheme.tokens.success,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

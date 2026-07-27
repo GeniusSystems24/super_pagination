@@ -12,8 +12,8 @@ void main() {
 
     expect(source, contains("package:super_core/super_core.dart"));
     expect(source, contains('SuperThemeData.of(context)'));
-    expect(source, contains('SuperText.heading'));
-    expect(source, contains('SuperCard('));
+    expect(source, contains('t.textTheme.heading'));
+    expect(source, contains('SuperSectionCard('));
     expect(source, contains('t.tintFill('));
   });
 

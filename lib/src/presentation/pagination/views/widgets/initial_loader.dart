@@ -11,7 +11,7 @@ class InitialLoader extends StatelessWidget {
     return SingleChildScrollView(
       child: Center(
         child: Padding(
-          padding: superTheme.padding.card,
+          padding: superTheme.spacing.cardPadding,
           child: SizedBox.square(
             dimension: 28,
             child: CircularProgressIndicator(

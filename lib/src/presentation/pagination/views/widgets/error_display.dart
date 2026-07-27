@@ -30,17 +30,17 @@ class ErrorDisplay extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: superTheme.padding.card,
+        padding: superTheme.spacing.cardPadding,
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: superTheme.sizing.contentColumn),
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: paginationTheme.errorContainerColor,
-              borderRadius: BorderRadius.circular(superTheme.tokens.radiusCard),
+              borderRadius: BorderRadius.circular(superTheme.spacing.radiusCard),
               border: Border.all(color: paginationTheme.errorBorderColor),
             ),
             child: Padding(
-              padding: superTheme.padding.card,
+              padding: superTheme.spacing.cardPadding,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -53,7 +53,7 @@ class ErrorDisplay extends StatelessWidget {
                   Text(
                     'Error occurred',
                     textAlign: TextAlign.center,
-                    style: SuperText.heading.copyWith(
+                    style: superTheme.textTheme.heading.copyWith(
                       color: paginationTheme.errorTitleColor,
                     ),
                   ),
@@ -61,7 +61,7 @@ class ErrorDisplay extends StatelessWidget {
                   Text(
                     exception.toString(),
                     textAlign: TextAlign.center,
-                    style: SuperText.body.copyWith(
+                    style: superTheme.textTheme.body.copyWith(
                       color: paginationTheme.errorMessageColor,
                     ),
                   ),

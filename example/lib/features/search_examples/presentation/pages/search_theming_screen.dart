@@ -69,10 +69,10 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                   maxWidth: superTheme.sizing.contentColumn,
                 ),
                 child: ListView(
-                  padding: superTheme.padding.page,
+                  padding: superTheme.spacing.pagePadding,
                   children: [
-                    SuperCard(
-                      child: SectionHeader(
+                    SuperSectionCard(
+                      header: SuperSectionHeader(
                         title: 'Shared theme source',
                         subtitle:
                             'Search surfaces are generated from SuperMaterialThemeData and SuperPalette.',
@@ -124,8 +124,8 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
                       child: _buildDropdown(),
                     ),
                     SizedBox(height: superTheme.spacing.section),
-                    const SuperCard(
-                      header: SectionHeader(
+                    const SuperSectionCard(
+                      header: SuperSectionHeader(
                         title: 'Override surface',
                         subtitle:
                             'All existing SuperSearchTheme properties remain available for focused overrides.',
@@ -173,7 +173,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
           title: Text(product.name),
           subtitle: Text(
             '\$${product.price.toStringAsFixed(2)}',
-            style: SuperText.mono.copyWith(color: superTheme.tokens.success),
+            style: superTheme.textTheme.mono.copyWith(color: superTheme.tokens.success),
           ),
         );
       },
@@ -236,8 +236,8 @@ class _PaletteSearchSection extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final superTheme = SuperThemeData.of(context);
-          return SuperCard(
-            header: SectionHeader(
+          return SuperSectionCard(
+            header: SuperSectionHeader(
               title: title,
               subtitle: subtitle,
               marker: marker,
@@ -265,7 +265,7 @@ class _ThemeModeItem extends StatelessWidget {
     return Row(
       children: [
         Icon(icon),
-        SizedBox(width: SuperThemeData.of(context).tokens.space2),
+        SizedBox(width: SuperThemeData.of(context).spacing.space2),
         Text(label),
       ],
     );
@@ -309,7 +309,7 @@ class _PropertyGroups extends StatelessWidget {
             children: [
               Text(
                 entry.key.toUpperCase(),
-                style: SuperText.label.copyWith(color: superTheme.fg2),
+                style: superTheme.textTheme.label.copyWith(color: superTheme.fg2),
               ),
               SizedBox(height: superTheme.spacing.sm),
               Wrap(
@@ -318,19 +318,19 @@ class _PropertyGroups extends StatelessWidget {
                 children: entry.value.map((property) {
                   return Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: superTheme.tokens.space2,
-                      vertical: superTheme.tokens.space1,
+                      horizontal: superTheme.spacing.space2,
+                      vertical: superTheme.spacing.space1,
                     ),
                     decoration: BoxDecoration(
                       color: superTheme.inputBg,
                       borderRadius: BorderRadius.circular(
-                        superTheme.tokens.radiusControl,
+                        superTheme.spacing.radiusControl,
                       ),
                       border: Border.all(color: superTheme.border),
                     ),
                     child: Text(
                       property,
-                      style: SuperText.mono.copyWith(
+                      style: superTheme.textTheme.mono.copyWith(
                         color: superTheme.fg3,
                         fontSize: 10,
                       ),

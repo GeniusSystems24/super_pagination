@@ -530,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: SectionHeader(
+                      child: SuperSectionHeader(
                         title: category.title,
                         subtitle: category.subtitle,
                         marker: _markerFor(_selectedIndex),
@@ -571,7 +571,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: _PageFrame(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    bottom: t.padding.page.bottom + t.spacing.xl,
+                    bottom: t.spacing.pagePadding.bottom + t.spacing.xl,
                   ),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
@@ -642,7 +642,7 @@ class _PageFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = SuperThemeData.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: t.padding.page.left),
+      padding: EdgeInsets.symmetric(horizontal: t.spacing.pagePadding.left),
       child: Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
@@ -674,7 +674,7 @@ class _HeroPanel extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: t.surface,
-        borderRadius: BorderRadius.circular(t.tokens.radiusCard),
+        borderRadius: BorderRadius.circular(t.spacing.radiusCard),
         border: Border.all(color: t.border),
         boxShadow: t.cardShadow,
       ),
@@ -722,7 +722,7 @@ class _HeroPanel extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: cs.primary,
                             borderRadius: BorderRadius.circular(
-                              t.tokens.radiusPill,
+                              t.spacing.radiusPill,
                             ),
                           ),
                         ),
@@ -736,7 +736,7 @@ class _HeroPanel extends StatelessWidget {
                     SizedBox(height: t.spacing.lg),
                     Text(
                       'Explore pagination\nwithout the boilerplate.',
-                      style: SuperText.h1.copyWith(
+                      style: t.textTheme.h1.copyWith(
                         color: t.fg1,
                         fontSize: t.mode.isMobile ? 30 : 40,
                         height: 1.08,
@@ -747,7 +747,7 @@ class _HeroPanel extends StatelessWidget {
                       constraints: const BoxConstraints(maxWidth: 640),
                       child: Text(
                         'A focused gallery of production-ready pagination, streaming, search, error recovery, and Firebase patterns.',
-                        style: SuperText.body.copyWith(
+                        style: t.textTheme.body.copyWith(
                           color: t.fg3,
                           fontSize: 15,
                         ),
@@ -830,10 +830,10 @@ class _CategorySnapshot extends StatelessWidget {
     final t = SuperThemeData.of(context);
     final cs = Theme.of(context).colorScheme;
     return Container(
-      padding: t.padding.card,
+      padding: t.spacing.cardPadding,
       decoration: BoxDecoration(
         color: t.bg.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(t.tokens.radiusCard),
+        borderRadius: BorderRadius.circular(t.spacing.radiusCard),
         border: Border.all(color: t.border),
       ),
       child: Column(
@@ -844,14 +844,14 @@ class _CategorySnapshot extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               color: t.selectionFill(0.12),
-              borderRadius: BorderRadius.circular(t.tokens.radiusMd),
+              borderRadius: BorderRadius.circular(t.spacing.radiusMd),
             ),
             child: Icon(category.icon, color: cs.primary),
           ),
           SizedBox(height: t.spacing.lg),
-          Text(category.title, style: SuperText.heading.copyWith(color: t.fg1)),
+          Text(category.title, style: t.textTheme.heading.copyWith(color: t.fg1)),
           SizedBox(height: t.spacing.xs),
-          Text(category.subtitle, style: SuperText.body.copyWith(color: t.fg3)),
+          Text(category.subtitle, style: t.textTheme.body.copyWith(color: t.fg3)),
           SizedBox(height: t.spacing.lg),
           Hairline(color: t.border),
           SizedBox(height: t.spacing.md),
@@ -883,9 +883,9 @@ class _SnapshotValue extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: SuperText.label.copyWith(color: t.fg4)),
+        Text(label, style: t.textTheme.label.copyWith(color: t.fg4)),
         SizedBox(height: t.spacing.xs),
-        Text(value, style: SuperText.mono.copyWith(color: t.fg1, fontSize: 22)),
+        Text(value, style: t.textTheme.mono.copyWith(color: t.fg1, fontSize: 22)),
       ],
     );
   }
@@ -976,32 +976,34 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = SuperThemeData.of(context);
     final cs = Theme.of(context).colorScheme;
-    return SuperCard(
-      padding: EdgeInsets.all(t.spacing.md),
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: t.selectionFill(0.08),
-              borderRadius: BorderRadius.circular(t.tokens.radiusMd),
+    return SuperSectionCard(
+      child: Padding(
+        padding: EdgeInsets.all(t.spacing.md),
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: t.selectionFill(0.08),
+                borderRadius: BorderRadius.circular(t.spacing.radiusMd),
+              ),
+              child: Icon(data.icon, color: cs.primary, size: 20),
             ),
-            child: Icon(data.icon, color: cs.primary, size: 20),
-          ),
-          SizedBox(width: t.spacing.md),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(data.value, style: SuperText.heading.copyWith(color: t.fg1)),
-                SizedBox(height: t.spacing.xs),
-                Text(data.label, style: SuperText.caption.copyWith(color: t.fg3)),
-              ],
+            SizedBox(width: t.spacing.md),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(data.value, style: t.textTheme.heading.copyWith(color: t.fg1)),
+                  SizedBox(height: t.spacing.xs),
+                  Text(data.label, style: t.textTheme.caption.copyWith(color: t.fg3)),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1044,57 +1046,59 @@ class _ExampleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = SuperThemeData.of(context);
-    return SuperCard(
+    return SuperSectionCard(
       onTap: () => context.go(item.route),
-      padding: EdgeInsets.all(t.spacing.lg),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: t.tintFill(item.color, 0.14),
-                  borderRadius: BorderRadius.circular(t.tokens.radiusMd),
+      child: Padding(
+        padding: EdgeInsets.all(t.spacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: t.tintFill(item.color, 0.14),
+                    borderRadius: BorderRadius.circular(t.spacing.radiusMd),
+                  ),
+                  child: Icon(item.icon, color: item.color, size: 21),
                 ),
-                child: Icon(item.icon, color: item.color, size: 21),
-              ),
-              const Spacer(),
-              const StatusPill('Demo', tone: PillTone.neutral),
-            ],
-          ),
-          SizedBox(height: t.spacing.lg),
-          Text(
-            item.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: SuperText.heading.copyWith(color: t.fg1),
-          ),
-          SizedBox(height: t.spacing.sm),
-          SizedBox(
-            height: 64,
-            child: Text(
-              item.description,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: SuperText.body.copyWith(color: t.fg3),
+                const Spacer(),
+                const StatusPill('Demo', tone: PillTone.neutral),
+              ],
             ),
-          ),
-          SizedBox(height: t.spacing.md),
-          Row(
-            children: [
-              Text(
-                'OPEN EXAMPLE',
-                style: SuperText.label.copyWith(color: item.color),
+            SizedBox(height: t.spacing.lg),
+            Text(
+              item.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: t.textTheme.heading.copyWith(color: t.fg1),
+            ),
+            SizedBox(height: t.spacing.sm),
+            SizedBox(
+              height: 64,
+              child: Text(
+                item.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: t.textTheme.body.copyWith(color: t.fg3),
               ),
-              SizedBox(width: t.spacing.sm),
-              Icon(Icons.arrow_forward_rounded, size: 17, color: item.color),
-            ],
-          ),
-        ],
+            ),
+            SizedBox(height: t.spacing.md),
+            Row(
+              children: [
+                Text(
+                  'OPEN EXAMPLE',
+                  style: t.textTheme.label.copyWith(color: item.color),
+                ),
+                SizedBox(width: t.spacing.sm),
+                Icon(Icons.arrow_forward_rounded, size: 17, color: item.color),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1110,24 +1114,26 @@ class _EmptyState extends StatelessWidget {
     final t = SuperThemeData.of(context);
     return Center(
       child: Padding(
-        padding: t.padding.page,
-        child: SuperCard(
-          padding: EdgeInsets.all(t.spacing.xl),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.search_off_rounded, size: 42, color: t.fg4),
-              SizedBox(height: t.spacing.md),
-              Text('No matching examples', style: SuperText.heading.copyWith(color: t.fg1)),
-              SizedBox(height: t.spacing.xs),
-              Text('Clear the query and explore the complete section.', style: SuperText.body.copyWith(color: t.fg3)),
-              SizedBox(height: t.spacing.lg),
-              OutlinedButton.icon(
-                onPressed: onClear,
-                icon: const Icon(Icons.close_rounded),
-                label: const Text('Clear search'),
-              ),
-            ],
+        padding: t.spacing.pagePadding,
+        child: SuperSectionCard(
+          child: Padding(
+            padding: EdgeInsets.all(t.spacing.xl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.search_off_rounded, size: 42, color: t.fg4),
+                SizedBox(height: t.spacing.md),
+                Text('No matching examples', style: t.textTheme.heading.copyWith(color: t.fg1)),
+                SizedBox(height: t.spacing.xs),
+                Text('Clear the query and explore the complete section.', style: t.textTheme.body.copyWith(color: t.fg3)),
+                SizedBox(height: t.spacing.lg),
+                OutlinedButton.icon(
+                  onPressed: onClear,
+                  icon: const Icon(Icons.close_rounded),
+                  label: const Text('Clear search'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

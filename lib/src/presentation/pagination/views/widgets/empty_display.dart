@@ -6,7 +6,8 @@ class EmptyDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paginationTheme = SuperPaginationTheme.of(context);
-    final spacing = SuperThemeData.of(context).spacing;
+    final superTheme = SuperThemeData.of(context);
+    final spacing = superTheme.spacing;
 
     return Center(
       child: Padding(
@@ -22,7 +23,7 @@ class EmptyDisplay extends StatelessWidget {
             SizedBox(height: spacing.md),
             Text(
               'No documents found',
-              style: SuperText.heading.copyWith(
+              style: superTheme.textTheme.heading.copyWith(
                 color: paginationTheme.emptyTitleColor,
               ),
             ),
@@ -30,7 +31,7 @@ class EmptyDisplay extends StatelessWidget {
             Text(
               'New items will appear here when they are available.',
               textAlign: TextAlign.center,
-              style: SuperText.caption.copyWith(
+              style: superTheme.textTheme.caption.copyWith(
                 color: paginationTheme.emptyMessageColor,
               ),
             ),

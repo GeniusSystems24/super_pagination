@@ -23,7 +23,7 @@ class EmptyDisplay extends StatelessWidget {
             SizedBox(height: spacing.md),
             Text(
               'No documents found',
-              style: superTheme.textTheme.heading.copyWith(
+              style: context.superTextTheme.heading.copyWith(
                 color: paginationTheme.emptyTitleColor,
               ),
             ),
@@ -31,7 +31,7 @@ class EmptyDisplay extends StatelessWidget {
             Text(
               'New items will appear here when they are available.',
               textAlign: TextAlign.center,
-              style: superTheme.textTheme.caption.copyWith(
+              style: context.superTextTheme.caption.copyWith(
                 color: paginationTheme.emptyMessageColor,
               ),
             ),

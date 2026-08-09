@@ -36,13 +36,21 @@ SuperPaginationListView.withProvider(
 
 `super_pagination` now consumes [`super_core`](https://github.com/GeniusSystems24/super_core) as its visual source of truth. Built-in loaders, empty states, error styles, search fields, overlays, focus states, radii, and spacing follow the active `SuperMaterialThemeData` automatically.
 
+`super_core 3.3.0` makes `SuperTextTheme` explicit: `textTheme` and `primaryTextTheme` are required by `SuperMaterialThemeData.light/dark`, and branded typography is read with `context.superTextTheme` rather than `SuperThemeData.textTheme`. Material `Theme.of(context).textTheme` remains valid where a standard Flutter `TextTheme` is intended. Font-family metadata is not inferred through the removed `_familyOf` helper; pass `fontFamily` explicitly only when a token-level override is required.
+
 ```dart
+final typography = SuperTextTheme();
+
 MaterialApp(
   theme: SuperMaterialThemeData.light(
     palette: SuperPalette.bluePalette,
+    textTheme: typography,
+    primaryTextTheme: typography,
   ),
   darkTheme: SuperMaterialThemeData.dark(
     palette: SuperPalette.bluePalette,
+    textTheme: typography,
+    primaryTextTheme: typography,
   ),
 );
 ```
@@ -51,8 +59,11 @@ No package-specific extension is required for the default appearance. `SuperSear
 
 ```dart
 final base = SuperSearchTheme.light();
+final typography = SuperTextTheme();
 
 SuperMaterialThemeData.light(
+  textTheme: typography,
+  primaryTextTheme: typography,
   extensions: [
     base.copyWith(searchBoxElevation: 0),
     SuperPaginationTheme.light(),
@@ -946,12 +957,18 @@ read the active GeniusLink palette, brightness, typography, spacing, radii, and
 responsive mode automatically.
 
 ```dart
+final typography = SuperTextTheme();
+
 MaterialApp(
   theme: SuperMaterialThemeData.light(
     palette: SuperPalette.bluePalette,
+    textTheme: typography,
+    primaryTextTheme: typography,
   ),
   darkTheme: SuperMaterialThemeData.dark(
     palette: SuperPalette.bluePalette,
+    textTheme: typography,
+    primaryTextTheme: typography,
   ),
 )
 ```
@@ -960,8 +977,12 @@ Use the package extensions only for focused overrides. Their default factories
 are still generated from the same `super_core` palette:
 
 ```dart
+final typography = SuperTextTheme();
+
 SuperMaterialThemeData.light(
   palette: SuperPalette.greenPalette,
+  textTheme: typography,
+  primaryTextTheme: typography,
   extensions: [
     SuperSearchTheme.light(
       palette: SuperPalette.greenPalette,

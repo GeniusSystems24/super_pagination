@@ -16,10 +16,16 @@ void main() {
       ..devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
+    final mode = SuperDeviceMode.forWidth(size.width);
+    final typography = SuperTextTheme(
+      isDesktop: mode == SuperDeviceMode.desktop,
+    );
     await tester.pumpWidget(
       MaterialApp(
         theme: SuperMaterialThemeData.light(
-          mode: SuperDeviceMode.forWidth(size.width),
+          mode: mode,
+          textTheme: typography,
+          primaryTextTheme: typography,
         ),
         home: ExampleShell(
           location: location,

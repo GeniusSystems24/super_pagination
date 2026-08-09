@@ -57,7 +57,7 @@ class ProductCard extends StatelessWidget {
                   HighlightedText.single(
                     text: product.name,
                     searchQuery: searchQuery,
-                    style: superTheme.textTheme.heading.copyWith(color: superTheme.fg1),
+                    style: context.superTextTheme.heading.copyWith(color: superTheme.fg1),
                     highlightColor: superTheme.tintFill(
                       Theme.of(context).colorScheme.primary,
                       0.22,
@@ -68,7 +68,7 @@ class ProductCard extends StatelessWidget {
                     product.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: superTheme.textTheme.caption.copyWith(color: superTheme.fg3),
+                    style: context.superTextTheme.caption.copyWith(color: superTheme.fg3),
                   ),
                   SizedBox(height: superTheme.spacing.sm),
                   StatusPill(product.category, tone: PillTone.accent),
@@ -78,7 +78,7 @@ class ProductCard extends StatelessWidget {
             SizedBox(width: superTheme.spacing.md),
             Text(
               '\$${product.price.toStringAsFixed(2)}',
-              style: superTheme.textTheme.mono.copyWith(
+              style: context.superTextTheme.mono.copyWith(
                 color: superTheme.tokens.success,
                 fontWeight: FontWeight.w700,
               ),

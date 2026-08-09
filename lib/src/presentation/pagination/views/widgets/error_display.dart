@@ -53,7 +53,7 @@ class ErrorDisplay extends StatelessWidget {
                   Text(
                     'Error occurred',
                     textAlign: TextAlign.center,
-                    style: superTheme.textTheme.heading.copyWith(
+                    style: context.superTextTheme.heading.copyWith(
                       color: paginationTheme.errorTitleColor,
                     ),
                   ),
@@ -61,7 +61,7 @@ class ErrorDisplay extends StatelessWidget {
                   Text(
                     exception.toString(),
                     textAlign: TextAlign.center,
-                    style: superTheme.textTheme.body.copyWith(
+                    style: context.superTextTheme.body.copyWith(
                       color: paginationTheme.errorMessageColor,
                     ),
                   ),

@@ -11,9 +11,16 @@ part of '../../search_feature.dart';
 /// their defaults automatically:
 ///
 /// ```dart
+/// final typography = SuperTextTheme();
 /// MaterialApp(
-///   theme: SuperMaterialThemeData.light(),
-///   darkTheme: SuperMaterialThemeData.dark(),
+///   theme: SuperMaterialThemeData.light(
+///     textTheme: typography,
+///     primaryTextTheme: typography,
+///   ),
+///   darkTheme: SuperMaterialThemeData.dark(
+///     textTheme: typography,
+///     primaryTextTheme: typography,
+///   ),
 /// )
 /// ```
 ///

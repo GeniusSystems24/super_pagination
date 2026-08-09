@@ -736,7 +736,7 @@ class _HeroPanel extends StatelessWidget {
                     SizedBox(height: t.spacing.lg),
                     Text(
                       'Explore pagination\nwithout the boilerplate.',
-                      style: t.textTheme.h1.copyWith(
+                      style: context.superTextTheme.h1.copyWith(
                         color: t.fg1,
                         fontSize: t.mode.isMobile ? 30 : 40,
                         height: 1.08,
@@ -747,7 +747,7 @@ class _HeroPanel extends StatelessWidget {
                       constraints: const BoxConstraints(maxWidth: 640),
                       child: Text(
                         'A focused gallery of production-ready pagination, streaming, search, error recovery, and Firebase patterns.',
-                        style: t.textTheme.body.copyWith(
+                        style: context.superTextTheme.body.copyWith(
                           color: t.fg3,
                           fontSize: 15,
                         ),
@@ -849,9 +849,9 @@ class _CategorySnapshot extends StatelessWidget {
             child: Icon(category.icon, color: cs.primary),
           ),
           SizedBox(height: t.spacing.lg),
-          Text(category.title, style: t.textTheme.heading.copyWith(color: t.fg1)),
+          Text(category.title, style: context.superTextTheme.heading.copyWith(color: t.fg1)),
           SizedBox(height: t.spacing.xs),
-          Text(category.subtitle, style: t.textTheme.body.copyWith(color: t.fg3)),
+          Text(category.subtitle, style: context.superTextTheme.body.copyWith(color: t.fg3)),
           SizedBox(height: t.spacing.lg),
           Hairline(color: t.border),
           SizedBox(height: t.spacing.md),
@@ -883,9 +883,9 @@ class _SnapshotValue extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: t.textTheme.label.copyWith(color: t.fg4)),
+        Text(label, style: context.superTextTheme.label.copyWith(color: t.fg4)),
         SizedBox(height: t.spacing.xs),
-        Text(value, style: t.textTheme.mono.copyWith(color: t.fg1, fontSize: 22)),
+        Text(value, style: context.superTextTheme.mono.copyWith(color: t.fg1, fontSize: 22)),
       ],
     );
   }
@@ -996,9 +996,9 @@ class _StatCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(data.value, style: t.textTheme.heading.copyWith(color: t.fg1)),
+                  Text(data.value, style: context.superTextTheme.heading.copyWith(color: t.fg1)),
                   SizedBox(height: t.spacing.xs),
-                  Text(data.label, style: t.textTheme.caption.copyWith(color: t.fg3)),
+                  Text(data.label, style: context.superTextTheme.caption.copyWith(color: t.fg3)),
                 ],
               ),
             ),
@@ -1074,7 +1074,7 @@ class _ExampleCard extends StatelessWidget {
               item.title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: t.textTheme.heading.copyWith(color: t.fg1),
+              style: context.superTextTheme.heading.copyWith(color: t.fg1),
             ),
             SizedBox(height: t.spacing.sm),
             SizedBox(
@@ -1083,7 +1083,7 @@ class _ExampleCard extends StatelessWidget {
                 item.description,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: t.textTheme.body.copyWith(color: t.fg3),
+                style: context.superTextTheme.body.copyWith(color: t.fg3),
               ),
             ),
             SizedBox(height: t.spacing.md),
@@ -1091,7 +1091,7 @@ class _ExampleCard extends StatelessWidget {
               children: [
                 Text(
                   'OPEN EXAMPLE',
-                  style: t.textTheme.label.copyWith(color: item.color),
+                  style: context.superTextTheme.label.copyWith(color: item.color),
                 ),
                 SizedBox(width: t.spacing.sm),
                 Icon(Icons.arrow_forward_rounded, size: 17, color: item.color),
@@ -1123,9 +1123,9 @@ class _EmptyState extends StatelessWidget {
               children: [
                 Icon(Icons.search_off_rounded, size: 42, color: t.fg4),
                 SizedBox(height: t.spacing.md),
-                Text('No matching examples', style: t.textTheme.heading.copyWith(color: t.fg1)),
+                Text('No matching examples', style: context.superTextTheme.heading.copyWith(color: t.fg1)),
                 SizedBox(height: t.spacing.xs),
-                Text('Clear the query and explore the complete section.', style: t.textTheme.body.copyWith(color: t.fg3)),
+                Text('Clear the query and explore the complete section.', style: context.superTextTheme.body.copyWith(color: t.fg3)),
                 SizedBox(height: t.spacing.lg),
                 OutlinedButton.icon(
                   onPressed: onClear,

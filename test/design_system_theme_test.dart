@@ -34,10 +34,13 @@ void main() {
       late SuperSearchTheme searchTheme;
       late SuperPaginationTheme paginationTheme;
 
+      final typography = SuperTextTheme();
       await tester.pumpWidget(
         MaterialApp(
           theme: SuperMaterialThemeData.light(
             palette: SuperPalette.greenPalette,
+            textTheme: typography,
+            primaryTextTheme: typography,
           ),
           home: Builder(
             builder: (context) {

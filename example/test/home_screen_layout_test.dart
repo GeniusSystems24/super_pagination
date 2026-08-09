@@ -25,9 +25,16 @@ void main() {
     );
     addTearDown(router.dispose);
 
+    final typography = SuperTextTheme(
+      isDesktop: mode == SuperDeviceMode.desktop,
+    );
     await tester.pumpWidget(
       MaterialApp.router(
-        theme: SuperMaterialThemeData.light(mode: mode),
+        theme: SuperMaterialThemeData.light(
+          mode: mode,
+          textTheme: typography,
+          primaryTextTheme: typography,
+        ),
         routerConfig: router,
       ),
     );

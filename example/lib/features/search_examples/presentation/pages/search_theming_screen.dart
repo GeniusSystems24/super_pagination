@@ -173,7 +173,7 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
           title: Text(product.name),
           subtitle: Text(
             '\$${product.price.toStringAsFixed(2)}',
-            style: superTheme.textTheme.mono.copyWith(color: superTheme.tokens.success),
+            style: context.superTextTheme.mono.copyWith(color: superTheme.tokens.success),
           ),
         );
       },
@@ -191,16 +191,23 @@ class _SearchThemingScreenState extends State<SearchThemingScreen> {
       ThemeMode.dark => Brightness.dark,
       ThemeMode.system => MediaQuery.platformBrightnessOf(context),
     };
+    final typography = SuperTextTheme(
+      isDesktop: mode == SuperDeviceMode.desktop,
+    );
 
     return brightness == Brightness.dark
         ? SuperMaterialThemeData.dark(
             palette: palette,
             mode: mode,
+            textTheme: typography,
+            primaryTextTheme: typography,
             extensions: [SuperSearchTheme.dark(palette: palette)],
           )
         : SuperMaterialThemeData.light(
             palette: palette,
             mode: mode,
+            textTheme: typography,
+            primaryTextTheme: typography,
             extensions: [SuperSearchTheme.light(palette: palette)],
           );
   }
@@ -309,7 +316,7 @@ class _PropertyGroups extends StatelessWidget {
             children: [
               Text(
                 entry.key.toUpperCase(),
-                style: superTheme.textTheme.label.copyWith(color: superTheme.fg2),
+                style: context.superTextTheme.label.copyWith(color: superTheme.fg2),
               ),
               SizedBox(height: superTheme.spacing.sm),
               Wrap(
@@ -330,7 +337,7 @@ class _PropertyGroups extends StatelessWidget {
                     ),
                     child: Text(
                       property,
-                      style: superTheme.textTheme.mono.copyWith(
+                      style: context.superTextTheme.mono.copyWith(
                         color: superTheme.fg3,
                         fontSize: 10,
                       ),

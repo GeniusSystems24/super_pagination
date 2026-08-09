@@ -764,10 +764,10 @@ class _ChatScreenView extends StatelessWidget {
               child: TextField(
                 controller: controller.searchController,
                 autofocus: true,
-                style: t.textTheme.body.copyWith(color: t.fg1),
+                style: context.superTextTheme.body.copyWith(color: t.fg1),
                 decoration: InputDecoration(
                   hintText: 'ابحث في الرسائل…',
-                  hintStyle: t.textTheme.body.copyWith(color: t.fg4),
+                  hintStyle: context.superTextTheme.body.copyWith(color: t.fg4),
                   prefixIcon: Icon(Icons.search_rounded, color: t.fg3),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -829,7 +829,7 @@ class _ChatScreenView extends StatelessWidget {
                           _ChatScreenController._otherUser,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: t.textTheme.heading.copyWith(color: t.fg1),
+                          style: context.superTextTheme.heading.copyWith(color: t.fg1),
                         ),
                         SizedBox(height: t.spacing.xs),
                         Row(
@@ -848,7 +848,7 @@ class _ChatScreenView extends StatelessWidget {
                                 uiState.isTyping ? 'يكتب الآن…' : 'متصل الآن',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: t.textTheme.caption.copyWith(color: t.fg3),
+                                style: context.superTextTheme.caption.copyWith(color: t.fg3),
                               ),
                             ),
                           ],
@@ -938,12 +938,12 @@ class _ChatScreenView extends StatelessWidget {
           SizedBox(height: t.spacing.md),
           Text(
             _ChatScreenController._otherUser,
-            style: t.textTheme.heading.copyWith(color: t.fg1, fontSize: 20),
+            style: context.superTextTheme.heading.copyWith(color: t.fg1, fontSize: 20),
           ),
           SizedBox(height: t.spacing.xs),
           Text(
             '+966 50 XXX XXXX',
-            style: t.textTheme.mono.copyWith(color: t.fg3),
+            style: context.superTextTheme.mono.copyWith(color: t.fg3),
           ),
           SizedBox(height: t.spacing.lg),
           Row(
@@ -985,7 +985,7 @@ class _ChatScreenView extends StatelessWidget {
           ),
         ),
         SizedBox(height: t.spacing.xs),
-        Text(label, style: t.textTheme.caption.copyWith(color: t.fg3)),
+        Text(label, style: context.superTextTheme.caption.copyWith(color: t.fg3)),
       ],
     );
   }
@@ -1017,7 +1017,7 @@ class _ChatScreenView extends StatelessWidget {
           SizedBox(width: t.spacing.sm),
           Text(
             'تنقل سريع',
-            style: t.textTheme.label.copyWith(color: t.fg2),
+            style: context.superTextTheme.label.copyWith(color: t.fg2),
           ),
           SizedBox(width: t.spacing.md),
           Expanded(
@@ -1130,14 +1130,14 @@ class _ChatScreenView extends StatelessWidget {
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'اكتب رسالة…',
-                    hintStyle: t.textTheme.body.copyWith(color: t.fg4),
+                    hintStyle: context.superTextTheme.body.copyWith(color: t.fg4),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: t.spacing.md,
                       vertical: 12,
                     ),
                   ),
-                  style: t.textTheme.body.copyWith(color: t.fg1),
+                  style: context.superTextTheme.body.copyWith(color: t.fg1),
                   onSubmitted: (_) => controller.sendMessage(),
                 ),
               ),
@@ -1227,7 +1227,7 @@ class _ChatScreenView extends StatelessWidget {
                 constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
                 child: Text(
                   '${uiState.unreadCount}',
-                  style: t.textTheme.mono.copyWith(
+                  style: context.superTextTheme.mono.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
@@ -1280,14 +1280,14 @@ class _ChatScreenView extends StatelessWidget {
                       : Icon(icon, color: color, size: 26),
                 ),
                 SizedBox(height: t.spacing.lg),
-                Text(title, style: t.textTheme.heading.copyWith(color: t.fg1)),
+                Text(title, style: context.superTextTheme.heading.copyWith(color: t.fg1)),
                 SizedBox(height: t.spacing.sm),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 360),
                   child: Text(
                     description,
                     textAlign: TextAlign.center,
-                    style: t.textTheme.body.copyWith(color: t.fg3),
+                    style: context.superTextTheme.body.copyWith(color: t.fg3),
                   ),
                 ),
                 if (action != null) ...[
@@ -1344,7 +1344,7 @@ class _ChatScreenView extends StatelessWidget {
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   'إجراءات الرسالة',
-                  style: t.textTheme.heading.copyWith(color: t.fg1),
+                  style: context.superTextTheme.heading.copyWith(color: t.fg1),
                 ),
               ),
               SizedBox(height: t.spacing.md),
@@ -1361,7 +1361,7 @@ class _ChatScreenView extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textDirection: TextDirection.rtl,
-                  style: t.textTheme.body.copyWith(color: t.fg2),
+                  style: context.superTextTheme.body.copyWith(color: t.fg2),
                 ),
               ),
               SizedBox(height: t.spacing.lg),
@@ -1527,7 +1527,7 @@ class _MenuItem extends StatelessWidget {
       children: [
         Icon(icon, size: 19, color: t.fg3),
         SizedBox(width: t.spacing.sm),
-        Text(label, style: t.textTheme.body.copyWith(color: t.fg2)),
+        Text(label, style: context.superTextTheme.body.copyWith(color: t.fg2)),
       ],
     );
   }
@@ -1573,7 +1573,7 @@ class _DateSeparator extends StatelessWidget {
               ),
               child: Text(
                 dateText,
-                style: t.textTheme.caption.copyWith(color: t.fg3),
+                style: context.superTextTheme.caption.copyWith(color: t.fg3),
               ),
             ),
           ),
@@ -1648,7 +1648,7 @@ class _NavigationChip extends StatelessWidget {
         ),
         child: ActionChip(
           avatar: Icon(icon, size: 16, color: color),
-          label: Text(label, style: t.textTheme.caption.copyWith(color: color)),
+          label: Text(label, style: context.superTextTheme.caption.copyWith(color: color)),
           onPressed: onTap,
           backgroundColor: t.tintFill(color, 0.1),
           side: BorderSide(color: t.tintFill(color, 0.28)),
@@ -1682,7 +1682,7 @@ class _MessageActionChip extends StatelessWidget {
 
     return ActionChip(
       avatar: Icon(icon, size: 17, color: chipColor),
-      label: Text(label, style: t.textTheme.caption.copyWith(color: chipColor)),
+      label: Text(label, style: context.superTextTheme.caption.copyWith(color: chipColor)),
       onPressed: onTap,
       backgroundColor: t.tintFill(chipColor, 0.08),
       side: BorderSide(color: t.border),
@@ -1866,7 +1866,7 @@ class _MessageAttachmentView extends StatelessWidget {
                 bottom: 12,
                 child: Text(
                   attachment.title,
-                  style: t.textTheme.label.copyWith(
+                  style: context.superTextTheme.label.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
@@ -1880,7 +1880,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             attachment.caption!,
-            style: t.textTheme.caption.copyWith(color: mutedColor),
+            style: context.superTextTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -1961,7 +1961,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           attachment.title,
-          style: t.textTheme.label.copyWith(
+          style: context.superTextTheme.label.copyWith(
             color: textColor,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -1972,7 +1972,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.subtitle!,
-            style: t.textTheme.caption.copyWith(color: mutedColor),
+            style: context.superTextTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -1980,7 +1980,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             attachment.caption!,
-            style: t.textTheme.caption.copyWith(color: mutedColor),
+            style: context.superTextTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -2028,7 +2028,7 @@ class _MessageAttachmentView extends StatelessWidget {
                   children: [
                     Text(
                       attachment.title,
-                      style: t.textTheme.label.copyWith(
+                      style: context.superTextTheme.label.copyWith(
                         color: textColor,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2042,7 +2042,7 @@ class _MessageAttachmentView extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 attachment.duration ?? '0:00',
-                style: t.textTheme.caption.copyWith(
+                style: context.superTextTheme.caption.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                 ),
@@ -2053,7 +2053,7 @@ class _MessageAttachmentView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               attachment.subtitle!,
-              style: t.textTheme.caption.copyWith(color: mutedColor),
+              style: context.superTextTheme.caption.copyWith(color: mutedColor),
               textDirection: TextDirection.rtl,
             ),
           ],
@@ -2061,7 +2061,7 @@ class _MessageAttachmentView extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               attachment.caption!,
-              style: t.textTheme.caption.copyWith(color: mutedColor),
+              style: context.superTextTheme.caption.copyWith(color: mutedColor),
               textDirection: TextDirection.rtl,
             ),
           ],
@@ -2098,7 +2098,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: t.textTheme.caption.copyWith(color: textColor),
+            style: context.superTextTheme.caption.copyWith(color: textColor),
             textDirection: TextDirection.rtl,
           ),
           if (showProgress) ...[
@@ -2165,7 +2165,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           attachment.title,
-          style: t.textTheme.label.copyWith(
+          style: context.superTextTheme.label.copyWith(
             color: textColor,
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -2176,7 +2176,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.subtitle!,
-            style: t.textTheme.caption.copyWith(color: mutedColor),
+            style: context.superTextTheme.caption.copyWith(color: mutedColor),
             textDirection: TextDirection.rtl,
           ),
         ],
@@ -2189,7 +2189,7 @@ class _MessageAttachmentView extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 attachment.caption!,
-                style: t.textTheme.caption.copyWith(
+                style: context.superTextTheme.caption.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                 ),
@@ -2240,7 +2240,7 @@ class _MessageAttachmentView extends StatelessWidget {
                   children: [
                     Text(
                       attachment.title,
-                      style: t.textTheme.label.copyWith(
+                      style: context.superTextTheme.label.copyWith(
                         color: textColor,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2249,12 +2249,12 @@ class _MessageAttachmentView extends StatelessWidget {
                     if (attachment.subtitle != null)
                       Text(
                         attachment.subtitle!,
-                        style: t.textTheme.caption.copyWith(color: mutedColor),
+                        style: context.superTextTheme.caption.copyWith(color: mutedColor),
                       ),
                     if (attachment.caption != null)
                       Text(
                         attachment.caption!,
-                        style: t.textTheme.caption.copyWith(
+                        style: context.superTextTheme.caption.copyWith(
                           color: mutedColor,
                           fontSize: 11,
                         ),
@@ -2308,7 +2308,7 @@ class _MessageAttachmentView extends StatelessWidget {
             Expanded(
               child: Text(
                 attachment.title,
-                style: t.textTheme.label.copyWith(
+                style: context.superTextTheme.label.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w700,
                 ),
@@ -2331,7 +2331,7 @@ class _MessageAttachmentView extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           attachment.subtitle ?? '$totalVotes صوتاً',
-          style: t.textTheme.caption.copyWith(
+          style: context.superTextTheme.caption.copyWith(
             color: mutedColor,
             fontSize: 11,
           ),
@@ -2341,7 +2341,7 @@ class _MessageAttachmentView extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             attachment.caption!,
-            style: t.textTheme.caption.copyWith(
+            style: context.superTextTheme.caption.copyWith(
               color: mutedColor,
               fontSize: 11,
             ),
@@ -2382,7 +2382,7 @@ class _AttachmentBadge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style: t.textTheme.caption.copyWith(
+            style: context.superTextTheme.caption.copyWith(
               color: Colors.white,
               fontSize: 10.5,
               fontWeight: FontWeight.w600,
@@ -2433,7 +2433,7 @@ class _InlineAction extends StatelessWidget {
               child: Text(
                 label,
                 overflow: TextOverflow.ellipsis,
-                style: t.textTheme.caption.copyWith(
+                style: context.superTextTheme.caption.copyWith(
                   color: color,
                   fontWeight: FontWeight.w700,
                 ),
@@ -2508,13 +2508,13 @@ class _PollOptionTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   option.label,
-                  style: t.textTheme.caption.copyWith(color: textColor),
+                  style: context.superTextTheme.caption.copyWith(color: textColor),
                   textDirection: TextDirection.rtl,
                 ),
               ),
               Text(
                 '${(percentage * 100).round()}%',
-                style: t.textTheme.mono.copyWith(
+                style: context.superTextTheme.mono.copyWith(
                   color: mutedColor,
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
@@ -2621,7 +2621,7 @@ class _MessageBubble extends StatelessWidget {
                     if (attachment == null)
                       Text(
                         message.content,
-                        style: t.textTheme.body.copyWith(color: t.fg1),
+                        style: context.superTextTheme.body.copyWith(color: t.fg1),
                         textDirection: TextDirection.rtl,
                       )
                     else
@@ -2637,7 +2637,7 @@ class _MessageBubble extends StatelessWidget {
                       children: [
                         Text(
                           DateFormat('HH:mm').format(message.timestamp),
-                          style: t.textTheme.mono.copyWith(
+                          style: context.superTextTheme.mono.copyWith(
                             color: t.fg4,
                             fontSize: 10.5,
                           ),

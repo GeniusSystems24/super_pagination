@@ -7,22 +7,35 @@ import 'package:super_pagination/super_pagination.dart';
 abstract final class AppTheme {
   static const SuperPalette palette = SuperPalette.bluePalette;
 
-  static ThemeData light(SuperDeviceMode mode) =>
-      SuperMaterialThemeData.light(
-        palette: palette,
-        mode: mode,
-        extensions: [
-          SuperSearchTheme.light(palette: palette),
-          SuperPaginationTheme.light(palette: palette),
-        ],
-      );
+  static ThemeData light(SuperDeviceMode mode) {
+    final typography = SuperTextTheme(
+      isDesktop: mode == SuperDeviceMode.desktop,
+    );
+    return SuperMaterialThemeData.light(
+      palette: palette,
+      mode: mode,
+      textTheme: typography,
+      primaryTextTheme: typography,
+      extensions: [
+        SuperSearchTheme.light(palette: palette),
+        SuperPaginationTheme.light(palette: palette),
+      ],
+    );
+  }
 
-  static ThemeData dark(SuperDeviceMode mode) => SuperMaterialThemeData.dark(
-        palette: palette,
-        mode: mode,
-        extensions: [
-          SuperSearchTheme.dark(palette: palette),
-          SuperPaginationTheme.dark(palette: palette),
-        ],
-      );
+  static ThemeData dark(SuperDeviceMode mode) {
+    final typography = SuperTextTheme(
+      isDesktop: mode == SuperDeviceMode.desktop,
+    );
+    return SuperMaterialThemeData.dark(
+      palette: palette,
+      mode: mode,
+      textTheme: typography,
+      primaryTextTheme: typography,
+      extensions: [
+        SuperSearchTheme.dark(palette: palette),
+        SuperPaginationTheme.dark(palette: palette),
+      ],
+    );
+  }
 }

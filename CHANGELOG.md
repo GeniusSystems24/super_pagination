@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2026-08-10
+
+- Migrated the package and example application to the `super_core 3.3.0` theme API.
+- Replaced `SuperThemeData.textTheme` reads with `context.superTextTheme` while preserving valid Material `Theme.of(context).textTheme` usage.
+- Updated all `SuperMaterialThemeData.light/dark` call sites to provide the required `SuperTextTheme` values through `textTheme` and `primaryTextTheme`.
+- Raised the minimum compatible `super_core` version to `3.3.0`.
+- Documented explicit font-family handling after removal of the internal `_familyOf` inference helper in `super_core`.
+
 ## [4.1.4] - 2026-07-16
 
 - Rebuilt the chat pagination example around the shared `super_core` design system.

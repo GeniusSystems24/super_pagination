@@ -34,7 +34,7 @@ class CustomErrorBuilder {
               SizedBox(height: superTheme.spacing.lg),
               Text(
                 title ?? 'Something went wrong',
-                style: superTheme.textTheme.heading.copyWith(
+                style: context.superTextTheme.heading.copyWith(
                   color: paginationTheme.errorTitleColor,
                 ),
                 textAlign: TextAlign.center,
@@ -43,7 +43,7 @@ class CustomErrorBuilder {
               Text(
                 message ?? error.toString(),
                 textAlign: TextAlign.center,
-                style: superTheme.textTheme.body.copyWith(
+                style: context.superTextTheme.body.copyWith(
                   color: paginationTheme.errorMessageColor,
                 ),
               ),
@@ -91,7 +91,7 @@ class CustomErrorBuilder {
           Expanded(
             child: Text(
               message ?? 'Failed to load more items',
-              style: superTheme.textTheme.body.copyWith(color: effectiveTextColor),
+              style: context.superTextTheme.body.copyWith(color: effectiveTextColor),
             ),
           ),
           SizedBox(width: superTheme.spacing.sm),
@@ -118,7 +118,7 @@ class CustomErrorBuilder {
           Flexible(
             child: Text(
               message ?? 'Error occurred',
-              style: superTheme.textTheme.caption.copyWith(
+              style: context.superTextTheme.caption.copyWith(
                 color: paginationTheme.errorMessageColor,
               ),
             ),
@@ -184,7 +184,7 @@ class CustomErrorBuilder {
                 SizedBox(height: superTheme.spacing.md),
                 Text(
                   title ?? 'Error Loading Data',
-                  style: superTheme.textTheme.heading.copyWith(
+                  style: context.superTextTheme.heading.copyWith(
                     color: paginationTheme.errorTitleColor,
                   ),
                   textAlign: TextAlign.center,
@@ -193,7 +193,7 @@ class CustomErrorBuilder {
                 Text(
                   message ?? 'An error occurred while loading the data.',
                   textAlign: TextAlign.center,
-                  style: superTheme.textTheme.body.copyWith(
+                  style: context.superTextTheme.body.copyWith(
                     color: paginationTheme.errorMessageColor,
                   ),
                 ),
@@ -243,7 +243,7 @@ class CustomErrorBuilder {
             Flexible(
               child: Text(
                 message ?? 'Failed to load',
-                style: superTheme.textTheme.body.copyWith(color: foreground),
+                style: context.superTextTheme.body.copyWith(color: foreground),
               ),
             ),
             SizedBox(width: superTheme.spacing.sm),

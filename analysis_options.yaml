@@ -2,3 +2,11 @@ include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+analyzer:
+  errors:
+    # منع أي استيراد مباشر لملفات src/ من خارج المكتبة
+    implementation_imports: error
+linter:
+  rules:
+    - implementation_imports

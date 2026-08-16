@@ -7,7 +7,7 @@ description: >
   backoff, SuperSearchBox with auto-positioning overlay dropdown, keyboard navigation, and production-ready UI components..
 
 # package version
-version: 4.2.1
+version: 4.2.1+2
 
 # package homepage, repository and issue tracker urls
 homepage: https://github.com/GeniusSystems24/super_pagination

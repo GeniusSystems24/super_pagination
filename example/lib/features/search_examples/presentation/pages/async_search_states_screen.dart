@@ -106,7 +106,7 @@ class _AsyncSearchStatesScreenState extends State<AsyncSearchStatesScreen> {
             SuperSearchDropdown<Product, Product>.withProvider(
               key: ValueKey('default-$_simulateError-$_simulateEmpty-$_debounceMs'),
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => _fetchProducts(request),
               ),
               searchRequestBuilder: (query) => SuperPaginationRequest(
@@ -145,7 +145,7 @@ class _AsyncSearchStatesScreenState extends State<AsyncSearchStatesScreen> {
             SuperSearchDropdown<Product, Product>.withProvider(
               key: ValueKey('custom-$_simulateError-$_simulateEmpty-$_debounceMs'),
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => _fetchProducts(request),
               ),
               searchRequestBuilder: (query) => SuperPaginationRequest(

@@ -34,7 +34,7 @@ class _ColumnExampleScreenState extends State<ColumnExampleScreen> {
               // SuperPagination.column example
               SuperPagination<Product, SuperPaginationRequest>.columnWithProvider(
                 request: const SuperPaginationRequest(page: 1, pageSize: 3),
-                provider: SuperPaginationProvider.future(
+                provider: SuperPaginationProvider.listFuture(
                   (request) => ExampleDependencies.catalog.fetchProducts(
                     request,
                   ),

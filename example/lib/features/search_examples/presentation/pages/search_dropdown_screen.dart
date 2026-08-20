@@ -112,7 +112,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
             // Toggle the theme using the button in the app bar to see the effect
             SuperSearchDropdown<Product, Product>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,
@@ -242,7 +242,7 @@ class _SearchDropdownScreenState extends State<SearchDropdownScreen> {
             const SizedBox(height: 8),
             SuperSearchDropdown<Product, Product>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 10,

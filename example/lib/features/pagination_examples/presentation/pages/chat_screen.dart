@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -92,7 +94,7 @@ class _ChatScreenController {
     // SuperPagination will automatically attach it to the cubit.
     cubit = SuperPaginationCubit<Message, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 30),
-      provider: SuperPaginationProvider.future(_fetchMessages),
+      provider: SuperPaginationProvider.listFuture(_fetchMessages),
     );
 
     // Simulate typing indicator
@@ -2086,7 +2088,6 @@ class _MessageAttachmentView extends StatelessWidget {
     required String label,
     bool showProgress = false,
   }) {
-    final t = SuperThemeData.of(context);
     return Container(
       height: height,
       width: double.infinity,

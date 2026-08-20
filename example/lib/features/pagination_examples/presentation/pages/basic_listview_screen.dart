@@ -16,7 +16,7 @@ class BasicListViewScreen extends StatelessWidget {
       ),
       body: SuperPagination<Product, SuperPaginationRequest>.withProvider(
         request: const SuperPaginationRequest(page: 1, pageSize: 20),
-        provider: SuperPaginationProvider.future(
+        provider: SuperPaginationProvider.listFuture(
           (request) => ExampleDependencies.catalog.fetchProducts(request),
         ),
         itemBuilder: (context, products, index) {

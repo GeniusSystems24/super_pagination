@@ -172,7 +172,7 @@ class _OverlayAnimationsScreenState extends State<OverlayAnimationsScreen> {
                 '${_selectedAnimation.name}_${_animationDuration.inMilliseconds}_${_selectedCurve.hashCode}',
               ),
               request: SuperPaginationRequest(page: 1, pageSize: 10),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               searchRequestBuilder: (query) => SuperPaginationRequest(
@@ -375,7 +375,7 @@ class _OverlayValueDemoState extends State<_OverlayValueDemo> {
     super.initState();
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: SuperPaginationRequest(page: 1, pageSize: 10),
-      provider: SuperPaginationProvider.future(
+      provider: SuperPaginationProvider.listFuture(
         (request) => ExampleDependencies.catalog.fetchProducts(request),
       ),
     );

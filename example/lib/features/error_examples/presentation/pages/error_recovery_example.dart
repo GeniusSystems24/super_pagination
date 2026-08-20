@@ -197,7 +197,7 @@ class _CachedDataTabState extends State<_CachedDataTab> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: ValueKey('cached_data_$_shouldFail'),
       request: SuperPaginationRequest(page: 1, pageSize: 20),
-      provider: SuperPaginationProvider.future(_fetchProducts),
+      provider: SuperPaginationProvider.listFuture(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(
@@ -328,7 +328,7 @@ class _PartialDataTabState extends State<_PartialDataTab> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: const Key('partial_data_loading'),
       request: SuperPaginationRequest(page: 1, pageSize: 20),
-      provider: SuperPaginationProvider.future(_fetchProducts),
+      provider: SuperPaginationProvider.listFuture(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(title: Text(product.name));
@@ -389,7 +389,7 @@ class _AlternativeSourceTabState extends State<_AlternativeSourceTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('alt_source_$_usePrimarySource'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               _usePrimarySource ? _fetchFromPrimary : _fetchFromBackup,
             ),
             itemBuilder: (context, products, index) {
@@ -515,7 +515,7 @@ class _UserRecoveryTabState extends State<_UserRecoveryTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('user_recovery_$_requiresLogin'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.future(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(

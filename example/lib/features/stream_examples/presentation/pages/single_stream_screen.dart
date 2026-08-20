@@ -36,7 +36,7 @@ class SingleStreamScreen extends StatelessWidget {
             child: SuperPagination<Product,
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
-              provider: SuperPaginationProvider.stream(
+              provider: SuperPaginationProvider.listStream(
                 (request) => ExampleDependencies.catalog.productsStream(request),
               ),
               itemBuilder: (context, items, index) {

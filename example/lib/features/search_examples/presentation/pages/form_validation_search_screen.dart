@@ -86,7 +86,7 @@ class _FormValidationSearchScreenState
               const SizedBox(height: 8),
               SuperSearchDropdown<Product, Product>.withProvider(
                 request: const SuperPaginationRequest(page: 1, pageSize: 10),
-                provider: SuperPaginationProvider.future(
+                provider: SuperPaginationProvider.listFuture(
                   (request) => ExampleDependencies.catalog.searchProducts(
                     request.searchQuery ?? '',
                     pageSize: request.pageSize ?? 10,

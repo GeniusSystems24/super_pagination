@@ -98,7 +98,7 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchDropdown<Product, String>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
@@ -178,7 +178,7 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchDropdown<Product, String>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
@@ -255,7 +255,7 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchMultiDropdown<Product, String>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
@@ -366,7 +366,7 @@ class _KeyBasedSelectionScreenState extends State<KeyBasedSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchDropdown<Product, String>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) async {
                   // Simulate slow network to show pending key state
                   await Future.delayed(const Duration(seconds: 2));

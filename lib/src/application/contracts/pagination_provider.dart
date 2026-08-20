@@ -1,119 +1,144 @@
+
 import 'dart:async';
 
 import '../../domain/models/pagination_request.dart';
+import '../../domain/models/pagination_result.dart';
 
 typedef WhereChecker<T> = bool Function(T item);
 typedef CompareBy<T> = int Function(T a, T b);
 typedef OnInsertionCallback<T> = void Function(List<T> items);
 
-/// Unified pagination data provider that can be either Future-based or Stream-based.
+/// Unified pagination datasource contract.
 ///
-/// The second type parameter [R] is the concrete [SuperPaginationRequest] type
-/// (or subclass) that the provider callback will receive. This enables
-/// compile-time type safety when passing custom request objects.
+/// v5 exposes six canonical datasource shapes:
 ///
-/// Use [SuperPaginationProvider.future] for standard REST API pagination.
-/// Use [SuperPaginationProvider.stream] for real-time updates.
+/// 1. [SuperPaginationProvider.listFuture]
+/// 2. [SuperPaginationProvider.listStream]
+/// 3. [SuperPaginationProvider.pageFuture]
+/// 4. [SuperPaginationProvider.pageStream]
+/// 5. [SuperPaginationProvider.cursorFuture]
+/// 6. [SuperPaginationProvider.cursorStream]
 ///
-/// Example with the base request type (no custom fields):
-/// ```dart
-/// final provider = SuperPaginationProvider<Product, SuperPaginationRequest>.future(
-///   (request) => apiService.fetchProducts(request),
-/// );
-/// // Shorthand – SuperPaginationRequest is the default bound:
-/// final provider = SuperPaginationProvider<Product>.future(
-///   (request) => apiService.fetchProducts(request),
-/// );
-/// ```
-///
-/// Example with a custom typed request:
-/// ```dart
-/// final provider = SuperPaginationProvider<Product, ProductRequest>.future(
-///   (req) => apiService.fetchProducts(req.category, maxPrice: req.maxPrice),
-/// );
-/// ```
-///
-/// Example with Stream:
-/// ```dart
-/// final provider = SuperPaginationProvider<Product, ProductRequest>.stream(
-///   (req) => apiService.productsStream(req.category),
-/// );
-/// ```
+/// Raw-list sources preserve the v4 item-count end heuristic. Page/cursor
+/// result sources use the backend's explicit `hasMore` value.
 sealed class SuperPaginationProvider<T, R extends SuperPaginationRequest> {
   const SuperPaginationProvider();
 
-  /// Creates a Future-based pagination provider for standard REST APIs.
+  /// Future datasource returning only page items.
+  const factory SuperPaginationProvider.listFuture(
+    Future<List<T>> Function(R request) dataProvider,
+  ) = FutureSuperPaginationProvider<T, R>;
+
+  /// Stream datasource returning only page items.
+  const factory SuperPaginationProvider.listStream(
+    Stream<List<T>> Function(R request) streamProvider,
+  ) = StreamSuperPaginationProvider<T, R>;
+
+  /// Future datasource returning page-aware result data.
+  const factory SuperPaginationProvider.pageFuture(
+    Future<PagePaginationResult<T>> Function(R request) dataProvider,
+  ) = FuturePageSuperPaginationProvider<T, R>;
+
+  /// Stream datasource returning page-aware result data.
+  const factory SuperPaginationProvider.pageStream(
+    Stream<PagePaginationResult<T>> Function(R request) streamProvider,
+  ) = StreamPageSuperPaginationProvider<T, R>;
+
+  /// Future datasource returning cursor-aware result data.
+  ///
+  /// Use with [SuperCursorPaginationRequest].
+  const factory SuperPaginationProvider.cursorFuture(
+    Future<CursorPaginationResult<T>> Function(R request) dataProvider,
+  ) = FutureCursorSuperPaginationProvider<T, R>;
+
+  /// Stream datasource returning cursor-aware result data.
+  ///
+  /// Use with [SuperCursorPaginationRequest].
+  const factory SuperPaginationProvider.cursorStream(
+    Stream<CursorPaginationResult<T>> Function(R request) streamProvider,
+  ) = StreamCursorSuperPaginationProvider<T, R>;
+
+  /// v4 compatibility alias for [listFuture].
+  @Deprecated('Use SuperPaginationProvider.listFuture in v5.')
   const factory SuperPaginationProvider.future(
     Future<List<T>> Function(R request) dataProvider,
   ) = FutureSuperPaginationProvider<T, R>;
 
-  /// Creates a Stream-based pagination provider for real-time updates.
+  /// v4 compatibility alias for [listStream].
+  @Deprecated('Use SuperPaginationProvider.listStream in v5.')
   const factory SuperPaginationProvider.stream(
     Stream<List<T>> Function(R request) streamProvider,
   ) = StreamSuperPaginationProvider<T, R>;
 
-  /// Creates a provider that merges multiple streams into a single stream.
+  /// Compatibility utility that merges multiple raw-list streams.
   ///
-  /// When you have multiple data sources (streams) and want to combine them
-  /// into one unified stream, use this provider.
-  ///
-  /// Example:
-  /// ```dart
-  /// final provider = SuperPaginationProvider<Product, ProductRequest>.mergeStreams(
-  ///   (req) => [
-  ///     apiService.regularProductsStream(req),
-  ///     apiService.featuredProductsStream(req),
-  ///   ],
-  /// );
-  /// ```
+  /// This remains available in v5 in addition to the six canonical datasource
+  /// modes above.
   factory SuperPaginationProvider.mergeStreams(
     List<Stream<List<T>>> Function(R request) streamsProvider,
   ) = MergedStreamSuperPaginationProvider<T, R>;
 }
 
-/// Future-based pagination provider for standard REST APIs.
+/// Future raw-list datasource.
 final class FutureSuperPaginationProvider<T, R extends SuperPaginationRequest>
     extends SuperPaginationProvider<T, R> {
   const FutureSuperPaginationProvider(this.dataProvider);
 
-  /// Function that fetches a page of data from your API.
   final Future<List<T>> Function(R request) dataProvider;
 }
 
-/// Stream-based pagination provider for real-time updates.
+/// Stream raw-list datasource.
 final class StreamSuperPaginationProvider<T, R extends SuperPaginationRequest>
     extends SuperPaginationProvider<T, R> {
   const StreamSuperPaginationProvider(this.streamProvider);
 
-  /// Function that provides a stream of data updates.
   final Stream<List<T>> Function(R request) streamProvider;
 }
 
-/// Merged streams pagination provider that combines multiple streams into one.
-///
-/// This provider takes multiple data streams and merges them into a single
-/// stream, emitting data whenever any of the source streams emit.
-final class MergedStreamSuperPaginationProvider<T, R extends SuperPaginationRequest>
+/// Future page-result datasource.
+final class FuturePageSuperPaginationProvider<T,
+        R extends SuperPaginationRequest>
+    extends SuperPaginationProvider<T, R> {
+  const FuturePageSuperPaginationProvider(this.dataProvider);
+
+  final Future<PagePaginationResult<T>> Function(R request) dataProvider;
+}
+
+/// Stream page-result datasource.
+final class StreamPageSuperPaginationProvider<T,
+        R extends SuperPaginationRequest>
+    extends SuperPaginationProvider<T, R> {
+  const StreamPageSuperPaginationProvider(this.streamProvider);
+
+  final Stream<PagePaginationResult<T>> Function(R request) streamProvider;
+}
+
+/// Future cursor-result datasource.
+final class FutureCursorSuperPaginationProvider<T,
+        R extends SuperPaginationRequest>
+    extends SuperPaginationProvider<T, R> {
+  const FutureCursorSuperPaginationProvider(this.dataProvider);
+
+  final Future<CursorPaginationResult<T>> Function(R request) dataProvider;
+}
+
+/// Stream cursor-result datasource.
+final class StreamCursorSuperPaginationProvider<T,
+        R extends SuperPaginationRequest>
+    extends SuperPaginationProvider<T, R> {
+  const StreamCursorSuperPaginationProvider(this.streamProvider);
+
+  final Stream<CursorPaginationResult<T>> Function(R request) streamProvider;
+}
+
+/// Merged raw-list streams datasource retained for compatibility.
+final class MergedStreamSuperPaginationProvider<T,
+        R extends SuperPaginationRequest>
     extends SuperPaginationProvider<T, R> {
   MergedStreamSuperPaginationProvider(this.streamsProvider);
 
-  /// Function that provides a list of streams to be merged.
   final List<Stream<List<T>>> Function(R request) streamsProvider;
 
-  /// Gets a merged stream that combines all source streams.
-  ///
-  /// Lifecycle contract (spec 002-stabilize-provider §FR-020 to FR-023):
-  ///
-  /// - **Zero streams**: returns `Stream.value([])` which owns no
-  ///   subscription and no controller; nothing to leak.
-  /// - **One or more streams**: wraps every child subscription in an
-  ///   internal `StreamController` whose `onCancel` cancels every child
-  ///   subscription and whose internal `completed` counter closes the
-  ///   controller only when **every** child has completed. The single-stream
-  ///   case uses the same wrapper as the multi-stream case so cancellation
-  ///   is symmetric (previously the single branch returned the underlying
-  ///   stream directly, leaking the subscription if the consumer never
-  ///   cancelled via the merge provider).
   Stream<List<T>> getMergedStream(R request) {
     final streams = streamsProvider(request);
 
@@ -156,17 +181,17 @@ final class MergedStreamSuperPaginationProvider<T, R extends SuperPaginationRequ
   }
 }
 
-/// Legacy typedef for backward compatibility (will be deprecated).
+/// Legacy typedef retained for source compatibility.
 typedef PaginationDataProvider<T> =
     Future<List<T>> Function(SuperPaginationRequest request);
 
-/// Legacy typedef for backward compatibility (will be deprecated).
+/// Legacy typedef retained for source compatibility.
 typedef PaginationStreamProvider<T> =
     Stream<List<T>> Function(SuperPaginationRequest request);
 
 /// Signature for a function that builds a list from fetched items.
 typedef ListBuilder<T> = List<T> Function(List<T> list);
 
-/// Signature for a callback function that is called when items are inserted.
+/// Signature for a callback called when items are inserted.
 typedef InsertAllCallback<T> =
     void Function(List<T> currentItems, Iterable<T> newItems);

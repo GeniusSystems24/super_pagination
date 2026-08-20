@@ -123,7 +123,7 @@ class _BeforeBuildHookScreenState extends State<BeforeBuildHookScreen> {
           Expanded(
             child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               // beforeBuild hook - executes before building the list

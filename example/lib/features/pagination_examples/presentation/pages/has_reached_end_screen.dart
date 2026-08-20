@@ -89,7 +89,7 @@ class _HasReachedEndScreenState extends State<HasReachedEndScreen> {
           Expanded(
             child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, products, index) {
@@ -259,7 +259,7 @@ class HasReachedEndCallbackScreen extends StatelessWidget {
           Expanded(
             child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilderType: PaginateBuilderType.listView,

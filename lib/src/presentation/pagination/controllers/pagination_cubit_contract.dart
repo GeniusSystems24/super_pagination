@@ -13,6 +13,17 @@ abstract class IPaginationCubit<T, StateType extends IPaginationState<T>,
   /// Initial request configuration used when the pagination starts.
   R get initialRequest;
 
+  /// Current datasource used by the cubit.
+  ///
+  /// The datasource is fixed after construction.
+  SuperPaginationProvider<T, R> get source;
+
+  /// Current active pagination request.
+  R get currentRequest;
+
+  /// Replaces the active request and optionally fetches its first page.
+  void setRequest(R request, {bool fetch = true});
+
   /// Filters the paginated list based on the provided search term.
   void filterPaginatedList(WhereChecker<T>? searchTerm);
 

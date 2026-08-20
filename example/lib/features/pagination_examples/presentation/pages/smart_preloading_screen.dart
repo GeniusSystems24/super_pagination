@@ -139,7 +139,7 @@ class _SuperPreloadingScreenState extends State<SuperPreloadingScreen> {
                 SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey(_threshold), // Rebuild when threshold changes
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, items, index) {

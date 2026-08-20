@@ -157,7 +157,7 @@ class _ECommerceSearchExampleState extends State<_ECommerceSearchExample> {
           const SizedBox(height: 8),
           SuperSearchDropdown<Product, String>.withProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(_searchProducts),
+            provider: SuperPaginationProvider.listFuture(_searchProducts),
             searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 10,
@@ -705,7 +705,7 @@ class _TeamMemberSearchExampleState extends State<_TeamMemberSearchExample> {
           // Multi-select search
           SuperSearchMultiDropdown<User, String>.withProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 15),
-            provider: SuperPaginationProvider.future(_searchUsers),
+            provider: SuperPaginationProvider.listFuture(_searchUsers),
             searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 15,
@@ -1118,7 +1118,7 @@ class _CountryPickerExampleState extends State<_CountryPickerExample> {
                   const SizedBox(height: 8),
                   SuperSearchDropdown<Country, String>.withProvider(
                     request: const SuperPaginationRequest(page: 1, pageSize: 20),
-                    provider: SuperPaginationProvider.future(_searchCountries),
+                    provider: SuperPaginationProvider.listFuture(_searchCountries),
                     searchRequestBuilder: (query) => SuperPaginationRequest(
                       page: 1,
                       pageSize: 20,
@@ -1435,7 +1435,7 @@ class _TagSelectorExampleState extends State<_TagSelectorExample> {
           const SizedBox(height: 8),
           SuperSearchMultiDropdown<Tag, String>.withProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.future(_searchTags),
+            provider: SuperPaginationProvider.listFuture(_searchTags),
             searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,
               pageSize: 20,
@@ -1710,7 +1710,7 @@ class _EmployeeDirectoryExampleState extends State<_EmployeeDirectoryExample> {
                 // Search
                 SuperSearchDropdown<User, String>.withProvider(
                   request: const SuperPaginationRequest(page: 1, pageSize: 15),
-                  provider: SuperPaginationProvider.future(_searchEmployees),
+                  provider: SuperPaginationProvider.listFuture(_searchEmployees),
                   searchRequestBuilder: (query) => SuperPaginationRequest(
                     page: 1,
                     pageSize: 15,

@@ -218,7 +218,7 @@ class _FirestoreSearchScreenState extends State<FirestoreSearchScreen> {
           // Search dropdown
           SuperSearchDropdown<FirestoreUser, FirestoreUser>.withProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(searchUsers),
+            provider: SuperPaginationProvider.listFuture(searchUsers),
             showClearButton: true,
             searchRequestBuilder: (query) => SuperPaginationRequest(
               page: 1,

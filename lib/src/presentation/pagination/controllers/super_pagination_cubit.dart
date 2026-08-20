@@ -35,6 +35,29 @@ class _PageStreamEntry<T> {
   bool isComplete;
 }
 
+
+/// Normalized result used internally so all six v5 datasource shapes flow
+/// through one cubit state pipeline.
+class _PaginationFetchResult<T> {
+  const _PaginationFetchResult({
+    required this.items,
+    this.hasMore,
+    this.pageNumber,
+    this.totalPages,
+    this.lastCursorNo,
+    this.totalItems,
+    this.persistentStream,
+  });
+
+  final List<T> items;
+  final bool? hasMore;
+  final int? pageNumber;
+  final int? totalPages;
+  final int? lastCursorNo;
+  final int? totalItems;
+  final Stream<List<T>>? persistentStream;
+}
+
 // =============================================================================
 // Spec 002-stabilize-provider — Phase 3 (US1) refactor landed.
 // =============================================================================
@@ -280,8 +303,12 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
   bool _loadMoreSuppressionEnabled = true;
 
   /// Builds the per-page load-more key for [_activeLoadMoreKey].
-  String _buildLoadMoreKey(R request) =>
-      '${request.page}:${request.pageSize ?? 'null'}';
+  String _buildLoadMoreKey(R request) {
+    if (request is SuperCursorPaginationRequest) {
+      return 'cursor:${request.lastCursorNo ?? 'start'}:${request.pageSize ?? 'null'}';
+    }
+    return '${request.page}:${request.pageSize ?? 'null'}';
+  }
 
   /// Removes items from [pageItems] whose [identityKey] already appears in
   /// [existingPages]. No-op when [identityKey] is null or [pageItems] is
@@ -330,6 +357,41 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
 
   /// Returns the last error that occurred, or null if no error.
   Exception? get lastError => _lastError;
+
+
+  /// Current datasource used by this cubit.
+  ///
+  /// The datasource is fixed for the cubit's lifetime. Use [setRequest] to
+  /// change filters, search terms, tenant scope, or other runtime query state.
+  @override
+  SuperPaginationProvider<T, R> get source => _provider;
+
+  /// Current active request.
+  ///
+  /// Unlike [initialRequest], this value changes when [setRequest] is called
+  /// and advances as pagination fetches subsequent pages/cursors.
+  @override
+  R get currentRequest => _currentRequest;
+
+  /// Replaces the active pagination request.
+  ///
+  /// The datasource remains unchanged. Existing in-flight work and page-stream
+  /// subscriptions are cancelled, pagination is reset to page 1, and the new
+  /// request becomes the base request for future refresh/load-more operations.
+  /// By default it is fetched immediately. Pass [fetch] as `false` to leave the
+  /// cubit in its initial state until the caller triggers a fetch.
+  @override
+  void setRequest(R request, {bool fetch = true}) {
+    _currentRequest = request;
+
+    if (fetch) {
+      refreshPaginatedList();
+      return;
+    }
+
+    _resetToInitial();
+    _currentRequest = request;
+  }
 
   /// Returns true if the last error was network-related.
   /// Use this to show appropriate UI (e.g., "No internet connection").
@@ -932,31 +994,9 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     }
     final token = ++_fetchToken;
 
-    // Spec 003-load-more-guard §8.1, §9: capture the stream factory call
-    // exactly once per page. The same instance is awaited for `.first`
-    // (snapshot) and passed to `_attachStream` for the persistent
-    // subscription, eliminating the previous double factory call.
-    Stream<List<T>>? capturedStream;
-
     try {
-      // Fetch data based on provider type
-      final pageItems = await switch (_provider) {
-        FutureSuperPaginationProvider<T, R>(:final dataProvider) =>
-          _retryHandler != null
-              ? _retryHandler.execute(
-                  () => dataProvider(request),
-                  onRetry: (attempt, error) {
-                    if (SuperPaginationCubit.enableLogging) {
-                      _logger.w('Retry attempt $attempt after error: $error');
-                    }
-                  },
-                )
-              : dataProvider(request),
-        StreamSuperPaginationProvider<T, R> provider =>
-          (capturedStream = provider.streamProvider(request)).first,
-        MergedStreamSuperPaginationProvider<T, R> provider =>
-          (capturedStream = provider.getMergedStream(request)).first,
-      };
+      final fetchResult = await _readSource(request);
+      final pageItems = fetchResult.items;
 
       // Check if request was cancelled
       if (token != _fetchToken) {
@@ -969,7 +1009,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
       }
 
       didFetch = true;
-      _currentRequest = request;
+      _currentRequest = _requestAfterResult(request, fetchResult);
 
       // Clear error state on successful fetch
       _lastFetchWasError = false;
@@ -984,10 +1024,14 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
       // empty page. (Empty initial-load is handled below — it produces an
       // empty Loaded state with `hasReachedEnd = true`.)
       if (!reset && pageItems.isEmpty) {
+        final emptyHasNext = fetchResult.hasMore ?? false;
         final meta = SuperPaginationMeta(
-          page: request.page,
+          page: fetchResult.pageNumber ?? request.page,
           pageSize: request.pageSize,
-          hasNext: false,
+          lastCursorNo: fetchResult.lastCursorNo,
+          totalPages: fetchResult.totalPages,
+          totalCount: fetchResult.totalItems,
+          hasNext: emptyHasNext,
           hasPrevious: request.page > 1,
         );
         _currentMeta = meta;
@@ -996,7 +1040,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
           emit(
             currentState.copyWith(
               meta: meta,
-              hasReachedEnd: true,
+              hasReachedEnd: !emptyHasNext,
               isLoadingMore: false,
               loadMoreError: null,
               fetchedAt: _lastFetchTime,
@@ -1035,10 +1079,17 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
       // Apply sorting if orders are configured
       final sortedItems = _applySorting(aggregated);
 
-      final hasNext = _computeHasNext(pageItems, request.pageSize);
+      final hasNext = _computeHasNext(
+        pageItems,
+        request.pageSize,
+        serverHasNext: fetchResult.hasMore,
+      );
       final meta = SuperPaginationMeta(
-        page: request.page,
+        page: fetchResult.pageNumber ?? request.page,
         pageSize: request.pageSize,
+        lastCursorNo: fetchResult.lastCursorNo,
+        totalPages: fetchResult.totalPages,
+        totalCount: fetchResult.totalItems,
         hasNext: hasNext,
         hasPrevious: request.page > 1,
       );
@@ -1112,33 +1163,13 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
         });
       }
 
-      // Register a per-page stream subscription for **every** page load
-      // (initial AND load-more) per spec FR-010. This delivers stream
-      // accumulation: page N's subscription is added to the registry without
-      // cancelling pages 1..N-1.
-      //
-      // Spec 003-load-more-guard §8.1, §9: when the captured stream is a
-      // broadcast stream, reuse it for the persistent subscription — the
-      // `.first` consumer above and the `_attachStream` listener can both
-      // co-exist. For single-subscription streams the `.first` await has
-      // already consumed the only allowed listener slot; we fall back to a
-      // second factory call so `_attachStream` gets a fresh subscription.
-      // RC-3 (eliminate double factory call) applies to broadcast streams,
-      // which is the real-world common case (Firestore, broadcast
-      // controllers, RxDart subjects).
-      if (capturedStream != null) {
-        final Stream<List<T>> persistent;
-        final provider = _provider;
-        if (capturedStream.isBroadcast) {
-          persistent = capturedStream;
-        } else if (provider is StreamSuperPaginationProvider<T, R>) {
-          persistent = provider.streamProvider(request);
-        } else if (provider is MergedStreamSuperPaginationProvider<T, R>) {
-          persistent = provider.getMergedStream(request);
-        } else {
-          persistent = capturedStream;
-        }
-        _attachStream(persistent, request);
+      // Stream datasources return a persistent item stream from _readSource.
+      // Raw-list streams preserve their original values; page/cursor result
+      // streams are normalized to their `items` payload for the existing
+      // per-page accumulation registry.
+      final persistentStream = fetchResult.persistentStream;
+      if (persistentStream != null) {
+        _attachStream(persistentStream, request);
       }
     } on Exception catch (error, stackTrace) {
       if (SuperPaginationCubit.enableLogging) {
@@ -1238,18 +1269,149 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     }
   }
 
+
+  Future<X> _executeSourceWithRetry<X>(Future<X> Function() operation) {
+    final retryHandler = _retryHandler;
+    if (retryHandler == null) return operation();
+    return retryHandler.execute(
+      operation,
+      onRetry: (attempt, error) {
+        if (SuperPaginationCubit.enableLogging) {
+          _logger.w('Retry attempt $attempt after error: $error');
+        }
+      },
+    );
+  }
+
+  Future<_PaginationFetchResult<T>> _readSource(R request) async {
+    final source = _provider;
+
+    if (source is FutureSuperPaginationProvider<T, R>) {
+      final items = await _executeSourceWithRetry(
+        () => source.dataProvider(request),
+      );
+      return _PaginationFetchResult<T>(items: items);
+    }
+
+    if (source is StreamSuperPaginationProvider<T, R>) {
+      final firstStream = source.streamProvider(request);
+      final items = await firstStream.first;
+      final persistent = firstStream.isBroadcast
+          ? firstStream
+          : source.streamProvider(request);
+      return _PaginationFetchResult<T>(
+        items: items,
+        persistentStream: persistent,
+      );
+    }
+
+    if (source is FuturePageSuperPaginationProvider<T, R>) {
+      final result = await _executeSourceWithRetry(
+        () => source.dataProvider(request),
+      );
+      return _PaginationFetchResult<T>(
+        items: result.items,
+        hasMore: result.hasMore,
+        pageNumber: result.pageNumber,
+        totalPages: result.totalPages,
+      );
+    }
+
+    if (source is StreamPageSuperPaginationProvider<T, R>) {
+      final firstStream = source.streamProvider(request);
+      final result = await firstStream.first;
+      final persistentRaw = firstStream.isBroadcast
+          ? firstStream
+          : source.streamProvider(request);
+      return _PaginationFetchResult<T>(
+        items: result.items,
+        hasMore: result.hasMore,
+        pageNumber: result.pageNumber,
+        totalPages: result.totalPages,
+        persistentStream: persistentRaw.map((value) => value.items),
+      );
+    }
+
+    if (source is FutureCursorSuperPaginationProvider<T, R>) {
+      if (request is! SuperCursorPaginationRequest) {
+        throw ArgumentError(
+          'cursorFuture requires SuperCursorPaginationRequest (or a subclass).',
+        );
+      }
+      final result = await _executeSourceWithRetry(
+        () => source.dataProvider(request),
+      );
+      return _PaginationFetchResult<T>(
+        items: result.items,
+        hasMore: result.hasMore,
+        lastCursorNo: result.lastCursorNo,
+        totalItems: result.totalItems,
+      );
+    }
+
+    if (source is StreamCursorSuperPaginationProvider<T, R>) {
+      if (request is! SuperCursorPaginationRequest) {
+        throw ArgumentError(
+          'cursorStream requires SuperCursorPaginationRequest (or a subclass).',
+        );
+      }
+      final firstStream = source.streamProvider(request);
+      final result = await firstStream.first;
+      final persistentRaw = firstStream.isBroadcast
+          ? firstStream
+          : source.streamProvider(request);
+      return _PaginationFetchResult<T>(
+        items: result.items,
+        hasMore: result.hasMore,
+        lastCursorNo: result.lastCursorNo,
+        totalItems: result.totalItems,
+        persistentStream: persistentRaw.map((value) => value.items),
+      );
+    }
+
+    if (source is MergedStreamSuperPaginationProvider<T, R>) {
+      final firstStream = source.getMergedStream(request);
+      final items = await firstStream.first;
+      final persistent = firstStream.isBroadcast
+          ? firstStream
+          : source.getMergedStream(request);
+      return _PaginationFetchResult<T>(
+        items: items,
+        persistentStream: persistent,
+      );
+    }
+
+    throw StateError('Unsupported SuperPagination datasource: $source');
+  }
+
+  R _requestAfterResult(R request, _PaginationFetchResult<T> result) {
+    if (request is SuperCursorPaginationRequest && result.lastCursorNo != null) {
+      return request
+          .copyWithCursor(lastCursorNo: result.lastCursorNo)
+          as R;
+    }
+    return request;
+  }
+
   R _buildRequest({
     required bool reset,
     R? override,
     int? limit,
   }) {
-    final base = override ?? (reset ? initialRequest : _currentRequest);
+    final base = override ?? _currentRequest;
     final pageSize = limit ?? base.pageSize ?? initialRequest.pageSize;
     final nextPage = reset ? 1 : base.page + 1;
 
-    // copyWith is declared on SuperPaginationRequest but subclasses should override
-    // it to return their own type (preserving custom fields). The cast is safe
-    // when the override is implemented correctly.
+    if (base is SuperCursorPaginationRequest) {
+      return base
+          .copyWithCursor(
+            page: nextPage,
+            pageSize: pageSize,
+            lastCursorNo: base.lastCursorNo,
+          )
+          as R;
+    }
+
     return base.copyWith(page: nextPage, pageSize: pageSize) as R;
   }
 

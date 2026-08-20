@@ -45,7 +45,7 @@ class _DynamicEndOfPaginationScreenState
     _page1Controller = StreamController<List<Product>>.broadcast();
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: _pageSize),
-      provider: SuperPaginationProvider.stream(_buildProvider),
+      provider: SuperPaginationProvider.listStream(_buildProvider),
     );
     // Emit the initial partial page after subscriptions are set up.
     Future.microtask(() => _emitPage(5));

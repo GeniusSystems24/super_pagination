@@ -233,7 +233,7 @@ class _OfflineModeTabState extends State<_OfflineModeTab> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: const Key('online_mode'),
       request: SuperPaginationRequest(page: 1, pageSize: 20),
-      provider: SuperPaginationProvider.future(_fetchProducts),
+      provider: SuperPaginationProvider.listFuture(_fetchProducts),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(
@@ -280,7 +280,7 @@ class _PlaceholderContentTab extends StatelessWidget {
           child:
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.future(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));

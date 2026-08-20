@@ -136,7 +136,7 @@ class _ReorderableListScreenState extends State<ReorderableListScreen> {
                 return SuperPagination<Product,
                     SuperPaginationRequest>.reorderableListViewWithProvider(
                   request: const SuperPaginationRequest(page: 1, pageSize: 20),
-                  provider: SuperPaginationProvider.future(
+                  provider: SuperPaginationProvider.listFuture(
                     (request) async => _items,
                   ),
                   itemBuilder: (context, items, index) {
@@ -398,7 +398,7 @@ class _PriorityTasksScreenState extends State<PriorityTasksScreen> {
                 return SuperPagination<Product,
                     SuperPaginationRequest>.reorderableListViewWithProvider(
                   request: const SuperPaginationRequest(page: 1, pageSize: 15),
-                  provider: SuperPaginationProvider.future(
+                  provider: SuperPaginationProvider.listFuture(
                     (request) async => _tasks,
                   ),
                   itemBuilder: (context, items, index) {

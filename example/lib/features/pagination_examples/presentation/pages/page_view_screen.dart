@@ -36,7 +36,7 @@ class PageViewScreen extends StatelessWidget {
             child: SuperPagination<Product,
                 SuperPaginationRequest>.pageViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 1),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, items, index) {

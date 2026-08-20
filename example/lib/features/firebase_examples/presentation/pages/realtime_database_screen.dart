@@ -199,7 +199,7 @@ class _RealtimeDatabaseScreenState extends State<RealtimeDatabaseScreen> {
           child:
               SuperPagination<RTDBPost, SuperPaginationRequest>.listViewWithProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(fetchPosts),
+            provider: SuperPaginationProvider.listFuture(fetchPosts),
             itemBuilder: (context, items, index) {
               final post = items[index];
               return Card(

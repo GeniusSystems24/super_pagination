@@ -37,7 +37,7 @@ class StaggeredGridScreen extends StatelessWidget {
             child: SuperPagination<Product,
                 SuperPaginationRequest>.staggeredGridViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               crossAxisCount: 2,

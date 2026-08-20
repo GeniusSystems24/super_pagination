@@ -1,9 +1,6 @@
 # Super Pagination
 
-> **v4 migration:** the package name is now `super_pagination`. Replace only the
-> package segment in imports. Existing `SuperPagination*` API names remain
-> available as compatibility aliases, while new code can use
-> `SuperPagination*`.
+> **v5 migration:** six canonical datasource modes are now available. Use `listFuture`/`listStream` for raw lists, `pageFuture`/`pageStream` for `PagePaginationResult`, and `cursorFuture`/`cursorStream` with `SuperCursorPaginationRequest`. The old `future`/`stream` names remain deprecated compatibility aliases.
 
 [![pub package](https://img.shields.io/pub/v/super_pagination.svg)](https://pub.dev/packages/super_pagination)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -16,7 +13,7 @@
 ```dart
 SuperPaginationListView.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => api.getProducts(req)),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.listFuture((req) => api.getProducts(req)),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
 ```
@@ -27,10 +24,91 @@ SuperPaginationListView.withProvider(
 - **Super Search** - Auto-positioning dropdown with key-based selection
 - **Built-in BLoC** - State management included, or bring your own cubit
 - **Error Handling** - 6 pre-built styles with first-page/load-more separation
-- **Stream Support** - Future, Stream, and merged streams
+- **6 Datasource Modes** - list/page/cursor × Future/Stream, plus merged-stream compatibility
 - **Data Operations** - Insert, remove, update, replace, and refresh items with first/last/at targeting
 - **Auto Expiration** - Configurable data age for global cubits
 - **Load-More Safety** - Rapid scrolling can never trigger duplicate concurrent page requests; optional cross-page deduplication via `identityKey`
+
+
+## v5 Datasources and ResultData
+
+v5 separates the transport shape from the pagination strategy. Choose one of six
+canonical datasource modes:
+
+| Datasource | Callback result | Request |
+|---|---|---|
+| `listFuture` | `Future<List<T>>` | `SuperPaginationRequest` |
+| `listStream` | `Stream<List<T>>` | `SuperPaginationRequest` |
+| `pageFuture` | `Future<PagePaginationResult<T>>` | `SuperPaginationRequest` |
+| `pageStream` | `Stream<PagePaginationResult<T>>` | `SuperPaginationRequest` |
+| `cursorFuture` | `Future<CursorPaginationResult<T>>` | `SuperCursorPaginationRequest` |
+| `cursorStream` | `Stream<CursorPaginationResult<T>>` | `SuperCursorPaginationRequest` |
+
+Page-result example:
+
+```dart
+provider: SuperPaginationProvider.pageFuture((request) async {
+  final response = await api.getProducts(page: request.page);
+  return PagePaginationResult(
+    pageNumber: response.page,
+    totalPages: response.totalPages,
+    items: response.items,
+    hasMore: response.hasMore,
+  );
+}),
+```
+
+Offset-result model:
+
+```dart
+final result = OffsetPaginationResult<Product>(
+  offset: response.offset,
+  totalItems: response.totalItems,
+  items: response.items,
+  hasMore: response.hasMore,
+);
+```
+
+`OffsetPaginationResult` is a ResultData model for offset-based API responses.
+This migration does not add a new datasource factory or request type; the six
+canonical v5 datasource modes remain unchanged.
+
+Cursor-result example:
+
+```dart
+request: const SuperCursorPaginationRequest(pageSize: 20),
+provider: SuperPaginationProvider.cursorFuture((request) async {
+  final response = await api.getProducts(after: request.lastCursorNo);
+  return CursorPaginationResult(
+    lastCursorNo: response.lastCursorNo,
+    totalItems: response.totalItems,
+    items: response.items,
+    hasMore: response.hasMore,
+  );
+}),
+```
+
+`hasMore` is authoritative for page/cursor result sources. For raw-list sources,
+the existing page-size heuristic remains in place.
+
+### Change the active request at runtime
+
+Keep the datasource stable and move runtime filters/search/scope into the
+request:
+
+```dart
+cubit.setRequest(
+  const SuperPaginationRequest(
+    pageSize: 20,
+    filters: {'status': 'archived'},
+  ),
+);
+```
+
+`setRequest` cancels in-flight work and page streams, resets pagination to page
+1, stores the new request as the active request, and fetches it immediately.
+Future refreshes and load-more calls continue from that request. Pass
+`fetch: false` when you want to update/reset the request without fetching yet.
 
 ## GeniusLink Design System
 
@@ -89,7 +167,7 @@ Configure `identityKey` to drop items whose key already appears in an earlier ac
 ```dart
 SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider.future(api.fetchProducts),
+  provider: SuperPaginationProvider.listFuture(api.fetchProducts),
   identityKey: (product) => product.id,
 );
 ```
@@ -148,7 +226,7 @@ post-append suppression flag are all disabled.
 ```dart
 SuperPaginationListView<Product, SuperPaginationRequest>.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider.future(api.fetchProducts),
+  provider: SuperPaginationProvider.listFuture(api.fetchProducts),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
   preserveScrollAnchorOnAppend: false, // legacy "stick to bottom" behavior
 );
@@ -742,13 +820,13 @@ cubit.resetOrder();
 ### Future (REST API)
 
 ```dart
-SuperPaginationProvider.future((request) => api.fetchProducts(request))
+SuperPaginationProvider.listFuture((request) => api.fetchProducts(request))
 ```
 
 ### Stream (Real-time)
 
 ```dart
-SuperPaginationProvider.stream((request) => firestore.collection('products').snapshots())
+SuperPaginationProvider.listStream((request) => firestore.collection('products').snapshots())
 ```
 
 #### Stream Accumulation

@@ -131,7 +131,7 @@ class _MultiStreamScreenState extends State<MultiStreamScreen> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: ValueKey(_selectedTabIndex), // Force rebuild when tab changes
       request: const SuperPaginationRequest(page: 1, pageSize: 15),
-      provider: SuperPaginationProvider.stream(
+      provider: SuperPaginationProvider.listStream(
         (request) => _getStreamProvider(request),
       ),
       itemBuilder: (context, items, index) {

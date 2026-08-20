@@ -262,7 +262,7 @@ class _FirestoreFiltersScreenState extends State<FirestoreFiltersScreen> {
           child: SuperPagination<FilteredProduct,
               SuperPaginationRequest>.listViewWithProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 15),
-            provider: SuperPaginationProvider.future(fetchFilteredProducts),
+            provider: SuperPaginationProvider.listFuture(fetchFilteredProducts),
             refreshListener: _refreshListener,
             itemBuilder: (context, items, index) {
               final product = items[index];

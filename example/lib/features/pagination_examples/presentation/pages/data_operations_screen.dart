@@ -31,7 +31,7 @@ class _DataOperationsScreenState extends State<DataOperationsScreen> {
     super.initState();
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 10),
-      provider: SuperPaginationProvider.future(
+      provider: SuperPaginationProvider.listFuture(
         (request) => ExampleDependencies.catalog.fetchProducts(
           SuperPaginationRequest(
             page: request.page,

@@ -110,7 +110,7 @@ class _FilterSearchScreenState extends State<FilterSearchScreen> {
                     ? {'category': _selectedCategory}
                     : null,
               ),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) async {
                   if (_searchQuery.isNotEmpty) {
                     return ExampleDependencies.catalog.searchProducts(

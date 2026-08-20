@@ -35,7 +35,7 @@ class RetryDemoScreen extends StatelessWidget {
             child: SuperPagination<Product,
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.fetchProducts(
                   request,
                   simulateError: true, // Enable error simulation

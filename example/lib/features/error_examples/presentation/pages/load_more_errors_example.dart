@@ -107,7 +107,7 @@ class _CompactErrorTabState extends State<_CompactErrorTab> {
           child:
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.future(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(
@@ -211,7 +211,7 @@ class _InlineRetryTabState extends State<_InlineRetryTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('inline_retry_$_loadMoreAttempts'),
             request: SuperPaginationRequest(page: 1, pageSize: 15),
-            provider: SuperPaginationProvider.future(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture(_fetchProducts),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return Card(
@@ -338,7 +338,7 @@ class _SilentFailureTabState extends State<_SilentFailureTab> {
             children: [
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: 20),
-                provider: SuperPaginationProvider.future(_fetchProducts),
+                provider: SuperPaginationProvider.listFuture(_fetchProducts),
                 itemBuilder: (context, products, index) {
                   final product = products[index];
                   return ListTile(

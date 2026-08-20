@@ -21,7 +21,7 @@ class _ScrollControlScreenState extends State<ScrollControlScreen> {
     // Create a cubit with built-in scroll navigation support
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 100),
-      provider: SuperPaginationProvider.future(
+      provider: SuperPaginationProvider.listFuture(
         (request) => ExampleDependencies.catalog.fetchProducts(request),
       ),
     );

@@ -83,7 +83,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('material_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -135,7 +135,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('compact_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -187,7 +187,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             itemBuilderType: PaginateBuilderType.gridView,
             key: const Key('card_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -259,7 +259,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('minimal_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
@@ -313,7 +313,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
           child: SuperPagination<Product, SuperPaginationRequest>.withProvider(
             key: const Key('custom_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
-            provider: SuperPaginationProvider.future(
+            provider: SuperPaginationProvider.listFuture(
               (request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {

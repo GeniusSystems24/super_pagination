@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0] - 2026-08-21
+
+### Added
+
+- Six canonical datasource modes: `listFuture`, `listStream`, `pageFuture`, `pageStream`, `cursorFuture`, and `cursorStream`.
+- `PagePaginationResult<T>` with `pageNumber`, `totalPages`, `items`, and `hasMore`.
+- `OffsetPaginationResult<T>` with `offset`, `totalItems`, `items`, and `hasMore`.
+- `CursorPaginationResult<T>` with `lastCursorNo`, `totalItems`, `items`, and `hasMore`.
+- `SuperCursorPaginationRequest` for numeric cursor pagination.
+- `SuperPaginationCubit.setRequest(...)` for safe runtime request replacement.
+- Dedicated v5 example screens for datasource selection, ResultData, cursor pagination, custom requests, and runtime request switching.
+- `SKILL.md` with v5 usage and migration guidance.
+
+### Changed
+
+- The datasource is now fixed for a cubit's lifetime; runtime query changes use `setRequest(...)`.
+- Page/cursor result datasources now treat backend `hasMore` as authoritative instead of inferring end-of-list from item count.
+- Example screens now use the explicit `listFuture` / `listStream` names for raw-list sources.
+- `SuperPaginationMeta` now exposes `lastCursorNo` and `totalPages`; cursor `totalItems` maps to `totalCount`.
+
+### Compatibility
+
+- `SuperPaginationProvider.future` and `.stream` remain available as deprecated aliases.
+- `mergeStreams` remains available as a compatibility utility in addition to the six canonical datasource modes.
+
 ## [4.2.0] - 2026-08-10
 
 - Migrated the package and example application to the `super_core 3.3.0` theme API.

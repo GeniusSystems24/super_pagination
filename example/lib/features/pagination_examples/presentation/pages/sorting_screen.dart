@@ -70,7 +70,7 @@ class _SortingScreenState extends State<SortingScreen> {
     // Create cubit with orders
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 15),
-      provider: SuperPaginationProvider.future(
+      provider: SuperPaginationProvider.listFuture(
         (request) => ExampleDependencies.catalog.fetchProducts(
           SuperPaginationRequest(
             page: request.page,

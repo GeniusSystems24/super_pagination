@@ -108,7 +108,7 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchDropdown<Product, Product>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
@@ -240,7 +240,7 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
                     const SizedBox(height: 8),
                     SuperSearchDropdown<Product, String>.withProvider(
                       request: const SuperPaginationRequest(page: 1, pageSize: 20),
-                      provider: SuperPaginationProvider.future(
+                      provider: SuperPaginationProvider.listFuture(
                         (request) => ExampleDependencies.catalog.searchProducts(
                           request.searchQuery ?? '',
                           pageSize: request.pageSize ?? 20,
@@ -322,7 +322,7 @@ class _InitialSelectionScreenState extends State<InitialSelectionScreen> {
             const SizedBox(height: 12),
             SuperSearchMultiDropdown<Product, String>.withProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,
@@ -572,7 +572,7 @@ class _ConditionalDropdownState extends State<_ConditionalDropdown> {
               // Use a unique key to rebuild when preference changes
               key: ValueKey('dropdown_$_rememberSelection'),
               request: const SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.future(
+              provider: SuperPaginationProvider.listFuture(
                 (request) => ExampleDependencies.catalog.searchProducts(
                   request.searchQuery ?? '',
                   pageSize: request.pageSize ?? 20,

@@ -12,6 +12,7 @@ export 'src/application/services/retry_handler.dart';
 export 'src/domain/errors/pagination_exception.dart';
 export 'src/domain/models/pagination_meta.dart';
 export 'src/domain/models/pagination_request.dart';
+export 'src/domain/models/pagination_result.dart';
 export 'src/domain/models/sort_order.dart';
 export 'src/presentation/pagination/pagination_feature.dart';
 export 'src/presentation/search/search_feature.dart';

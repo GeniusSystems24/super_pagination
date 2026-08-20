@@ -38,7 +38,7 @@ class _DataAgeScreenState extends State<DataAgeScreen> {
   void _createCubit() {
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 10),
-      provider: SuperPaginationProvider.future(
+      provider: SuperPaginationProvider.listFuture(
         (request) => ExampleDependencies.catalog.fetchProducts(
           SuperPaginationRequest(
             page: request.page,

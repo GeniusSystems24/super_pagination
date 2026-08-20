@@ -56,7 +56,7 @@ void main() {
     await pumpShell(
       tester,
       size: const Size(390, 844),
-      location: AppRoutes.search,
+      location: AppRoutes.errors,
     );
 
     expect(find.byType(NavigationSidebarAppBar), findsOneWidget);

@@ -1,8 +1,7 @@
 
 # Super Pagination v5 Skill
 
-Use this package for paginated Flutter lists, grids, page views, realtime streams,
-and search-oriented result collections.
+Use this package for paginated Flutter lists, grids, page views, and realtime streams.
 
 ## v5 source selection
 
@@ -79,3 +78,7 @@ or cursor metadata to the corresponding ResultData source so end-of-list is
 server-driven rather than inferred from item count. Do not use cursor sources
 with a plain `SuperPaginationRequest`; use `SuperCursorPaginationRequest` or a
 subclass that preserves `lastCursorNo` in its copy methods.
+
+## Removed search dropdown APIs
+
+As of `5.0.1`, do not use or recommend `SuperSearchDropdown`, `SuperSearchMultiDropdown`, or their former search controllers, overlays, configuration objects, or `SuperSearchTheme`. The package public surface is focused on pagination data sources, requests, results, cubits, and pagination views.

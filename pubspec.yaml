@@ -7,7 +7,7 @@ description: >
   real-time stream support, automatic retry with exponential backoff, SuperSearchBox with auto-positioning overlay dropdown, keyboard navigation, and production-ready UI components..
 
 # package version
-version: 5.0.0
+version: 5.0.1
 
 # package homepage, repository and issue tracker urls
 homepage: https://github.com/GeniusSystems24/super_pagination

@@ -32,7 +32,6 @@ class _ExampleShellState extends State<ExampleShell> {
     AppRoutes.basic,
     AppRoutes.streams,
     AppRoutes.advanced,
-    AppRoutes.search,
     AppRoutes.errors,
     AppRoutes.firebase,
   };
@@ -144,7 +143,6 @@ class _ExampleShellState extends State<ExampleShell> {
   static String _moduleIdFor(String location) {
     if (location.startsWith(AppRoutes.streams)) return 'module-streams';
     if (location.startsWith(AppRoutes.advanced)) return 'module-advanced';
-    if (location.startsWith(AppRoutes.search)) return 'module-search';
     if (location.startsWith(AppRoutes.errors)) return 'module-errors';
     if (location.startsWith(AppRoutes.firebase)) return 'module-firebase';
     return 'module-basic';
@@ -342,75 +340,6 @@ class _ExampleShellState extends State<ExampleShell> {
               ],
             ),
             NavNode<String>(
-              id: 'module-search',
-              label: 'Search',
-              icon: Icons.search_rounded,
-              badge: const NavBadge('11'),
-              children: [
-                _routeNode(
-                  route: AppRoutes.search,
-                  label: 'Search overview',
-                  icon: Icons.dashboard_outlined,
-                  shortcut: ['g', 'f'],
-                ),
-                _routeNode(
-                  route: AppRoutes.searchDropdown,
-                  label: 'Search dropdown',
-                  icon: Icons.arrow_drop_down_circle_outlined,
-                ),
-                _routeNode(
-                  route: AppRoutes.multiSelectSearch,
-                  label: 'Multi select',
-                  icon: Icons.checklist_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.bottomSheetSearch,
-                  label: 'Bottom sheet',
-                  icon: Icons.vertical_align_bottom_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.formValidation,
-                  label: 'Form validation',
-                  icon: Icons.rule_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.keyboardNavigation,
-                  label: 'Keyboard navigation',
-                  icon: Icons.keyboard_alt_outlined,
-                ),
-                _routeNode(
-                  route: AppRoutes.searchTheming,
-                  label: 'Search theming',
-                  icon: Icons.palette_outlined,
-                ),
-                _routeNode(
-                  route: AppRoutes.asyncStates,
-                  label: 'Async states',
-                  icon: Icons.hourglass_empty_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.overlayAnimations,
-                  label: 'Overlay animations',
-                  icon: Icons.animation_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.keyBasedSelection,
-                  label: 'Key-based selection',
-                  icon: Icons.key_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.initialSelection,
-                  label: 'Initial selection',
-                  icon: Icons.radio_button_checked_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.realisticSearchExamples,
-                  label: 'Realistic examples',
-                  icon: Icons.travel_explore_rounded,
-                ),
-              ],
-            ),
-            NavNode<String>(
               id: 'module-errors',
               label: 'Errors',
               icon: Icons.bug_report_outlined,
@@ -480,11 +409,6 @@ class _ExampleShellState extends State<ExampleShell> {
                   route: AppRoutes.firestoreRealtime,
                   label: 'Firestore realtime',
                   icon: Icons.sync_rounded,
-                ),
-                _routeNode(
-                  route: AppRoutes.firestoreSearch,
-                  label: 'Firestore search',
-                  icon: Icons.manage_search_rounded,
                 ),
                 _routeNode(
                   route: AppRoutes.realtimeDatabase,

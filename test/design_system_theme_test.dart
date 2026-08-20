@@ -5,20 +5,6 @@ import 'package:super_pagination/super_pagination.dart';
 
 void main() {
   group('GeniusLink design-system integration', () {
-    test('search theme derives from super_core light tokens', () {
-      final theme = SuperSearchTheme.light();
-      final colors = SuperPalette.bluePalette.toLightColorScheme();
-
-      expect(theme.searchBoxBackgroundColor, SuperThemeData.light.inputBg);
-      expect(theme.searchBoxTextColor, SuperThemeData.light.fg1);
-      expect(theme.searchBoxBorderColor, SuperThemeData.light.border);
-      expect(theme.searchBoxFocusedBorderColor, colors.primary);
-      expect(
-        theme.searchBoxBorderRadius,
-        BorderRadius.circular(SuperThemeData.light.spacing.radiusControl),
-      );
-    });
-
     test('pagination theme derives from super_core dark tokens', () {
       final theme = SuperPaginationTheme.dark();
       final colors = SuperPalette.bluePalette.toDarkColorScheme();
@@ -31,7 +17,6 @@ void main() {
 
     testWidgets('ambient SuperMaterialThemeData is used without extensions',
         (tester) async {
-      late SuperSearchTheme searchTheme;
       late SuperPaginationTheme paginationTheme;
 
       final typography = SuperTextTheme();
@@ -44,17 +29,11 @@ void main() {
           ),
           home: Builder(
             builder: (context) {
-              searchTheme = SuperSearchTheme.of(context);
               paginationTheme = SuperPaginationTheme.of(context);
               return const SizedBox();
             },
           ),
         ),
-      );
-
-      expect(
-        searchTheme.searchBoxFocusedBorderColor,
-        SuperPalette.greenPalette.primary,
       );
       expect(
         paginationTheme.loadingIndicatorColor,

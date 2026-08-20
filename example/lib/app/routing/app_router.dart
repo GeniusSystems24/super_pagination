@@ -39,19 +39,6 @@ import 'package:super_pagination_example/features/pagination_examples/presentati
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/sorting_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/chat_screen.dart';
 
-// Search examples
-import 'package:super_pagination_example/features/search_examples/presentation/pages/search_dropdown_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/multi_select_search_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/bottom_sheet_search_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/form_validation_search_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/keyboard_navigation_search_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/search_theming_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/async_search_states_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/overlay_animations_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/key_based_selection_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/initial_selection_screen.dart';
-import 'package:super_pagination_example/features/search_examples/presentation/pages/realistic_search_examples_screen.dart';
-
 // Error examples
 import 'package:super_pagination_example/features/error_examples/presentation/pages/basic_error_example.dart';
 import 'package:super_pagination_example/features/error_examples/presentation/pages/network_errors_example.dart';
@@ -64,7 +51,6 @@ import 'package:super_pagination_example/features/error_examples/presentation/pa
 // Firebase examples
 import 'package:super_pagination_example/features/firebase_examples/presentation/pages/firestore_pagination_screen.dart';
 import 'package:super_pagination_example/features/firebase_examples/presentation/pages/firestore_realtime_screen.dart';
-import 'package:super_pagination_example/features/firebase_examples/presentation/pages/firestore_search_screen.dart';
 import 'package:super_pagination_example/features/firebase_examples/presentation/pages/realtime_database_screen.dart';
 import 'package:super_pagination_example/features/firebase_examples/presentation/pages/firestore_filters_screen.dart';
 import 'package:super_pagination_example/features/firebase_examples/presentation/pages/offline_support_screen.dart';
@@ -168,23 +154,6 @@ CustomTransitionPage<void> _buildPageWithTransition({
         TypedGoRoute<ChatRoute>(path: 'chat'),
       ],
     ),
-    // ---- Search ----
-    TypedGoRoute<SearchRoute>(
-      path: '/search',
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<SearchDropdownRoute>(path: 'dropdown'),
-        TypedGoRoute<MultiSelectSearchRoute>(path: 'multi-select'),
-        TypedGoRoute<BottomSheetSearchRoute>(path: 'bottom-sheet'),
-        TypedGoRoute<FormValidationRoute>(path: 'form-validation'),
-        TypedGoRoute<KeyboardNavigationRoute>(path: 'keyboard'),
-        TypedGoRoute<SearchThemingRoute>(path: 'theming'),
-        TypedGoRoute<AsyncStatesRoute>(path: 'async-states'),
-        TypedGoRoute<OverlayAnimationsRoute>(path: 'overlay-animations'),
-        TypedGoRoute<KeyBasedSelectionRoute>(path: 'key-based-selection'),
-        TypedGoRoute<InitialSelectionRoute>(path: 'initial-selection'),
-        TypedGoRoute<RealisticSearchExamplesRoute>(path: 'realistic-examples'),
-      ],
-    ),
     // ---- Errors ----
     TypedGoRoute<ErrorRoute>(
       path: '/errors',
@@ -204,7 +173,6 @@ CustomTransitionPage<void> _buildPageWithTransition({
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<FirestorePaginationRoute>(path: 'firestore-pagination'),
         TypedGoRoute<FirestoreRealtimeRoute>(path: 'firestore-realtime'),
-        TypedGoRoute<FirestoreSearchRoute>(path: 'firestore-search'),
         TypedGoRoute<RealtimeDatabaseRoute>(path: 'realtime-database'),
         TypedGoRoute<FirestoreFiltersRoute>(path: 'firestore-filters'),
         TypedGoRoute<OfflineSupportRoute>(path: 'offline-support'),
@@ -258,21 +226,12 @@ class AdvancedRoute extends GoRouteData with $AdvancedRoute {
   }
 }
 
-class SearchRoute extends GoRouteData with $SearchRoute {
-  const SearchRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const HomeScreen(initialIndex: 3);
-  }
-}
-
 class ErrorRoute extends GoRouteData with $ErrorRoute {
   const ErrorRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomeScreen(initialIndex: 4);
+    return const HomeScreen(initialIndex: 3);
   }
 }
 
@@ -281,7 +240,7 @@ class FirebaseRoute extends GoRouteData with $FirebaseRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomeScreen(initialIndex: 5);
+    return const HomeScreen(initialIndex: 4);
   }
 }
 
@@ -760,186 +719,6 @@ class ChatRoute extends GoRouteData with $ChatRoute {
   }
 }
 
-// ---- Search detail routes ----
-
-class SearchDropdownRoute extends GoRouteData with $SearchDropdownRoute {
-  const SearchDropdownRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const SearchDropdownScreen(),
-    );
-  }
-}
-
-class MultiSelectSearchRoute extends GoRouteData with $MultiSelectSearchRoute {
-  const MultiSelectSearchRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const MultiSelectSearchScreen(),
-    );
-  }
-}
-
-class BottomSheetSearchRoute extends GoRouteData with $BottomSheetSearchRoute {
-  const BottomSheetSearchRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const BottomSheetSearchScreen(),
-    );
-  }
-}
-
-class FormValidationRoute extends GoRouteData with $FormValidationRoute {
-  const FormValidationRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const FormValidationSearchScreen(),
-    );
-  }
-}
-
-class KeyboardNavigationRoute extends GoRouteData
-    with $KeyboardNavigationRoute {
-  const KeyboardNavigationRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const KeyboardNavigationSearchScreen(),
-    );
-  }
-}
-
-class SearchThemingRoute extends GoRouteData with $SearchThemingRoute {
-  const SearchThemingRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const SearchThemingScreen(),
-    );
-  }
-}
-
-class AsyncStatesRoute extends GoRouteData with $AsyncStatesRoute {
-  const AsyncStatesRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const AsyncSearchStatesScreen(),
-    );
-  }
-}
-
-class OverlayAnimationsRoute extends GoRouteData with $OverlayAnimationsRoute {
-  const OverlayAnimationsRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const OverlayAnimationsScreen(),
-    );
-  }
-}
-
-class KeyBasedSelectionRoute extends GoRouteData with $KeyBasedSelectionRoute {
-  const KeyBasedSelectionRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const KeyBasedSelectionScreen(),
-    );
-  }
-}
-
-class InitialSelectionRoute extends GoRouteData with $InitialSelectionRoute {
-  const InitialSelectionRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const InitialSelectionScreen(),
-    );
-  }
-}
-
-class RealisticSearchExamplesRoute extends GoRouteData
-    with $RealisticSearchExamplesRoute {
-  const RealisticSearchExamplesRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const RealisticSearchExamplesScreen(),
-    );
-  }
-}
-
 // ---- Error detail routes ----
 
 class BasicErrorRoute extends GoRouteData with $BasicErrorRoute {
@@ -1087,22 +866,6 @@ class FirestoreRealtimeRoute extends GoRouteData with $FirestoreRealtimeRoute {
       context: context,
       state: state,
       child: const FirestoreRealtimeScreen(),
-    );
-  }
-}
-
-class FirestoreSearchRoute extends GoRouteData with $FirestoreSearchRoute {
-  const FirestoreSearchRoute();
-
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      _shellNavigatorKey;
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return _buildPageWithTransition(
-      context: context,
-      state: state,
-      child: const FirestoreSearchScreen(),
     );
   }
 }

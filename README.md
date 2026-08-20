@@ -8,7 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-All-blueviolet)](https://flutter.dev)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-View-success)](https://geniussystems24.github.io/super_pagination)
 
-**Production-ready Flutter pagination with built-in BLoC, search dropdowns, and error handling.**
+**Production-ready Flutter pagination with built-in BLoC, typed data sources, and error handling.**
 
 ```dart
 SuperPaginationListView.withProvider(
@@ -21,7 +21,6 @@ SuperPaginationListView.withProvider(
 ## Features
 
 - **7 Widget Classes** - ListView, GridView, PageView, StaggeredGrid, Column, Row, ReorderableList
-- **Super Search** - Auto-positioning dropdown with key-based selection
 - **Built-in BLoC** - State management included, or bring your own cubit
 - **Error Handling** - 6 pre-built styles with first-page/load-more separation
 - **6 Datasource Modes** - list/page/cursor × Future/Stream, plus merged-stream compatibility
@@ -112,7 +111,7 @@ Future refreshes and load-more calls continue from that request. Pass
 
 ## GeniusLink Design System
 
-`super_pagination` now consumes [`super_core`](https://github.com/GeniusSystems24/super_core) as its visual source of truth. Built-in loaders, empty states, error styles, search fields, overlays, focus states, radii, and spacing follow the active `SuperMaterialThemeData` automatically.
+`super_pagination` now consumes [`super_core`](https://github.com/GeniusSystems24/super_core) as its visual source of truth. Built-in pagination loaders, empty states, error styles, radii, and spacing follow the active `SuperMaterialThemeData` automatically.
 
 `super_core 3.3.0` makes `SuperTextTheme` explicit: `textTheme` and `primaryTextTheme` are required by `SuperMaterialThemeData.light/dark`, and branded typography is read with `context.superTextTheme` rather than `SuperThemeData.textTheme`. Material `Theme.of(context).textTheme` remains valid where a standard Flutter `TextTheme` is intended. Font-family metadata is not inferred through the removed `_familyOf` helper; pass `fontFamily` explicitly only when a token-level override is required.
 
@@ -133,17 +132,15 @@ MaterialApp(
 );
 ```
 
-No package-specific extension is required for the default appearance. `SuperSearchTheme.of(context)` and `SuperPaginationTheme.of(context)` derive their values from the ambient `SuperThemeData` and `ColorScheme`. Register either extension only when you need a focused override:
+No package-specific extension is required for the default appearance. `SuperPaginationTheme.of(context)` derives its values from the ambient `SuperThemeData` and `ColorScheme`. Register the extension only when a focused pagination override is needed:
 
 ```dart
-final base = SuperSearchTheme.light();
 final typography = SuperTextTheme();
 
 SuperMaterialThemeData.light(
   textTheme: typography,
   primaryTextTheme: typography,
   extensions: [
-    base.copyWith(searchBoxElevation: 0),
     SuperPaginationTheme.light(),
   ],
 );
@@ -315,311 +312,6 @@ Each widget has two constructors:
 
 - `.withProvider(...)` - Creates cubit internally
 - `.withCubit(...)` - Uses external cubit
-
----
-
-## Super Search
-
-Search components with auto-positioning overlay and key-based selection.
-
-### Basic Dropdown
-
-```dart
-SuperSearchDropdown<Product, int>.withProvider(
-  request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future((req) => api.search(req.searchQuery)),
-  searchRequestBuilder: (query) => SuperPaginationRequest(page: 1, pageSize: 20, searchQuery: query),
-  itemBuilder: (context, product) => ListTile(title: Text(product.name)),
-  keyExtractor: (product) => product.id,
-  onSelected: (product, id) => print('Selected: ${product.name} (ID: $id)'),
-)
-```
-
-### Key-Based Selection
-
-Select by ID instead of object reference - essential for edit forms and state management.
-
-```dart
-SuperSearchDropdown<Product, int>.withProvider(
-  // ... provider config
-  itemBuilder: (context, product) => ListTile(title: Text(product.name)),
-
-  // Key-based selection
-  keyExtractor: (product) => product.id,
-  selectedKey: selectedProductId,
-  onSelected: (product, id) => setState(() => selectedProductId = id),
-  selectedKeyLabelBuilder: (id) => 'Product #$id (loading...)',
-  showSelected: true,
-)
-```
-
-### Multi-Selection
-
-```dart
-SuperSearchMultiDropdown<Product, int>.withProvider(
-  // ... provider config
-  keyExtractor: (product) => product.id,
-  selectedKeys: selectedIds,
-  onSelected: (products, ids) => setState(() => selectedIds = ids),
-  maxSelections: 5,
-)
-```
-
-### Bottom Sheet Mode
-
-For mobile-friendly selection, use `displayMode: SearchDisplayMode.bottomSheet`:
-
-```dart
-SuperSearchMultiDropdown<Product, int>.withProvider(
-  // ... provider config
-  displayMode: SearchDisplayMode.bottomSheet,
-  bottomSheetConfig: SuperSearchBottomSheetConfig(
-    title: 'Select Products',
-    confirmText: 'Done',
-    showSelectedCount: true,
-    showClearAllButton: true,
-    heightFactor: 0.85,
-  ),
-  hintText: 'Tap to search...',
-  onSelected: (products, ids) => setState(() => selectedIds = ids),
-)
-```
-
-| Display Mode | Description |
-|--------------|-------------|-|
-| `SearchDisplayMode.overlay` | Default dropdown overlay |
-| `SearchDisplayMode.bottomSheet` | Fullscreen bottom sheet |
-
-### Components
-
-| Component | Description |
-|-----------|-------------|-|
-| `SuperSearchDropdown<T, K>` | Single-selection search dropdown |
-| `SuperSearchMultiDropdown<T, K>` | Multi-selection with chips |
-| `SuperSearchController<T, K>` | Controller for programmatic control |
-| `SuperSearchBox<T, K>` | Standalone search input |
-| `SuperSearchOverlay<T, K>` | Standalone results overlay |
-| `SuperSearchTheme` | ThemeExtension for styling |
-
-### Configuration
-
-```dart
-SuperSearchDropdown<Product, int>.withProvider(
-  // ...
-  searchConfig: SuperSearchConfig(
-    debounceDelay: Duration(milliseconds: 500),
-    minSearchLength: 2,
-    searchOnEmpty: false,
-  ),
-  overlayConfig: SuperSearchOverlayConfig(
-    position: OverlayPosition.auto,
-    maxHeight: 400,
-    animationType: OverlayAnimationType.fadeScale,
-  ),
-)
-```
-
-### SuperSearchDropdown Parameters
-
-#### Core Parameters
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `request` | `SuperPaginationRequest` | Yes*| - | Pagination config (for `.withProvider`) |
-| `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
-| `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
-| `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
-| `itemBuilder` | `Widget Function(BuildContext, T)` | Yes | - | Builds each result item |
-
-#### Selection Callback
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `onSelected` | `void Function(T, K)?` | No | `null` | Called with item and key when selected |
-| `onChanged` | `ValueChanged<String>?` | No | `null` | Called when text changes |
-
-#### Key-Based Selection
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `keyExtractor` | `K Function(T)?` | No | `null` | Extracts unique key from item |
-| `selectedKey` | `K?` | No | `null` | Currently selected key |
-| `selectedKeyLabelBuilder` | `String Function(K)?` | No | `null` | Label for pending key |
-| `selectedKeyBuilder` | `Widget Function(BuildContext, K, VoidCallback)?` | No | `null` | Custom pending key widget |
-
-#### Show Selected Mode
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `showSelected` | `bool` | No | `false` | Show selected item instead of search box |
-| `initialSelectedValue` | `T?` | No | `null` | Pre-selected item on load |
-| `selectedItemBuilder` | `Widget Function(BuildContext, T, VoidCallback)?` | No | `null` | Custom selected item widget |
-
-#### Search Box Appearance
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `decoration` | `InputDecoration?` | No | `null` | TextField decoration |
-| `style` | `TextStyle?` | No | `null` | Text style |
-| `prefixIcon` | `Widget?` | No | `null` | Leading icon |
-| `suffixIcon` | `Widget?` | No | `null` | Trailing icon |
-| `showClearButton` | `bool` | No | `true` | Show clear button |
-| `borderRadius` | `BorderRadius?` | No | `null` | Border radius |
-
-#### Input Configuration
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `textInputAction` | `TextInputAction` | No | `search` | Keyboard action button |
-| `textCapitalization` | `TextCapitalization` | No | `none` | Text capitalization |
-| `keyboardType` | `TextInputType` | No | `text` | Keyboard type |
-| `inputFormatters` | `List<TextInputFormatter>?` | No | `null` | Input formatters |
-| `maxLength` | `int?` | No | `null` | Max input length |
-
-#### Validation
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `validator` | `String? Function(String?)?` | No | `null` | Validation function |
-| `autovalidateMode` | `AutovalidateMode?` | No | `null` | When to validate |
-
-#### Overlay State Builders
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `loadingBuilder` | `WidgetBuilder?` | No | `null` | Loading state widget |
-| `emptyBuilder` | `WidgetBuilder?` | No | `null` | Empty results widget |
-| `errorBuilder` | `Widget Function(BuildContext, Exception)?` | No | `null` | Error state widget |
-| `headerBuilder` | `WidgetBuilder?` | No | `null` | Dropdown header |
-| `footerBuilder` | `WidgetBuilder?` | No | `null` | Dropdown footer |
-| `separatorBuilder` | `IndexedWidgetBuilder?` | No | `null` | Item separator |
-| `overlayDecoration` | `BoxDecoration?` | No | `null` | Overlay container decoration |
-
-#### Configuration Objects
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
-| `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
-
-#### Cubit Options (`.withProvider` only)
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `listBuilder` | `List<T> Function(List<T>)?` | No | `null` | Transform items |
-| `onInsertionCallback` | `void Function(List<T>)?` | No | `null` | Called on data load |
-| `maxPagesInMemory` | `int` | No | `5` | Max cached pages |
-| `retryConfig` | `RetryConfig?` | No | `null` | Retry configuration |
-| `dataAge` | `Duration?` | No | `null` | Data expiration |
-| `orders` | `SortOrderCollection<T>?` | No | `null` | Sort orders |
-| `logger` | `Logger?` | No | `null` | Debug logger |
-
----
-
-### SuperSearchMultiDropdown Parameters
-
-#### Multi Core Parameters
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `request` | `SuperPaginationRequest` | Yes*| - | Pagination config (for `.withProvider`) |
-| `provider` | `SuperPaginationProvider<T, SuperPaginationRequest>` | Yes* | - | Data source (for `.withProvider`) |
-| `cubit` | `SuperPaginationCubit<T, SuperPaginationRequest>` | Yes* | - | External cubit (for `.withCubit`) |
-| `searchRequestBuilder` | `SuperPaginationRequest Function(String)` | Yes | - | Builds request from search query |
-| `itemBuilder` | `Widget Function(BuildContext, T)` | Yes | - | Builds each result item |
-
-#### Multi Selection Callback
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `onSelected` | `void Function(List<T>, List<K>)?` | No | `null` | Called with items and keys when selection changes |
-| `onChanged` | `ValueChanged<String>?` | No | `null` | Called when text changes |
-| `maxSelections` | `int?` | No | `null` | Maximum items to select |
-
-#### Multi Key-Based Selection
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `keyExtractor` | `K Function(T)?` | No | `null` | Extracts unique key from item |
-| `selectedKeys` | `List<K>?` | No | `null` | Currently selected keys |
-| `selectedKeyLabelBuilder` | `String Function(K)?` | No | `null` | Label for pending keys |
-| `selectedKeyBuilder` | `Widget Function(BuildContext, K, VoidCallback)?` | No | `null` | Custom pending key chip |
-
-#### Multi Show Selected Mode
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `showSelected` | `bool` | No | `true` | Show selected chips below search |
-| `initialSelectedValues` | `List<T>?` | No | `null` | Pre-selected items on load |
-| `selectedItemBuilder` | `Widget Function(BuildContext, T, VoidCallback)?` | No | `null` | Custom selected chip |
-
-#### Multi Selected Items Layout
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `selectedItemsWrap` | `bool` | No | `true` | Wrap chips or scroll horizontally |
-| `selectedItemsSpacing` | `double` | No | `8.0` | Horizontal spacing between chips |
-| `selectedItemsRunSpacing` | `double` | No | `8.0` | Vertical spacing when wrapped |
-| `selectedItemsPadding` | `EdgeInsets` | No | `EdgeInsets.only(top: 12)` | Padding around chips container |
-
-#### Multi Search Box Appearance
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `decoration` | `InputDecoration?` | No | `null` | TextField decoration |
-| `style` | `TextStyle?` | No | `null` | Text style |
-| `prefixIcon` | `Widget?` | No | `null` | Leading icon |
-| `suffixIcon` | `Widget?` | No | `null` | Trailing icon |
-| `showClearButton` | `bool` | No | `true` | Show clear button |
-| `borderRadius` | `BorderRadius?` | No | `null` | Border radius |
-
-#### Multi Input Configuration
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `textInputAction` | `TextInputAction` | No | `search` | Keyboard action button |
-| `textCapitalization` | `TextCapitalization` | No | `none` | Text capitalization |
-| `keyboardType` | `TextInputType` | No | `text` | Keyboard type |
-| `inputFormatters` | `List<TextInputFormatter>?` | No | `null` | Input formatters |
-| `maxLength` | `int?` | No | `null` | Max input length |
-
-#### Multi Validation
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `validator` | `String? Function(String?)?` | No | `null` | Validation function |
-| `autovalidateMode` | `AutovalidateMode?` | No | `null` | When to validate |
-
-#### Multi Overlay State Builders
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `loadingBuilder` | `WidgetBuilder?` | No | `null` | Loading state widget |
-| `emptyBuilder` | `WidgetBuilder?` | No | `null` | Empty results widget |
-| `errorBuilder` | `Widget Function(BuildContext, Exception)?` | No | `null` | Error state widget |
-| `headerBuilder` | `WidgetBuilder?` | No | `null` | Dropdown header |
-| `footerBuilder` | `WidgetBuilder?` | No | `null` | Dropdown footer |
-| `separatorBuilder` | `IndexedWidgetBuilder?` | No | `null` | Item separator |
-| `overlayDecoration` | `BoxDecoration?` | No | `null` | Overlay container decoration |
-
-#### Multi Configuration Objects
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `searchConfig` | `SuperSearchConfig` | No | `SuperSearchConfig()` | Search behavior config |
-| `overlayConfig` | `SuperSearchOverlayConfig` | No | `SuperSearchOverlayConfig()` | Overlay appearance config |
-
-#### Multi Cubit Options (`.withProvider` only)
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|-|
-| `listBuilder` | `List<T> Function(List<T>)?` | No | `null` | Transform items |
-| `onInsertionCallback` | `void Function(List<T>)?` | No | `null` | Called on data load |
-| `maxPagesInMemory` | `int` | No | `5` | Max cached pages |
-| `retryConfig` | `RetryConfig?` | No | `null` | Retry configuration |
-| `dataAge` | `Duration?` | No | `null` | Data expiration |
-| `orders` | `SortOrderCollection<T>?` | No | `null` | Sort orders |
-| `logger` | `Logger?` | No | `null` | Debug logger |
 
 ---
 
@@ -1030,9 +722,8 @@ cubit.jumpFirstWhere((item) => item.isUnread);
 
 ## Theming
 
-Install `SuperMaterialThemeData` once. Pagination states and search surfaces then
-read the active GeniusLink palette, brightness, typography, spacing, radii, and
-responsive mode automatically.
+Install `SuperMaterialThemeData` once. Pagination states then read the active GeniusLink palette, brightness, typography,
+spacing, radii, and responsive mode automatically.
 
 ```dart
 final typography = SuperTextTheme();
@@ -1062,9 +753,6 @@ SuperMaterialThemeData.light(
   textTheme: typography,
   primaryTextTheme: typography,
   extensions: [
-    SuperSearchTheme.light(
-      palette: SuperPalette.greenPalette,
-    ).copyWith(searchBoxElevation: 0),
     SuperPaginationTheme.light(
       palette: SuperPalette.greenPalette,
     ).copyWith(errorTitleColor: SuperTokens.danger),
@@ -1091,7 +779,7 @@ flutter pub get
 flutter run
 ```
 
-The example includes pagination, stream, search, error-handling, and Firebase
+The example includes pagination, stream, error-handling, and Firebase
 integration demonstrations. See `example/ARCHITECTURE.md` for the dependency
 rules and `example/REFACTORING_REPORT_AR.md` for the Arabic review.
 
@@ -1104,8 +792,6 @@ rules and `example/REFACTORING_REPORT_AR.md` for the Arabic review.
 **3. Configure preloading** - Adjust `invisibleItemsThreshold` for your scroll speed
 
 **4. Set memory limits** - Use `maxPagesInMemory` for large datasets
-
-**5. Use key-based selection** - For forms and state management in search dropdowns
 
 ---
 

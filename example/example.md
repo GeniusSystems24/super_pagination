@@ -62,17 +62,13 @@ SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
 - Sorting - Programmatic sorting
 
 ### Search (6 examples)
-- Search Dropdown - Auto-positioning overlay
-- Multi-Select Search - Select multiple items
 - Form Validation - Validators & formatters
 - Keyboard Navigation - Arrow keys, Enter, Escape
-- Search Theming - Light, dark & custom themes
 - Async States - Loading, empty & error states
 
 ### Firebase (6 examples)
 - Firestore Pagination - Basic paginated queries
 - Firestore Real-time - Live data updates
-- Firestore Search - Search with SuperSearchDropdown
 - Realtime Database - Firebase RTDB pagination
 - Firestore Filters - Advanced filtering
 - Offline Support - Offline persistence

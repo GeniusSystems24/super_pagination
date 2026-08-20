@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.1] - 2026-08-21
+
+### Removed
+
+- Removed `SuperSearchDropdown` and `SuperSearchMultiDropdown`.
+- Removed the search controllers, search box/overlay views, search configuration, positioning utilities, and `SuperSearchTheme` that existed to support those dropdown widgets.
+- Removed the public search feature export from `super_pagination.dart`.
+- Removed all dropdown-related example screens, including the Firestore search demo, and cleaned their routes/navigation entries.
+
+### Changed
+
+- Updated the example application theme and design-system tests after removing `SuperSearchTheme`.
+- Updated README and skill guidance to describe the pagination-only public surface.
+
 ## [5.0.0] - 2026-08-21
 
 ### Added

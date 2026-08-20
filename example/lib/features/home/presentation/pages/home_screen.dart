@@ -247,90 +247,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     ),
     ExampleCategory(
-      title: 'Search',
-      subtitle: 'Super search components',
-      icon: Icons.search_rounded,
-      items: [
-        ExampleItem(
-          title: 'Search Dropdown',
-          description: 'Search with auto-positioning overlay',
-          icon: Icons.search_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.searchDropdown,
-        ),
-        ExampleItem(
-          title: 'Multi-Select Search',
-          description: 'Search and select multiple items',
-          icon: Icons.checklist_rounded,
-          color: const Color(0xFFEF4444),
-          route: AppRoutes.multiSelectSearch,
-        ),
-        ExampleItem(
-          title: 'Bottom Sheet Search',
-          description: 'Fullscreen bottom sheet mode',
-          icon: Icons.vertical_align_bottom_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.bottomSheetSearch,
-        ),
-        ExampleItem(
-          title: 'Form Validation',
-          description: 'Search with validators & formatters',
-          icon: Icons.fact_check_rounded,
-          color: const Color(0xFF1DB88A),
-          route: AppRoutes.formValidation,
-        ),
-        ExampleItem(
-          title: 'Keyboard Navigation',
-          description: 'Arrow keys, Enter, Escape shortcuts',
-          icon: Icons.keyboard_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.keyboardNavigation,
-        ),
-        ExampleItem(
-          title: 'Search Theming',
-          description: 'Light, dark & custom themes',
-          icon: Icons.palette_rounded,
-          color: const Color(0xFFEF4444),
-          route: AppRoutes.searchTheming,
-        ),
-        ExampleItem(
-          title: 'Async States',
-          description: 'Loading, empty & error states',
-          icon: Icons.hourglass_empty_rounded,
-          color: const Color(0xFFF97316),
-          route: AppRoutes.asyncStates,
-        ),
-        ExampleItem(
-          title: 'Overlay Animations',
-          description: '13 animation types & overlay values',
-          icon: Icons.animation_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.overlayAnimations,
-        ),
-        ExampleItem(
-          title: 'Key-Based Selection',
-          description: 'Select by key/ID instead of object',
-          icon: Icons.key_rounded,
-          color: const Color(0xFF1DB88A),
-          route: AppRoutes.keyBasedSelection,
-        ),
-        ExampleItem(
-          title: 'Initial Selection',
-          description: 'Pre-populate with initial values',
-          icon: Icons.playlist_add_check_rounded,
-          color: const Color(0xFFF97316),
-          route: AppRoutes.initialSelection,
-        ),
-        ExampleItem(
-          title: 'Realistic Examples',
-          description: 'E-commerce, team, country, tags',
-          icon: Icons.auto_awesome_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.realisticSearchExamples,
-        ),
-      ],
-    ),
-    ExampleCategory(
       title: 'Errors',
       subtitle: 'Error handling patterns',
       icon: Icons.bug_report_rounded,
@@ -404,13 +320,6 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.sync_rounded,
           color: const Color(0xFF1DB88A),
           route: AppRoutes.firestoreRealtime,
-        ),
-        ExampleItem(
-          title: 'Firestore Search',
-          description: 'Search with array-contains',
-          icon: Icons.manage_search_rounded,
-          color: const Color(0xFF4A7CFF),
-          route: AppRoutes.firestoreSearch,
         ),
         ExampleItem(
           title: 'Realtime Database',
@@ -615,7 +524,6 @@ class _HomeScreenState extends State<HomeScreen> {
         const AdvancedRoute().go(context);
         return;
       case 3:
-        const SearchRoute().go(context);
         return;
       case 4:
         const ErrorRoute().go(context);

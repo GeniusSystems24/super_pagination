@@ -17,7 +17,6 @@ abstract final class AppTheme {
       textTheme: typography,
       primaryTextTheme: typography,
       extensions: [
-        SuperSearchTheme.light(palette: palette),
         SuperPaginationTheme.light(palette: palette),
       ],
     );
@@ -33,7 +32,6 @@ abstract final class AppTheme {
       textTheme: typography,
       primaryTextTheme: typography,
       extensions: [
-        SuperSearchTheme.dark(palette: palette),
         SuperPaginationTheme.dark(palette: palette),
       ],
     );

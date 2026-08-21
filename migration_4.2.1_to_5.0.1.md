@@ -1,8 +1,8 @@
-# Migration Guide: 4.2.1 → 5.0.0+1
+# Migration Guide: 4.2.1 → 5.0.1
 
-This guide covers the complete migration of `super_pagination` from **4.2.1** through **5.0.0** and the **5.0.0+1** patch release.
+This guide covers the complete migration of `super_pagination` from **4.2.1** through **5.0.0** and the **5.0.1** patch release.
 
-> **5.0.0** introduces the new pagination architecture. **5.0.0+1** removes the legacy search dropdown feature family and cleans all related public API, examples, routes, theme registration, and tests.
+> **5.0.0** introduces the new pagination architecture. **5.0.1** removes the legacy search dropdown feature family and cleans all related public API, examples, routes, theme registration, and tests.
 
 > In 5.0.0 the public provider type is `SuperPaginationProvider`; there is no `SuperPaginationDataSource` API.
 
@@ -27,7 +27,7 @@ The main migration work is:
 3. migrate cursor pagination to `SuperCursorPaginationRequest`
 4. replace runtime provider switching with request switching
 5. update custom request subclasses so pagination state is preserved correctly
-6. remove all usage of the search dropdown APIs removed in 5.0.0+1
+6. remove all usage of the search dropdown APIs removed in 5.0.1
 7. remove any app-specific routes, theme extensions, tests, or example wrappers that referenced those search components
 
 ---
@@ -778,14 +778,14 @@ If the API exposes an offset value, `OffsetPaginationResult<T>` is available as 
 
 # 15. Recommended migration sequence
 
-1. Update the dependency to 5.0.0+1.
+1. Update the dependency to 5.0.1.
 
 ```yaml
 dependencies:
-  super_pagination: ^5.0.0+1
+  super_pagination: ^5.0.1
 ```
 
-2. Replace:
+1. Replace:
 
 ```dart
 .future(...)
@@ -797,7 +797,7 @@ with:
 .listFuture(...)
 ```
 
-3. Replace:
+1. Replace:
 
 ```dart
 .stream(...)
@@ -809,7 +809,7 @@ with:
 .listStream(...)
 ```
 
-4. For APIs that return page metadata, migrate to:
+1. For APIs that return page metadata, migrate to:
 
 ```dart
 pageFuture
@@ -817,7 +817,7 @@ pageStream
 PagePaginationResult
 ```
 
-5. For cursor APIs, migrate to:
+1. For cursor APIs, migrate to:
 
 ```dart
 SuperCursorPaginationRequest
@@ -826,19 +826,19 @@ cursorStream
 CursorPaginationResult
 ```
 
-6. Replace runtime `setSource` logic with:
+1. Replace runtime `setSource` logic with:
 
 ```dart
 setRequest(...)
 ```
 
-7. Update custom request classes to preserve custom fields in `copyWith`.
+1. Update custom request classes to preserve custom fields in `copyWith`.
 
-8. For custom cursor requests, also implement `copyWithCursor`.
+2. For custom cursor requests, also implement `copyWithCursor`.
 
-9. Update code that assumes totals are always available.
+3. Update code that assumes totals are always available.
 
-10. Run formatter, analyzer, and tests.
+4. Run formatter, analyzer, and tests.
 
 ---
 
@@ -962,10 +962,9 @@ Use these examples as reference implementations when migrating application code.
 
 ---
 
+# 20. Changes in 5.0.1
 
-# 20. Changes in 5.0.0+1
-
-Version **5.0.0+1** is a cleanup release built on top of the 5.0.0 pagination architecture.
+Version **5.0.1** is a cleanup release built on top of the 5.0.0 pagination architecture.
 
 The main change is the complete removal of the old search dropdown feature family.
 
@@ -980,7 +979,7 @@ SuperSearchMultiDropdown
 
 Any application code importing or constructing these widgets must be removed or migrated to an application-owned search/select implementation.
 
-There is no compatibility alias for these APIs in 5.0.0+1.
+There is no compatibility alias for these APIs in 5.0.1.
 
 ---
 
@@ -1016,7 +1015,7 @@ If your application imported internal search files directly, those imports must 
 
 # 22. Remove search feature imports
 
-Before 5.0.0+1, application code may have imported the search APIs through the package barrel.
+Before 5.0.1, application code may have imported the search APIs through the package barrel.
 
 For example:
 
@@ -1042,7 +1041,7 @@ Direct imports into package `src` were never recommended and will no longer reso
 
 # 23. Replace `SuperSearchDropdown`
 
-There is no direct replacement inside `super_pagination` 5.0.0+1.
+There is no direct replacement inside `super_pagination` 5.0.1.
 
 Before:
 
@@ -1160,7 +1159,7 @@ Also remove:
 
 ---
 
-# 26. Example screens removed in 5.0.0+1
+# 26. Example screens removed in 5.0.1
 
 All example screens dedicated to the removed search dropdown APIs are removed.
 
@@ -1267,7 +1266,7 @@ Any hard-coded index that still assumes the old position must be updated.
 
 ---
 
-# 30. Test cleanup for 5.0.0+1
+# 30. Test cleanup for 5.0.1
 
 Remove or update tests that reference any deleted search API.
 
@@ -1297,7 +1296,7 @@ Navigation tests should target routes that still exist.
 
 ---
 
-# 31. Package architecture after 5.0.0+1
+# 31. Package architecture after 5.0.1
 
 After the patch, `super_pagination` has a clearer responsibility boundary.
 
@@ -1317,11 +1316,11 @@ This reduces coupling between pagination infrastructure and form/search controls
 
 ---
 
-# 32. Direct migration from 4.2.1 to 5.0.0+1
+# 32. Direct migration from 4.2.1 to 5.0.1
 
 If you are upgrading directly from 4.2.1, perform the migration in this order:
 
-1. update the dependency to `^5.0.0+1`
+1. update the dependency to `^5.0.1`
 2. migrate `future` to `listFuture`
 3. migrate `stream` to `listStream`
 4. migrate page-aware APIs to `pageFuture` / `pageStream`
@@ -1342,11 +1341,11 @@ If you are upgrading directly from 4.2.1, perform the migration in this order:
 
 ---
 
-# 33. 5.0.0+1 migration checklist
+# 33. 5.0.1 migration checklist
 
-After upgrading to 5.0.0+1, verify:
+After upgrading to 5.0.1, verify:
 
-- [ ] dependency is `super_pagination: ^5.0.0+1`
+- [ ] dependency is `super_pagination: ^5.0.1`
 - [ ] no `SuperSearchDropdown` references remain
 - [ ] no `SuperSearchMultiDropdown` references remain
 - [ ] no `SuperSearchController` references remain
@@ -1374,7 +1373,7 @@ After upgrading to 5.0.0+1, verify:
 
 After migration, verify:
 
-- [ ] package version is `5.0.0+1`
+- [ ] package version is `5.0.1`
 - [ ] legacy `.future(...)` usages are migrated to `.listFuture(...)` where appropriate
 - [ ] legacy `.stream(...)` usages are migrated to `.listStream(...)` where appropriate
 - [ ] page APIs use `PagePaginationResult` when server metadata is available
@@ -1418,10 +1417,10 @@ flutter test
 
 ## Summary
 
-The migration from 4.2.1 to 5.0.0+1 has two major parts:
+The migration from 4.2.1 to 5.0.1 has two major parts:
 
 1. **5.0.0** moves pagination to explicit provider modes, typed result data, dedicated cursor requests, request switching, and custom request support.
-2. **5.0.0+1** removes the complete `SuperSearchDropdown` / `SuperSearchMultiDropdown` feature family and all supporting search-specific API.
+2. **5.0.1** removes the complete `SuperSearchDropdown` / `SuperSearchMultiDropdown` feature family and all supporting search-specific API.
 
 The core architectural change in 5.0.0 is the move from a generic pagination provider contract to explicit pagination modes.
 
@@ -1457,5 +1456,4 @@ when filters or query parameters change.
 
 This keeps provider behavior stable while making pagination state, server metadata, and request evolution explicit.
 
-
-For 5.0.0+1, searchable dropdown/select UI should live outside `super_pagination`. Use that UI to construct or update a pagination request, then apply it through `SuperPaginationCubit.setRequest(...)`.
+For 5.0.1, searchable dropdown/select UI should live outside `super_pagination`. Use that UI to construct or update a pagination request, then apply it through `SuperPaginationCubit.setRequest(...)`.

@@ -1,8 +1,8 @@
-# Migration Guide: 4.2.1 → 5.0.0
+# Migration Guide: 4.2.1 → 5.0.0+1
 
-This guide covers the breaking and behavioral changes required to migrate `super_pagination` from **4.2.1** to **5.0.0**.
+This guide covers the complete migration of `super_pagination` from **4.2.1** through **5.0.0** and the **5.0.0+1** patch release.
 
-> This guide targets **5.0.0** specifically. Changes introduced later in **5.0.0+1** are intentionally not included.
+> **5.0.0** introduces the new pagination architecture. **5.0.0+1** removes the legacy search dropdown feature family and cleans all related public API, examples, routes, theme registration, and tests.
 
 > In 5.0.0 the public provider type is `SuperPaginationProvider`; there is no `SuperPaginationDataSource` API.
 
@@ -27,6 +27,8 @@ The main migration work is:
 3. migrate cursor pagination to `SuperCursorPaginationRequest`
 4. replace runtime provider switching with request switching
 5. update custom request subclasses so pagination state is preserved correctly
+6. remove all usage of the search dropdown APIs removed in 5.0.0+1
+7. remove any app-specific routes, theme extensions, tests, or example wrappers that referenced those search components
 
 ---
 
@@ -776,11 +778,11 @@ If the API exposes an offset value, `OffsetPaginationResult<T>` is available as 
 
 # 15. Recommended migration sequence
 
-1. Update the dependency to 5.0.0.
+1. Update the dependency to 5.0.0+1.
 
 ```yaml
 dependencies:
-  super_pagination: ^5.0.0
+  super_pagination: ^5.0.0+1
 ```
 
 2. Replace:
@@ -960,11 +962,419 @@ Use these examples as reference implementations when migrating application code.
 
 ---
 
-# 20. Verification checklist
+
+# 20. Changes in 5.0.0+1
+
+Version **5.0.0+1** is a cleanup release built on top of the 5.0.0 pagination architecture.
+
+The main change is the complete removal of the old search dropdown feature family.
+
+## Removed public widgets
+
+The following widgets are removed:
+
+```dart
+SuperSearchDropdown
+SuperSearchMultiDropdown
+```
+
+Any application code importing or constructing these widgets must be removed or migrated to an application-owned search/select implementation.
+
+There is no compatibility alias for these APIs in 5.0.0+1.
+
+---
+
+# 21. Removed search dropdown support classes
+
+All components that existed specifically to support the removed search dropdown widgets are also removed.
+
+This includes the search feature's:
+
+- controllers
+- multi-selection controllers
+- search box widgets
+- overlay widgets
+- search theme extension
+- configuration models
+- search-specific enums
+- overlay positioning utilities
+- helper classes used only by the dropdown feature
+
+In particular, code should no longer reference:
+
+```dart
+SuperSearchController
+SuperSearchMultiController
+SuperSearchBox
+SuperSearchOverlay
+SuperSearchTheme
+```
+
+If your application imported internal search files directly, those imports must also be removed.
+
+---
+
+# 22. Remove search feature imports
+
+Before 5.0.0+1, application code may have imported the search APIs through the package barrel.
+
+For example:
+
+```dart
+import 'package:super_pagination/super_pagination.dart';
+
+final field = SuperSearchDropdown(...);
+```
+
+After upgrading, remove all use of the removed search classes:
+
+```dart
+import 'package:super_pagination/super_pagination.dart';
+
+// Use only pagination APIs that remain part of super_pagination.
+```
+
+If you used direct `src/.../search/...` imports, remove them as well.
+
+Direct imports into package `src` were never recommended and will no longer resolve after this cleanup.
+
+---
+
+# 23. Replace `SuperSearchDropdown`
+
+There is no direct replacement inside `super_pagination` 5.0.0+1.
+
+Before:
+
+```dart
+SuperSearchDropdown<Item>(
+  items: items,
+  onChanged: (item) {
+    // ...
+  },
+)
+```
+
+After:
+
+```dart
+// Move search/select UI to the application layer or another dedicated
+// form/search package. Keep super_pagination responsible for pagination.
+```
+
+If the removed dropdown was only being used to update pagination filters, keep the selection UI separate and pass the selected value into the cubit request:
+
+```dart
+cubit.setRequest(
+  cubit.currentRequest.copyWith(
+    filters: {
+      ...cubit.currentRequest.filters,
+      'status': selectedStatus,
+    },
+  ),
+);
+```
+
+Recommended responsibility flow:
+
+```text
+search/select UI
+        ↓
+build/update request
+        ↓
+SuperPaginationCubit.setRequest(...)
+        ↓
+SuperPaginationProvider
+```
+
+---
+
+# 24. Replace `SuperSearchMultiDropdown`
+
+There is also no direct replacement inside `super_pagination`.
+
+Before:
+
+```dart
+SuperSearchMultiDropdown<Item>(
+  items: items,
+  onChanged: (items) {
+    // ...
+  },
+)
+```
+
+After, manage multi-selection outside the pagination package and convert the selection into request data.
+
+Example:
+
+```dart
+void applySelectedStatuses(List<String> statuses) {
+  cubit.setRequest(
+    cubit.currentRequest.copyWith(
+      filters: {
+        ...cubit.currentRequest.filters,
+        'statuses': statuses,
+      },
+    ),
+  );
+}
+```
+
+This keeps selection state and pagination state separate.
+
+---
+
+# 25. `SuperSearchTheme` is removed
+
+`SuperSearchTheme` was tied to the removed search feature and is no longer part of the package.
+
+Remove registrations such as:
+
+```dart
+ThemeData(
+  extensions: const [
+    SuperSearchTheme(
+      // ...
+    ),
+  ],
+)
+```
+
+After:
+
+```dart
+ThemeData(
+  extensions: const [
+    // Keep only theme extensions that still exist.
+  ],
+)
+```
+
+Also remove:
+
+- `SuperSearchTheme.of(context)`
+- `Theme.of(context).extension<SuperSearchTheme>()`
+- tests that assert `SuperSearchTheme` is installed
+- custom theme-copy helpers that reference it
+
+---
+
+# 26. Example screens removed in 5.0.0+1
+
+All example screens dedicated to the removed search dropdown APIs are removed.
+
+This includes:
+
+- `SuperSearchDropdown` examples
+- `SuperSearchMultiDropdown` examples
+- compatibility wrapper/export screens for those examples
+- the Firestore search example that depended on `SuperSearchDropdown`
+
+Do not keep imports to removed example files in:
+
+- `example/lib`
+- route configuration
+- generated router files
+- home/dashboard example lists
+- sidebar navigation
+- tests
+
+The normal pagination filtering/search example remains valid when it only updates `SuperPaginationRequest` and does not use the removed dropdown widgets.
+
+---
+
+# 27. Example navigation and route cleanup
+
+If your application copied the package example architecture, remove stale search routes.
+
+For example, remove code such as:
+
+```dart
+AppRoutes.search
+```
+
+and any corresponding router entry.
+
+Also remove search-specific section roots or module mappings, for example:
+
+```dart
+AppRoutes.search
+'module-search'
+```
+
+A stale route reference can produce diagnostics such as:
+
+```text
+The getter 'search' isn't defined for the type 'AppRoutes'.
+```
+
+It can also cause secondary const-expression errors when the undefined route is used inside a const set or list.
+
+After deleting the search route, update any navigation tests to use a route that still exists.
+
+---
+
+# 28. Generated router cleanup
+
+When using GoRouter code generation or generated route files:
+
+1. remove the source route declarations for deleted search examples
+2. regenerate router output if your project uses code generation
+3. verify that generated files contain no references to removed search screens
+
+Typical verification command when using `build_runner`:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Use the generation command appropriate for your project.
+
+---
+
+# 29. Sidebar and home-screen cleanup
+
+Applications that copied the package example navigation should remove the Search module/category from:
+
+- sidebar entries
+- navigation destinations
+- home-screen cards
+- module registries
+- route-to-module mapping
+- selected-index calculations
+
+If the Search category occupied an index between other categories, adjust the remaining indices.
+
+For example, if the old ordering was:
+
+```text
+0 Pagination
+1 Errors
+2 Search
+3 Custom
+```
+
+after removing Search it becomes:
+
+```text
+0 Pagination
+1 Errors
+2 Custom
+```
+
+Any hard-coded index that still assumes the old position must be updated.
+
+---
+
+# 30. Test cleanup for 5.0.0+1
+
+Remove or update tests that reference any deleted search API.
+
+Examples of obsolete assertions:
+
+```dart
+expect(
+  Theme.of(context).extension<SuperSearchTheme>(),
+  isNotNull,
+);
+```
+
+and:
+
+```dart
+expect(AppRoutes.search, ...);
+```
+
+Also remove widget tests that instantiate:
+
+```dart
+SuperSearchDropdown
+SuperSearchMultiDropdown
+```
+
+Navigation tests should target routes that still exist.
+
+---
+
+# 31. Package architecture after 5.0.0+1
+
+After the patch, `super_pagination` has a clearer responsibility boundary.
+
+The package focuses on:
+
+- pagination requests
+- pagination providers
+- pagination cubits/state
+- list/page/cursor pagination
+- pagination result metadata
+- request switching
+- pagination-specific error and presentation behavior
+
+The package no longer owns generic searchable dropdown/select UI.
+
+This reduces coupling between pagination infrastructure and form/search controls.
+
+---
+
+# 32. Direct migration from 4.2.1 to 5.0.0+1
+
+If you are upgrading directly from 4.2.1, perform the migration in this order:
+
+1. update the dependency to `^5.0.0+1`
+2. migrate `future` to `listFuture`
+3. migrate `stream` to `listStream`
+4. migrate page-aware APIs to `pageFuture` / `pageStream`
+5. migrate cursor APIs to `SuperCursorPaginationRequest`
+6. return `CursorPaginationResult` from cursor providers
+7. adopt nullable `totalPages` / `totalItems`
+8. replace provider switching with `setRequest`
+9. update custom `SuperPaginationRequest` subclasses
+10. update custom `SuperCursorPaginationRequest` subclasses
+11. remove `SuperSearchDropdown`
+12. remove `SuperSearchMultiDropdown`
+13. remove search controllers, overlay, config, theme, and helper usages
+14. remove deleted search example imports and routes
+15. remove `AppRoutes.search` and search module mappings
+16. remove `SuperSearchTheme` from application themes and tests
+17. regenerate router output if applicable
+18. run formatter, analyzer, and tests
+
+---
+
+# 33. 5.0.0+1 migration checklist
+
+After upgrading to 5.0.0+1, verify:
+
+- [ ] dependency is `super_pagination: ^5.0.0+1`
+- [ ] no `SuperSearchDropdown` references remain
+- [ ] no `SuperSearchMultiDropdown` references remain
+- [ ] no `SuperSearchController` references remain
+- [ ] no `SuperSearchMultiController` references remain
+- [ ] no `SuperSearchBox` references remain
+- [ ] no `SuperSearchOverlay` references remain
+- [ ] no `SuperSearchTheme` references remain
+- [ ] no direct imports of removed search feature files remain
+- [ ] no removed search example imports remain
+- [ ] no search example routes remain
+- [ ] no `AppRoutes.search` references remain
+- [ ] no `module-search` mappings remain
+- [ ] sidebar/home navigation no longer contains the Search module
+- [ ] navigation indices are correct after removing Search
+- [ ] theme-extension tests no longer assert `SuperSearchTheme`
+- [ ] navigation tests use existing routes
+- [ ] generated router output contains no removed search routes
+- [ ] pagination filter/search examples that remain do not depend on removed dropdown APIs
+- [ ] `flutter analyze` reports no stale search-related diagnostics
+- [ ] all tests pass
+
+---
+
+# 34. Complete verification checklist
 
 After migration, verify:
 
-- [ ] package version is `5.0.0`
+- [ ] package version is `5.0.0+1`
 - [ ] legacy `.future(...)` usages are migrated to `.listFuture(...)` where appropriate
 - [ ] legacy `.stream(...)` usages are migrated to `.listStream(...)` where appropriate
 - [ ] page APIs use `PagePaginationResult` when server metadata is available
@@ -985,7 +1395,7 @@ After migration, verify:
 
 ---
 
-# 21. Final verification commands
+# 35. Final verification commands
 
 Run:
 
@@ -1007,6 +1417,11 @@ flutter test
 ---
 
 ## Summary
+
+The migration from 4.2.1 to 5.0.0+1 has two major parts:
+
+1. **5.0.0** moves pagination to explicit provider modes, typed result data, dedicated cursor requests, request switching, and custom request support.
+2. **5.0.0+1** removes the complete `SuperSearchDropdown` / `SuperSearchMultiDropdown` feature family and all supporting search-specific API.
 
 The core architectural change in 5.0.0 is the move from a generic pagination provider contract to explicit pagination modes.
 
@@ -1041,3 +1456,6 @@ cubit.setRequest(...)
 when filters or query parameters change.
 
 This keeps provider behavior stable while making pagination state, server metadata, and request evolution explicit.
+
+
+For 5.0.0+1, searchable dropdown/select UI should live outside `super_pagination`. Use that UI to construct or update a pagination request, then apply it through `SuperPaginationCubit.setRequest(...)`.

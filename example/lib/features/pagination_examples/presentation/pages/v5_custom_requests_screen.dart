@@ -166,7 +166,7 @@ class _ListFutureDemo extends StatelessWidget {
       title: 'CustomRequest + listFuture',
       description: 'Raw Future<List<T>> using a CustomRequest subclass.',
       provider: SuperPaginationProvider<String, CustomRequest>.listFuture(
-        (request) async {
+        (context, request) async {
           await _delay();
           return _rawListItems('listFuture', request);
         },
@@ -184,7 +184,7 @@ class _ListStreamDemo extends StatelessWidget {
       title: 'CustomRequest + listStream',
       description: 'Raw Stream<List<T>> using a CustomRequest subclass.',
       provider: SuperPaginationProvider<String, CustomRequest>.listStream(
-        (request) => Stream<List<String>>.fromFuture(
+        (context, request) => Stream<List<String>>.fromFuture(
           _delayedValue(_rawListItems('listStream', request)),
         ),
       ),
@@ -201,7 +201,7 @@ class _PageFutureDemo extends StatelessWidget {
       title: 'CustomRequest + pageFuture',
       description: 'PagePaginationResult<T> keeps backend page metadata.',
       provider: SuperPaginationProvider<String, CustomRequest>.pageFuture(
-        (request) async {
+        (context, request) async {
           await _delay();
           return _pageResult('pageFuture', request);
         },
@@ -219,7 +219,7 @@ class _PageStreamDemo extends StatelessWidget {
       title: 'CustomRequest + pageStream',
       description: 'Stream<PagePaginationResult<T>> with the same custom request.',
       provider: SuperPaginationProvider<String, CustomRequest>.pageStream(
-        (request) => Stream<PagePaginationResult<String>>.fromFuture(
+        (context, request) => Stream<PagePaginationResult<String>>.fromFuture(
           _delayedValue(_pageResult('pageStream', request)),
         ),
       ),
@@ -237,7 +237,7 @@ class _CursorFutureDemo extends StatelessWidget {
       description: 'The cubit advances lastCursorNo through copyWithCursor.',
       provider:
           SuperPaginationProvider<String, CustomCursorRequest>.cursorFuture(
-        (request) async {
+        (context, request) async {
           await _delay();
           return _cursorResult('cursorFuture', request);
         },
@@ -256,7 +256,7 @@ class _CursorStreamDemo extends StatelessWidget {
       description: 'CursorPaginationResult<T> from a realtime-style stream.',
       provider:
           SuperPaginationProvider<String, CustomCursorRequest>.cursorStream(
-        (request) => Stream<CursorPaginationResult<String>>.fromFuture(
+        (context, request) => Stream<CursorPaginationResult<String>>.fromFuture(
           _delayedValue(_cursorResult('cursorStream', request)),
         ),
       ),

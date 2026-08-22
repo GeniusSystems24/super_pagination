@@ -1,7 +1,69 @@
 
-# Super Pagination v5 Skill
+# Super Pagination v5.1 Skill
 
 Use this package for paginated Flutter lists, grids, page views, and realtime streams.
+
+
+## Keep-alive lifecycle
+
+Use `keepAlive: true` when a pagination view is hosted in a lazy tab/page/sliver
+container and the user expects the same loaded data and scroll position when
+returning to it.
+
+```dart
+SuperPaginationListView<Item, SuperPaginationRequest>.withProvider(
+  keepAlive: true,
+  request: const SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.listFuture((context, request) => repository.fetchItems(request)),
+  itemBuilder: (context, items, index) => ItemTile(items[index]),
+)
+```
+
+The flag is available on `SuperPagination` and all public convenience wrappers.
+It defaults to `false`.
+
+Implementation contract:
+
+- `SuperPagination` uses `AutomaticKeepAliveClientMixin`.
+- `wantKeepAlive` mirrors `widget.keepAlive`.
+- `build` must call `super.build(context)`.
+- changing `keepAlive` at runtime must call `updateKeepAlive()`.
+- when retained by a compatible ancestor, the same pagination state survives,
+  including the internally-created cubit and the internal scroll controller.
+- permanent removal from the widget tree still disposes internally-owned
+  resources normally.
+- `keepAlive` is a widget lifecycle feature; do not confuse it with provider
+  caching, data age, or request persistence.
+
+
+
+## Provider callback context
+
+Every `SuperPaginationProvider` callback receives two arguments:
+
+```dart
+(context, request)
+```
+
+The first argument is the active Flutter `BuildContext`; the second is the
+concrete pagination request. Use the context to resolve inherited dependencies
+when needed:
+
+```dart
+SuperPaginationProvider.listFuture(
+  (context, request) => context.read<ProductRepository>().fetch(request),
+)
+```
+
+Apply this signature consistently to `listFuture`, `listStream`, `pageFuture`,
+`pageStream`, `cursorFuture`, `cursorStream`, deprecated `future`/`stream`, and
+`mergeStreams`.
+
+`SuperPagination` binds the live widget context automatically. For direct
+`SuperPaginationCubit` or `SuperPaginationController.of` construction, pass
+`providerContext: context` if the provider needs inherited widget-tree values.
+Do not store a `BuildContext` in request/domain models.
+
 
 ## v5 source selection
 

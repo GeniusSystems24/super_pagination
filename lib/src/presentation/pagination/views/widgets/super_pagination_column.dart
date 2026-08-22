@@ -11,7 +11,7 @@ part of '../../pagination_feature.dart';
 /// SingleChildScrollView(
 ///   child: SuperPaginationColumn.withProvider(
 ///     request: SuperPaginationRequest(page: 1, pageSize: 20),
-///     provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
+///     provider: SuperPaginationProvider.future((context, request) => fetchProducts(request)),
 ///     itemBuilder: (context, items, index) {
 ///       return ListTile(title: Text(items[index].name));
 ///     },
@@ -60,6 +60,7 @@ class SuperPaginationColumn<T, R extends SuperPaginationRequest> extends SuperPa
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
     super.onInsertionCallback,
@@ -110,6 +111,7 @@ class SuperPaginationColumn<T, R extends SuperPaginationRequest> extends SuperPa
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
   }) : super.columnWithCubit();

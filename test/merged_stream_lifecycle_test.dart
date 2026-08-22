@@ -31,7 +31,7 @@ void main() {
   group('US2: merged-stream lifecycle (T027–T032)', () {
     test('T027: zero streams emits empty page and holds no resources', () async {
       final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
-        (req) => const <Stream<List<int>>>[],
+        (context, req) => const <Stream<List<int>>>[],
       );
 
       final emissions = <List<int>>[];
@@ -51,7 +51,7 @@ void main() {
       final source = _controller(c);
 
       final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
-        (req) => [source.stream],
+        (context, req) => [source.stream],
       );
 
       final merged = provider.getMergedStream(SuperPaginationRequest(page: 1));
@@ -76,7 +76,7 @@ void main() {
       final c = _controller(cC);
 
       final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
-        (req) => [a.stream, b.stream, c.stream],
+        (context, req) => [a.stream, b.stream, c.stream],
       );
 
       final sub = provider
@@ -104,7 +104,7 @@ void main() {
       final b = _controller(cB);
 
       final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
-        (req) => [a.stream, b.stream],
+        (context, req) => [a.stream, b.stream],
       );
 
       final emissions = <List<int>>[];
@@ -140,7 +140,7 @@ void main() {
       final b = StreamController<List<int>>();
 
       final provider = MergedStreamSuperPaginationProvider<int, SuperPaginationRequest>(
-        (req) => [a.stream, b.stream],
+        (context, req) => [a.stream, b.stream],
       );
 
       var done = false;
@@ -183,7 +183,7 @@ void main() {
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         provider:
             SuperPaginationProvider<int, SuperPaginationRequest>.mergeStreams(
-          (req) => [a.stream, b.stream],
+          (context, req) => [a.stream, b.stream],
         ),
       );
       cubit.refreshPaginatedList();

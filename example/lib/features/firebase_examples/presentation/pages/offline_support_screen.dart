@@ -288,7 +288,7 @@ class _OfflineSupportScreenState extends State<OfflineSupportScreen> {
           child: SuperPagination<OfflineProduct,
               SuperPaginationRequest>.listViewWithProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 30),
-            provider: SuperPaginationProvider.listStream(streamProducts),
+            provider: SuperPaginationProvider.listStream((context, request) => streamProducts(request)),
             itemBuilder: (context, items, index) {
               final product = items[index];
               return Card(

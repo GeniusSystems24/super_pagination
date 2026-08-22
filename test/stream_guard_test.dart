@@ -21,7 +21,7 @@ void main() {
       var factoryCallCount = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           factoryCallCount++;
           final c = controllers.putIfAbsent(
             req.page,
@@ -59,7 +59,7 @@ void main() {
       final controllers = <int, StreamController<List<int>>>{};
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           pageFactoryCalls.update(req.page, (v) => v + 1, ifAbsent: () => 1);
           final c = controllers.putIfAbsent(
             req.page,
@@ -94,7 +94,7 @@ void main() {
       var pageCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           pageCalls++;
           final c = controllers.putIfAbsent(
             req.page,
@@ -137,7 +137,7 @@ void main() {
       final controllerByCall = <StreamController<List<int>>>[];
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           final c = StreamController<List<int>>.broadcast(sync: true);
           controllerByCall.add(c);
           Future<void>.microtask(() {
@@ -173,7 +173,7 @@ void main() {
       var cancelCount = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           // Use a non-broadcast controller so onCancel fires when the last
           // subscriber goes away.
           final c = StreamController<List<int>>(
@@ -203,7 +203,7 @@ void main() {
       final controllers = <int, StreamController<List<int>>>{};
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           final c = controllers.putIfAbsent(
             req.page,
             () => StreamController<List<int>>.broadcast(sync: true),

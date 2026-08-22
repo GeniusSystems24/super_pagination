@@ -249,7 +249,7 @@ class _ExampleShellState extends State<ExampleShell> {
               id: 'module-advanced',
               label: 'Advanced',
               icon: Icons.auto_awesome_rounded,
-              badge: const NavBadge('16', tone: NavBadgeTone.warning),
+              badge: const NavBadge('18', tone: NavBadgeTone.warning),
               children: [
                 _routeNode(
                   route: AppRoutes.advanced,
@@ -266,6 +266,16 @@ class _ExampleShellState extends State<ExampleShell> {
                   route: AppRoutes.cursorPagination,
                   label: 'Cursor pagination',
                   icon: Icons.navigate_next_rounded,
+                ),
+                _routeNode(
+                  route: AppRoutes.keepAlive,
+                  label: 'Keep alive',
+                  icon: Icons.layers_rounded,
+                ),
+                _routeNode(
+                  route: AppRoutes.providerContext,
+                  label: 'Provider context',
+                  icon: Icons.account_tree_outlined,
                 ),
                 _routeNode(
                   route: AppRoutes.horizontalScroll,

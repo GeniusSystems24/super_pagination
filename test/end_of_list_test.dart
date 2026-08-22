@@ -22,7 +22,7 @@ void main() {
       // requiring a public response-wrapper change.
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) return List<int>.generate(10, (i) => i);
           return [10, 11, 12]; // "final" page — server has no more
         }),
@@ -46,7 +46,7 @@ void main() {
       // the empty page is NOT appended.
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) return List<int>.generate(10, (i) => i);
           return <int>[];
         }),
@@ -70,7 +70,7 @@ void main() {
       // truthy so the cubit allows another fetch.
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
         }),
       );
@@ -93,7 +93,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         errorRetryStrategy: ErrorRetryStrategy.manual,
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           attempt++;
           if (attempt == 1) return [0, 1, 2, 3, 4];
           throw Exception('network down');

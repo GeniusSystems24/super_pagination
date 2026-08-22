@@ -30,7 +30,7 @@ class _PageResultDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SuperPagination<int, SuperPaginationRequest>.withProvider(
       request: const SuperPaginationRequest(pageSize: 10),
-      provider: SuperPaginationProvider.pageFuture((request) async {
+      provider: SuperPaginationProvider.pageFuture((context, request) async {
         await Future<void>.delayed(const Duration(milliseconds: 180));
         const totalPages = 4;
         final start = (request.page - 1) * (request.pageSize ?? 10);
@@ -58,7 +58,7 @@ class _CursorResultDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SuperPagination<int, SuperCursorPaginationRequest>.withProvider(
       request: const SuperCursorPaginationRequest(pageSize: 10),
-      provider: SuperPaginationProvider.cursorFuture((request) async {
+      provider: SuperPaginationProvider.cursorFuture((context, request) async {
         await Future<void>.delayed(const Duration(milliseconds: 180));
         const totalItems = 35;
         final start = request.lastCursorNo ?? 0;

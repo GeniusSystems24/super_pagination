@@ -18,7 +18,7 @@ class _Harness {
   _Harness({int pageSize = 5}) : _pageSize = pageSize {
     cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
       request: SuperPaginationRequest(page: 1, pageSize: pageSize),
-      provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+      provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
         final ctrl = controllers.putIfAbsent(
           req.page,
           () => StreamController<List<int>>.broadcast(sync: true),
@@ -253,7 +253,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         maxPagesInMemory: 2,
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.stream((context, req) {
           final ctrl = controllers.putIfAbsent(
             req.page,
             () => StreamController<List<int>>.broadcast(sync: true),

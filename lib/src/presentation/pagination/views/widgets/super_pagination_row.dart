@@ -12,7 +12,7 @@ part of '../../pagination_feature.dart';
 ///   scrollDirection: Axis.horizontal,
 ///   child: SuperPaginationRow.withProvider(
 ///     request: SuperPaginationRequest(page: 1, pageSize: 20),
-///     provider: SuperPaginationProvider.future((request) => fetchProducts(request)),
+///     provider: SuperPaginationProvider.future((context, request) => fetchProducts(request)),
 ///     itemBuilder: (context, items, index) {
 ///       return ProductChip(product: items[index]);
 ///     },
@@ -63,6 +63,7 @@ class SuperPaginationRow<T, R extends SuperPaginationRequest> extends SuperPagin
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
     super.onInsertionCallback,
@@ -115,6 +116,7 @@ class SuperPaginationRow<T, R extends SuperPaginationRequest> extends SuperPagin
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
   }) : super.rowWithCubit();

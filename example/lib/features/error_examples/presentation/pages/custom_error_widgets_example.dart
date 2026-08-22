@@ -69,7 +69,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('material_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -107,7 +107,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('compact_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -145,7 +145,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('card_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -182,7 +182,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('minimal_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -218,7 +218,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('snackbar_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -268,7 +268,7 @@ class CustomErrorWidgetsExample extends StatelessWidget {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: const Key('custom_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProductsWithError),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProductsWithError(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));

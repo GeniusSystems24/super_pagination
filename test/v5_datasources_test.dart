@@ -44,7 +44,7 @@ void main() {
     final requests = <int?>[];
     final cubit = SuperPaginationCubit<int, SuperCursorPaginationRequest>(
       request: const SuperCursorPaginationRequest(pageSize: 2),
-      provider: SuperPaginationProvider.cursorFuture((request) async {
+      provider: SuperPaginationProvider.cursorFuture((context, request) async {
         requests.add(request.lastCursorNo);
         final start = request.lastCursorNo ?? 0;
         return CursorPaginationResult<int>(
@@ -76,7 +76,7 @@ void main() {
         pageSize: 2,
         filters: <String, dynamic>{'parity': 'odd'},
       ),
-      provider: SuperPaginationProvider.listFuture((request) async {
+      provider: SuperPaginationProvider.listFuture((context, request) async {
         final parity = request.filters?['parity'] as String?;
         seenParity.add(parity);
         return parity == 'even' ? <int>[2, 4] : <int>[1, 3];

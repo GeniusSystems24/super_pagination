@@ -51,7 +51,7 @@ void main() {
           category: 'electronics',
           maxPrice: 99.99,
         ),
-        provider: SuperPaginationProvider<int, _ProductRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, _ProductRequest>.future((context, req) async {
           received = req;
           return List<int>.generate(5, (i) => i);
         }),
@@ -81,7 +81,7 @@ void main() {
           category: 'books',
           maxPrice: 19.99,
         ),
-        provider: SuperPaginationProvider<int, _ProductRequest>.stream((req) {
+        provider: SuperPaginationProvider<int, _ProductRequest>.stream((context, req) {
           receivedRequests.add(req);
           final ctrl = controllers.putIfAbsent(
             req.page,
@@ -131,7 +131,7 @@ void main() {
           maxPrice: 49.99,
         ),
         provider:
-            SuperPaginationProvider<int, _ProductRequest>.mergeStreams((req) {
+            SuperPaginationProvider<int, _ProductRequest>.mergeStreams((context, req) {
           receivedRequests.add(req);
           return [
             Stream<List<int>>.value([1, 2, 3, 4, 5]),

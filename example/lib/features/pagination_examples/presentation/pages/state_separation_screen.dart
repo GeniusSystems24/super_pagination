@@ -39,7 +39,7 @@ class StateSeparationScreen extends StatelessWidget {
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
               provider: SuperPaginationProvider.listFuture(
-                (request) => ExampleDependencies.catalog.fetchProducts(request),
+                (context, request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, items, index) {
                 final product = items[index];

@@ -47,7 +47,7 @@ class HorizontalListScreen extends StatelessWidget {
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 10),
               provider: SuperPaginationProvider.listFuture(
-                (request) => ExampleDependencies.catalog.fetchProducts(request),
+                (context, request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),

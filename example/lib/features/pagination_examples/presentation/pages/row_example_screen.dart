@@ -44,7 +44,7 @@ class _RowExampleScreenState extends State<RowExampleScreen> {
                   SuperPagination<Product, SuperPaginationRequest>.rowWithProvider(
                 request: const SuperPaginationRequest(page: 1, pageSize: 5),
                 provider: SuperPaginationProvider.listFuture(
-                  (request) => ExampleDependencies.catalog.fetchProducts(request),
+                  (context, request) => ExampleDependencies.catalog.fetchProducts(request),
                 ),
                 itemBuilder: (context, items, index) {
                   return SizedBox(

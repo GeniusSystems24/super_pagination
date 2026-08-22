@@ -23,6 +23,8 @@ import 'package:super_pagination_example/features/stream_examples/presentation/p
 
 // Advanced examples
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/cursor_pagination_screen.dart';
+import 'package:super_pagination_example/features/pagination_examples/presentation/pages/keep_alive_screen.dart';
+import 'package:super_pagination_example/features/pagination_examples/presentation/pages/provider_context_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/horizontal_list_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/page_view_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/staggered_grid_screen.dart';
@@ -137,6 +139,8 @@ CustomTransitionPage<void> _buildPageWithTransition({
       path: '/advanced',
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<CursorPaginationRoute>(path: 'cursor'),
+        TypedGoRoute<KeepAliveRoute>(path: 'keep-alive'),
+        TypedGoRoute<ProviderContextRoute>(path: 'provider-context'),
         TypedGoRoute<HorizontalScrollRoute>(path: 'horizontal'),
         TypedGoRoute<PageViewRoute>(path: 'page-view'),
         TypedGoRoute<StaggeredGridRoute>(path: 'staggered-grid'),
@@ -475,6 +479,38 @@ class CursorPaginationRoute extends GoRouteData with $CursorPaginationRoute {
       context: context,
       state: state,
       child: const CursorPaginationScreen(),
+    );
+  }
+}
+
+class KeepAliveRoute extends GoRouteData with $KeepAliveRoute {
+  const KeepAliveRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      _shellNavigatorKey;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return _buildPageWithTransition(
+      context: context,
+      state: state,
+      child: const KeepAliveScreen(),
+    );
+  }
+}
+
+class ProviderContextRoute extends GoRouteData with $ProviderContextRoute {
+  const ProviderContextRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      _shellNavigatorKey;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return _buildPageWithTransition(
+      context: context,
+      state: state,
+      child: const ProviderContextScreen(),
     );
   }
 }

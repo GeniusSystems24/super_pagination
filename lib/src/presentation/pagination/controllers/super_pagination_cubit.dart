@@ -100,12 +100,36 @@ enum ErrorRetryStrategy {
   none,
 }
 
+class _UnavailableProviderBuildContext implements BuildContext {
+  const _UnavailableProviderBuildContext();
+
+
+  // This sentinel is used only when a direct cubit/controller consumer did
+  // not supply a BuildContext. Reporting mounted=true keeps the async-gap
+  // safety guard transparent for context-independent provider callbacks.
+  // Any actual BuildContext API access still falls through to noSuchMethod
+  // below and throws the existing descriptive StateError.
+  @override
+  bool get mounted => true;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    throw StateError(
+      'No BuildContext is attached to this SuperPaginationCubit. '
+      'Render it through SuperPagination/SuperPagination*View or pass '
+      'providerContext when constructing SuperPaginationCubit or '
+      'SuperPaginationController.of before using context-dependent providers.',
+    );
+  }
+}
+
 class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     extends IPaginationListCubit<T, SuperPaginationState<T>, R> {
   static bool enableLogging = false;
   SuperPaginationCubit({
     required R request,
     required SuperPaginationProvider<T, R> provider,
+    BuildContext? providerContext,
     ListBuilder<T>? listBuilder,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -118,6 +142,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     Stream<bool>? connectivityStream,
     this.identityKey,
   }) : _provider = provider,
+       _fallbackProviderContext = providerContext,
        _listBuilder = listBuilder,
        _onInsertionCallback = onInsertionCallback,
        _onClear = onClear,
@@ -138,6 +163,30 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
   }
 
   final SuperPaginationProvider<T, R> _provider;
+  final BuildContext? _fallbackProviderContext;
+  BuildContext? _attachedProviderContext;
+
+  /// Binds the live widget context used for provider callback invocations.
+  ///
+  /// Private to the pagination library: [SuperPagination] refreshes this
+  /// binding whenever its dependencies/widget instance change. A directly
+  /// supplied `providerContext` remains available as a fallback after the
+  /// widget detaches.
+  void _attachProviderContext(BuildContext context) {
+    _attachedProviderContext = context;
+  }
+
+  void _detachProviderContext(BuildContext context) {
+    if (identical(_attachedProviderContext, context)) {
+      _attachedProviderContext = null;
+    }
+  }
+
+  BuildContext get _effectiveProviderContext =>
+      _attachedProviderContext ??
+      _fallbackProviderContext ??
+      const _UnavailableProviderBuildContext();
+
   final ListBuilder<T>? _listBuilder;
   final OnInsertionCallback<T>? _onInsertionCallback;
   final VoidCallback? _onClear;
@@ -172,7 +221,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
   /// ```dart
   /// SuperPaginationCubit<Product, SuperPaginationRequest>(
   ///   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  ///   provider: SuperPaginationProvider.future(api.fetchProducts),
+  ///   provider: SuperPaginationProvider.future((context, request) => api.fetchProducts(request)),
   ///   identityKey: (product) => product.id,
   /// );
   /// ```
@@ -1285,20 +1334,24 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
 
   Future<_PaginationFetchResult<T>> _readSource(R request) async {
     final source = _provider;
+    final context = _effectiveProviderContext;
 
     if (source is FutureSuperPaginationProvider<T, R>) {
       final items = await _executeSourceWithRetry(
-        () => source.dataProvider(request),
+        () => source.dataProvider(context, request),
       );
       return _PaginationFetchResult<T>(items: items);
     }
 
     if (source is StreamSuperPaginationProvider<T, R>) {
-      final firstStream = source.streamProvider(request);
+      final firstStream = source.streamProvider(context, request);
       final items = await firstStream.first;
+      if (!context.mounted) {
+        return _PaginationFetchResult<T>(items: items);
+      }
       final persistent = firstStream.isBroadcast
           ? firstStream
-          : source.streamProvider(request);
+          : source.streamProvider(context, request);
       return _PaginationFetchResult<T>(
         items: items,
         persistentStream: persistent,
@@ -1307,7 +1360,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
 
     if (source is FuturePageSuperPaginationProvider<T, R>) {
       final result = await _executeSourceWithRetry(
-        () => source.dataProvider(request),
+        () => source.dataProvider(context, request),
       );
       return _PaginationFetchResult<T>(
         items: result.items,
@@ -1318,11 +1371,19 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     }
 
     if (source is StreamPageSuperPaginationProvider<T, R>) {
-      final firstStream = source.streamProvider(request);
+      final firstStream = source.streamProvider(context, request);
       final result = await firstStream.first;
+      if (!context.mounted) {
+        return _PaginationFetchResult<T>(
+          items: result.items,
+          hasMore: result.hasMore,
+          pageNumber: result.pageNumber,
+          totalPages: result.totalPages,
+        );
+      }
       final persistentRaw = firstStream.isBroadcast
           ? firstStream
-          : source.streamProvider(request);
+          : source.streamProvider(context, request);
       return _PaginationFetchResult<T>(
         items: result.items,
         hasMore: result.hasMore,
@@ -1339,7 +1400,7 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
         );
       }
       final result = await _executeSourceWithRetry(
-        () => source.dataProvider(request),
+        () => source.dataProvider(context, request),
       );
       return _PaginationFetchResult<T>(
         items: result.items,
@@ -1355,11 +1416,19 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
           'cursorStream requires SuperCursorPaginationRequest (or a subclass).',
         );
       }
-      final firstStream = source.streamProvider(request);
+      final firstStream = source.streamProvider(context, request);
       final result = await firstStream.first;
+      if (!context.mounted) {
+        return _PaginationFetchResult<T>(
+          items: result.items,
+          hasMore: result.hasMore,
+          lastCursorNo: result.lastCursorNo,
+          totalItems: result.totalItems,
+        );
+      }
       final persistentRaw = firstStream.isBroadcast
           ? firstStream
-          : source.streamProvider(request);
+          : source.streamProvider(context, request);
       return _PaginationFetchResult<T>(
         items: result.items,
         hasMore: result.hasMore,
@@ -1370,11 +1439,14 @@ class SuperPaginationCubit<T, R extends SuperPaginationRequest>
     }
 
     if (source is MergedStreamSuperPaginationProvider<T, R>) {
-      final firstStream = source.getMergedStream(request);
+      final firstStream = source.getMergedStream(request, context: context);
       final items = await firstStream.first;
+      if (!context.mounted) {
+        return _PaginationFetchResult<T>(items: items);
+      }
       final persistent = firstStream.isBroadcast
           ? firstStream
-          : source.getMergedStream(request);
+          : source.getMergedStream(request, context: context);
       return _PaginationFetchResult<T>(
         items: items,
         persistentStream: persistent,

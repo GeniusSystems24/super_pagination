@@ -10,7 +10,7 @@ part of '../../pagination_feature.dart';
 /// ```dart
 /// SuperPaginationReorderableListView.withProvider(
 ///   request: SuperPaginationRequest(page: 1, pageSize: 20),
-///   provider: SuperPaginationProvider.future((request) => fetchTasks(request)),
+///   provider: SuperPaginationProvider.future((context, request) => fetchTasks(request)),
 ///   itemBuilder: (context, items, index) {
 ///     return ListTile(
 ///       key: ValueKey(items[index].id),
@@ -71,6 +71,7 @@ class SuperPaginationReorderableListView<T, R extends SuperPaginationRequest> ex
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
     super.onInsertionCallback,
@@ -127,6 +128,7 @@ class SuperPaginationReorderableListView<T, R extends SuperPaginationRequest> ex
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
   }) : super.reorderableListViewWithCubit();

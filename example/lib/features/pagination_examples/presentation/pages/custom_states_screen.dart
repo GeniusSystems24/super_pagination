@@ -38,7 +38,7 @@ class CustomStatesScreen extends StatelessWidget {
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
               provider: SuperPaginationProvider.listFuture(
-                (request) => ExampleDependencies.catalog.fetchProducts(request),
+                (context, request) => ExampleDependencies.catalog.fetchProducts(request),
               ),
               itemBuilder: (context, products, index) {
                 final product = products[index];

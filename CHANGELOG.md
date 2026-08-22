@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0] - 2026-08-22
+
+### Added
+
+- Added `keepAlive` to `SuperPagination` and every public pagination view wrapper.
+- Added `AutomaticKeepAliveClientMixin` support so `keepAlive: true` retains the pagination state in lazy tab/page/sliver containers that honor Flutter keep-alive requests.
+- Added a dedicated example showing pagination tabs that preserve the same internally-created cubit and scroll controller while off-screen.
+- Added regression coverage for the public `keepAlive` API and retained lifecycle behavior.
+
+### Changed
+
+- `keepAlive` defaults to `false`, preserving the existing disposal behavior unless explicitly enabled.
+- A runtime change to `keepAlive` now calls `updateKeepAlive()` so Flutter updates the ancestor keep-alive bucket immediately.
+- Provider callbacks now receive the active Flutter `BuildContext` together with the request: `(context, request)`.
+- Added optional `providerContext` for direct cubit/controller construction and updated all examples/docs/tests.
+
+
 ## [5.0.1] - 2026-08-21
 
 ### Removed

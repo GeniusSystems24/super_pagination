@@ -43,7 +43,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -134,7 +134,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -219,7 +219,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -303,7 +303,7 @@ void main() {
                         SuperPaginationRequest>.withProvider(
                   request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                   provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                    (req) async {
+                    (context, req) async {
                       providerCallCount++;
                       return List<int>.generate(
                         _pageSize,
@@ -376,7 +376,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -463,7 +463,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -539,7 +539,7 @@ void main() {
         final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
           request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
           provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-            (req) async {
+            (context, req) async {
               providerCallCount++;
               return List<int>.generate(
                 _pageSize,

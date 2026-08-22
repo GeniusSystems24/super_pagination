@@ -234,7 +234,7 @@ class _NetworkErrorsExampleState extends State<NetworkErrorsExample> {
                 SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey('network_error_$_selectedErrorType'),
               request: SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.listFuture(_fetchProducts),
+              provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
               itemBuilder: (context, products, index) {
                 final product = products[index];
                 return ListTile(

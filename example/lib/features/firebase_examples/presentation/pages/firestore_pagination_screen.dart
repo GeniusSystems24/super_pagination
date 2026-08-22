@@ -178,7 +178,7 @@ class _FirestorePaginationScreenState extends State<FirestorePaginationScreen> {
           child: SuperPagination<FirestoreProduct,
               SuperPaginationRequest>.listViewWithProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => fetchProducts(request)),
             itemBuilder: (context, items, index) {
               final product = items[index];
               return Card(

@@ -147,6 +147,20 @@ class _HomeScreenState extends State<HomeScreen> {
           route: AppRoutes.cursorPagination,
         ),
         ExampleItem(
+          title: 'Keep Alive',
+          description: 'Preserve cubit and scroll position across tab switches',
+          icon: Icons.layers_rounded,
+          color: const Color(0xFF4A7CFF),
+          route: AppRoutes.keepAlive,
+        ),
+        ExampleItem(
+          title: 'Provider Context',
+          description: 'Access widget-tree dependencies inside provider callbacks',
+          icon: Icons.account_tree_outlined,
+          color: const Color(0xFF1DB88A),
+          route: AppRoutes.providerContext,
+        ),
+        ExampleItem(
           title: 'Horizontal Scroll',
           description: 'Horizontal scrolling with pagination',
           icon: Icons.swap_horiz_rounded,

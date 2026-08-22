@@ -12,7 +12,7 @@ void main() {
   test('new provider alias preserves provider behavior', () async {
     final SuperPaginationProvider<int, SuperPaginationRequest> provider =
         SuperPaginationProvider<int, SuperPaginationRequest>.future(
-          (request) async => <int>[request.page],
+          (context, request) async => <int>[request.page],
         );
 
     expect(provider, isA<FutureSuperPaginationProvider<int, SuperPaginationRequest>>());
@@ -24,7 +24,7 @@ void main() {
     final widget = SuperPagination<int, SuperPaginationRequest>.listViewWithProvider(
       request: const SuperPaginationRequest(pageSize: 10),
       provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-        (_) async => const <int>[],
+        (context, _) async => const <int>[],
       ),
       itemBuilder: (context, items, index) => const SizedBox.shrink(),
     );

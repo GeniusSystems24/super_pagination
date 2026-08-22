@@ -22,7 +22,7 @@ class _ScrollControlScreenState extends State<ScrollControlScreen> {
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 100),
       provider: SuperPaginationProvider.listFuture(
-        (request) => ExampleDependencies.catalog.fetchProducts(request),
+        (context, request) => ExampleDependencies.catalog.fetchProducts(request),
       ),
     );
   }

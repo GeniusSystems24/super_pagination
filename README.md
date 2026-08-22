@@ -2,6 +2,8 @@
 
 > **v5 migration:** six canonical datasource modes are now available. Use `listFuture`/`listStream` for raw lists, `pageFuture`/`pageStream` for `PagePaginationResult`, and `cursorFuture`/`cursorStream` with `SuperCursorPaginationRequest`. The old `future`/`stream` names remain deprecated compatibility aliases.
 
+> **v5.1:** set `keepAlive: true` on any pagination view to retain the same pagination state, internally-created cubit, and internal scroll controller while the view is kept off-screen by a lazy `TabBarView`, `PageView`, or keep-alive-aware sliver.
+
 [![pub package](https://img.shields.io/pub/v/super_pagination.svg)](https://pub.dev/packages/super_pagination)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.32+-02569B?logo=flutter)](https://flutter.dev)
@@ -13,7 +15,7 @@
 ```dart
 SuperPaginationListView.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.listFuture((req) => api.getProducts(req)),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.listFuture((context, req) => api.getProducts(req)),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
 )
 ```
@@ -27,6 +29,101 @@ SuperPaginationListView.withProvider(
 - **Data Operations** - Insert, remove, update, replace, and refresh items with first/last/at targeting
 - **Auto Expiration** - Configurable data age for global cubits
 - **Load-More Safety** - Rapid scrolling can never trigger duplicate concurrent page requests; optional cross-page deduplication via `identityKey`
+- **Optional Keep Alive** - `keepAlive: true` preserves the same cubit and scroll state across off-screen tab/page retention
+
+
+
+## Keep pagination alive across tabs
+
+`SuperPagination` 5.1.0 adds an opt-in `keepAlive` flag to every public
+pagination view.
+
+```dart
+SuperPaginationListView<Product, SuperPaginationRequest>.withProvider(
+  keepAlive: true,
+  request: const SuperPaginationRequest(page: 1, pageSize: 20),
+  provider: SuperPaginationProvider.listFuture((context, request) => api.fetchProducts(request)),
+  itemBuilder: (context, items, index) => ProductTile(items[index]),
+)
+```
+
+When `keepAlive` is `true`, the `SuperPagination` state participates in
+Flutter's `AutomaticKeepAlive` protocol. In containers such as `TabBarView`,
+`PageView`, or lazy slivers that honor keep-alive requests, moving the
+pagination view off-screen no longer disposes its state. This preserves the
+same internally-owned `SuperPaginationCubit` and the same internal
+`ScrollController`, so returning to the tab/page restores the loaded data and
+scroll position without starting over.
+
+`keepAlive` defaults to `false`.
+
+Use `keepAlive: true` when:
+
+- each tab/page owns independent pagination state
+- users frequently switch between tabs and expect the same scroll position
+- refetching after every tab switch is undesirable
+
+Keep the default `false` when the view should release its cubit and scroll
+state as soon as Flutter evicts it.
+
+> `keepAlive` only affects ancestors that support Flutter's keep-alive
+> protocol. Permanently removing the pagination widget from the widget tree
+> still disposes its state normally.
+
+
+
+## Provider callbacks and BuildContext
+
+Provider callbacks receive the active Flutter `BuildContext` together with the
+request:
+
+```dart
+provider: SuperPaginationProvider<Product, SuperPaginationRequest>.listFuture(
+  (context, request) {
+    final repository = context.read<ProductRepository>();
+    return repository.fetchProducts(request);
+  },
+),
+```
+
+The callback contract is:
+
+```dart
+(BuildContext context, R request)
+```
+
+This applies to all provider modes:
+
+- `listFuture`
+- `listStream`
+- `pageFuture`
+- `pageStream`
+- `cursorFuture`
+- `cursorStream`
+- compatibility aliases `future` and `stream`
+- `mergeStreams`
+
+`SuperPagination` automatically binds its live widget context before invoking
+the provider. This makes inherited dependency access such as
+`context.read<MyClass>()` available without coupling the request model to UI
+state.
+
+When constructing a cubit/controller directly and the provider needs inherited
+values, supply `providerContext`:
+
+```dart
+final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
+  request: request,
+  providerContext: context,
+  provider: SuperPaginationProvider.listFuture(
+    (context, request) => context.read<ProductRepository>().fetch(request),
+  ),
+);
+```
+
+A direct cubit may omit `providerContext` when its provider does not use the
+context argument. Attempting an inherited lookup without an attached/provided
+context produces a clear `StateError`.
 
 
 ## v5 Datasources and ResultData
@@ -46,7 +143,7 @@ canonical datasource modes:
 Page-result example:
 
 ```dart
-provider: SuperPaginationProvider.pageFuture((request) async {
+provider: SuperPaginationProvider.pageFuture((context, request) async {
   final response = await api.getProducts(page: request.page);
   return PagePaginationResult(
     pageNumber: response.page,
@@ -76,7 +173,7 @@ Cursor-result example:
 
 ```dart
 request: const SuperCursorPaginationRequest(pageSize: 20),
-provider: SuperPaginationProvider.cursorFuture((request) async {
+provider: SuperPaginationProvider.cursorFuture((context, request) async {
   final response = await api.getProducts(after: request.lastCursorNo);
   return CursorPaginationResult(
     lastCursorNo: response.lastCursorNo,
@@ -164,7 +261,7 @@ Configure `identityKey` to drop items whose key already appears in an earlier ac
 ```dart
 SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider.listFuture(api.fetchProducts),
+  provider: SuperPaginationProvider.listFuture((context, request) => api.fetchProducts(request)),
   identityKey: (product) => product.id,
 );
 ```
@@ -223,7 +320,7 @@ post-append suppression flag are all disabled.
 ```dart
 SuperPaginationListView<Product, SuperPaginationRequest>.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider.listFuture(api.fetchProducts),
+  provider: SuperPaginationProvider.listFuture((context, request) => api.fetchProducts(request)),
   itemBuilder: (context, items, index) => ProductTile(items[index]),
   preserveScrollAnchorOnAppend: false, // legacy "stick to bottom" behavior
 );
@@ -261,7 +358,7 @@ import 'package:super_pagination/pagination.dart';
 ```dart
 SuperPaginationListView.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => fetchProducts(req)),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((context, req) => fetchProducts(req)),
   itemBuilder: (context, items, index) => ListTile(
     title: Text(items[index].name),
   ),
@@ -273,7 +370,7 @@ SuperPaginationListView.withProvider(
 ```dart
 SuperPaginationGridView.withProvider(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((req) => fetchProducts(req)),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((context, req) => fetchProducts(req)),
   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
   itemBuilder: (context, items, index) => ProductCard(items[index]),
 )
@@ -284,7 +381,7 @@ SuperPaginationGridView.withProvider(
 ```dart
 final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future(fetchProducts),
+  provider: SuperPaginationProvider<Type, SuperPaginationRequest>.future((context, request) => fetchProducts(request)),
   dataAge: Duration(minutes: 5), // Auto-refresh stale data
 );
 
@@ -352,7 +449,7 @@ SuperPaginationListView.withProvider(
 ```dart
 SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future((context, request) => fetchProducts(request)),
   retryConfig: RetryConfig(
     maxAttempts: 3,
     initialDelay: Duration(seconds: 1),
@@ -496,7 +593,7 @@ final orders = SortOrderCollection<Product>(
 
 final cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
   request: SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future((context, request) => fetchProducts(request)),
   orders: orders,
 );
 
@@ -512,13 +609,13 @@ cubit.resetOrder();
 ### Future (REST API)
 
 ```dart
-SuperPaginationProvider.listFuture((request) => api.fetchProducts(request))
+SuperPaginationProvider.listFuture((context, request) => api.fetchProducts(request))
 ```
 
 ### Stream (Real-time)
 
 ```dart
-SuperPaginationProvider.listStream((request) => firestore.collection('products').snapshots())
+SuperPaginationProvider.listStream((context, request) => firestore.collection('products').snapshots())
 ```
 
 #### Stream Accumulation
@@ -534,7 +631,7 @@ A page whose latest emission has fewer items than `pageSize` is treated as the e
 ### Merged Streams
 
 ```dart
-SuperPaginationProvider.mergeStreams((request) => [
+SuperPaginationProvider.mergeStreams((context, request) => [
   regularStream(request),
   featuredStream(request),
 ])
@@ -589,7 +686,7 @@ BlocBuilder<SuperPaginationCubit<Product, ProductRequest>, SuperPaginationState<
 ```dart
 SuperPaginationListView.withProvider(
   request: const SuperPaginationRequest(page: 1, pageSize: 20),
-  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future(fetchProducts),
+  provider: SuperPaginationProvider<Product, SuperPaginationRequest>.future((context, request) => fetchProducts(request)),
   canRefresh: true,
   onRefresh: (cubit) async {
     cubit.reload();

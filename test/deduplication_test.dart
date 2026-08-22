@@ -18,7 +18,7 @@ void main() {
       final cubit = SuperPaginationCubit<_Item, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         identityKey: (item) => item.id,
-        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),
@@ -58,7 +58,7 @@ void main() {
       final cubit = SuperPaginationCubit<_Item, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         // No identityKey configured.
-        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),
@@ -98,7 +98,7 @@ void main() {
         onInsertionCallback: (items) {
           receivedKeys.add(items.map((i) => i.id).toList());
         },
-        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<_Item, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) {
             return const [
               _Item(0, 'a'),

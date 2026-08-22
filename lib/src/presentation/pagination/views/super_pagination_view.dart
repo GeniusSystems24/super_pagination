@@ -148,6 +148,23 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
   /// (`reverse: true`, `pageView`, `reorderableListView`, `custom`).
   final bool preserveScrollAnchorOnAppend;
 
+
+  /// Keeps this pagination subtree alive when it is placed inside a lazy
+  /// container that supports [AutomaticKeepAlive], such as a [TabBarView],
+  /// [PageView], or lazily built sliver.
+  ///
+  /// When `true`, Flutter retains this [State] instead of disposing it when
+  /// the page/tab moves off-screen. That preserves the same internally-owned
+  /// [SuperPaginationCubit] and the same internal [ScrollController] used by
+  /// [PaginateApiView] while the subtree remains in the keep-alive bucket.
+  ///
+  /// Defaults to `false` to preserve the existing lifecycle behavior.
+  ///
+  /// This does not keep the widget alive after it is permanently removed from
+  /// the widget tree, nor does it override an ancestor that does not honor
+  /// [AutomaticKeepAlive].
+  final bool keepAlive;
+
   SuperPagination.withProvider({
     super.key,
     required R request,
@@ -200,6 +217,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
     Logger? logger,
@@ -275,6 +293,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     SuperPaginationRefreshedChangeListener? refreshListener,
     List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : internalCubit = false,
@@ -329,6 +348,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.listView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -400,6 +420,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.listView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -476,6 +497,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.gridView,
        separator = separator ?? SizedBox(height: spacing),
        staggeredAxisDirection = null,
@@ -547,6 +569,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.gridView,
        separator = separator ?? SizedBox(height: spacing),
        staggeredAxisDirection = null,
@@ -606,6 +629,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     SuperPaginationRefreshedChangeListener? refreshListener,
     List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
@@ -689,6 +713,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     SuperPaginationRefreshedChangeListener? refreshListener,
     List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : itemBuilderType = PaginateBuilderType.listView,
@@ -757,6 +782,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     SuperPaginationRefreshedChangeListener? refreshListener,
     List<SuperPaginationFilterChangeListener<T>>? filterListeners,
     // Cubit params
@@ -840,6 +866,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
     SuperPaginationRefreshedChangeListener? refreshListener,
     List<SuperPaginationFilterChangeListener<T>>? filterListeners,
   }) : itemBuilderType = PaginateBuilderType.reorderableListView,
@@ -914,6 +941,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.pageView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -989,6 +1017,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.pageView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -1069,6 +1098,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.staggeredGridView,
        gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: crossAxisCount,
@@ -1150,6 +1180,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.staggeredGridView,
        gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: crossAxisCount,
@@ -1216,6 +1247,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.listView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -1287,6 +1319,7 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
     this.removeItemAnimationBuilder,
     this.animationDuration = const Duration(milliseconds: 300),
     this.preserveScrollAnchorOnAppend = true,
+    this.keepAlive = false,
   }) : itemBuilderType = PaginateBuilderType.listView,
        gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
          crossAxisCount: 2,
@@ -1311,7 +1344,29 @@ class SuperPagination<T, R extends SuperPaginationRequest> extends StatefulWidge
 }
 
 class _SuperPaginationState<T, R extends SuperPaginationRequest>
-    extends State<SuperPagination<T, R>> {
+    extends State<SuperPagination<T, R>>
+    with AutomaticKeepAliveClientMixin<SuperPagination<T, R>> {
+  void _bindProviderContext() {
+    widget.cubit._attachProviderContext(context);
+  }
+
+  void _fetchPaginatedList() {
+    _bindProviderContext();
+    widget.cubit.fetchPaginatedList();
+  }
+
+  void _refreshPaginatedList() {
+    _bindProviderContext();
+    widget.cubit.refreshPaginatedList();
+  }
+
+  void _reload() {
+    _bindProviderContext();
+    widget.cubit.reload();
+  }
+
+  @override
+  bool get wantKeepAlive => widget.keepAlive;
   bool get _isRefreshEnabled => widget.canRefresh;
 
   ScrollPhysics _buildRefreshPhysics() {
@@ -1330,7 +1385,7 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
       return;
     }
 
-    widget.cubit.reload();
+    _reload();
     await _waitForFetchCompletion();
   }
 
@@ -1371,7 +1426,7 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
       return widget.firstPageErrorBuilder!(
         context,
         state.error,
-        () => widget.cubit.fetchPaginatedList(),
+        _fetchPaginatedList,
       );
     }
 
@@ -1412,11 +1467,13 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    _bindProviderContext();
     return BlocBuilder<SuperPaginationCubit<T, R>, SuperPaginationState<T>>(
       bloc: widget.cubit,
       buildWhen: widget.buildWhen ?? _defaultBuildWhen,
       builder: (context, state) {
-        if (!widget.cubit.didFetch) widget.cubit.fetchPaginatedList();
+        if (!widget.cubit.didFetch) _fetchPaginatedList();
 
         if (state is SuperPaginationInitial<T>) {
           return _buildWithScrollView(
@@ -1472,7 +1529,7 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
           header: widget.header,
           footer: widget.footer,
           bottomLoader: widget.bottomLoader,
-          fetchPaginatedList: widget.cubit.fetchPaginatedList,
+          fetchPaginatedList: _fetchPaginatedList,
           cacheExtent: widget.cacheExtent,
           customViewBuilder: widget.customViewBuilder,
           onReorder: widget.onReorder,
@@ -1482,7 +1539,7 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
           firstPageEmptyBuilder: widget.firstPageEmptyBuilder,
           emptyWidget: widget.emptyWidget,
           invisibleItemsThreshold: widget.invisibleItemsThreshold,
-          retryLoadMore: widget.cubit.fetchPaginatedList,
+          retryLoadMore: _fetchPaginatedList,
           itemKeyBuilder: widget.itemKeyBuilder,
           insertItemAnimationBuilder: widget.insertItemAnimationBuilder,
           removeItemAnimationBuilder: widget.removeItemAnimationBuilder,
@@ -1556,7 +1613,29 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _bindProviderContext();
+    if (!widget.cubit.didFetch) {
+      widget.cubit.fetchPaginatedList();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant SuperPagination<T, R> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.cubit, widget.cubit)) {
+      oldWidget.cubit._detachProviderContext(context);
+      _bindProviderContext();
+    }
+    if (oldWidget.keepAlive != widget.keepAlive) {
+      updateKeepAlive();
+    }
+  }
+
+  @override
   void dispose() {
+    widget.cubit._detachProviderContext(context);
     if (widget.internalCubit) widget.cubit.dispose();
     super.dispose();
   }
@@ -1568,7 +1647,7 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
         if (listener is SuperPaginationRefreshedChangeListener) {
           listener.addListener(() {
             if (listener.refreshed) {
-              widget.cubit.refreshPaginatedList();
+              _refreshPaginatedList();
             }
           });
         } else if (listener is SuperPaginationFilterChangeListener<T>) {
@@ -1581,7 +1660,6 @@ class _SuperPaginationState<T, R extends SuperPaginationRequest>
       }
     }
 
-    if (!widget.cubit.didFetch) widget.cubit.fetchPaginatedList();
     super.initState();
   }
 }

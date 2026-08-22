@@ -26,7 +26,8 @@ class _StreamAccumulationScreenState extends State<StreamAccumulationScreen> {
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 8),
       provider: SuperPaginationProvider.listStream(
-        ExampleDependencies.catalog.accumulatingProductsStream,
+        (context, request) =>
+            ExampleDependencies.catalog.accumulatingProductsStream(request),
       ),
     );
   }

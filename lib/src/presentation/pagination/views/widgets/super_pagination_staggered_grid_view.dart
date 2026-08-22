@@ -10,7 +10,7 @@ part of '../../pagination_feature.dart';
 /// ```dart
 /// SuperPaginationStaggeredGridView.withProvider(
 ///   request: SuperPaginationRequest(page: 1, pageSize: 20),
-///   provider: SuperPaginationProvider.future((request) => fetchImages(request)),
+///   provider: SuperPaginationProvider.future((context, request) => fetchImages(request)),
 ///   crossAxisCount: 2,
 ///   itemBuilder: (context, items, index) {
 ///     final image = items[index];
@@ -73,6 +73,7 @@ class SuperPaginationStaggeredGridView<T, R extends SuperPaginationRequest> exte
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
     super.onInsertionCallback,
@@ -132,6 +133,7 @@ class SuperPaginationStaggeredGridView<T, R extends SuperPaginationRequest> exte
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
   }) : super.staggeredGridViewWithCubit();

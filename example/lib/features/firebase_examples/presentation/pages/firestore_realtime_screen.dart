@@ -234,7 +234,7 @@ class _FirestoreRealtimeScreenState extends State<FirestoreRealtimeScreen> {
           child: SuperPagination<RealtimeMessage,
               SuperPaginationRequest>.listViewWithProvider(
             request: const SuperPaginationRequest(page: 1, pageSize: 50),
-            provider: SuperPaginationProvider.listStream(streamMessages),
+            provider: SuperPaginationProvider.listStream((context, request) => streamMessages(request)),
             itemBuilder: (context, items, index) {
               final message = items[index];
               final isNew = index == 0 &&

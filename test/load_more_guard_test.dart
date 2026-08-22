@@ -25,7 +25,7 @@ void main() {
       var providerCallCount = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCallCount++;
           return List<int>.generate(10, (i) => (req.page - 1) * 10 + i);
         }),
@@ -55,7 +55,7 @@ void main() {
       var providerCallCount = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCallCount++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           return completer.future;
@@ -88,7 +88,7 @@ void main() {
       final completers = <int, Completer<List<int>>>{};
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           pageCallCounts.update(req.page, (v) => v + 1, ifAbsent: () => 1);
           if (req.page == 1) return [0, 1, 2, 3, 4];
           completers.putIfAbsent(req.page, () => Completer<List<int>>());
@@ -116,7 +116,7 @@ void main() {
       var providerCallCount = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCallCount++;
           return List<int>.generate(5, (i) => (req.page - 1) * 5 + i);
         }),
@@ -155,7 +155,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         errorRetryStrategy: ErrorRetryStrategy.automatic,
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           attempt++;
           if (attempt == 1) return [0, 1, 2, 3, 4];
           throw PaginationNetworkException(message: 'boom');
@@ -180,7 +180,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         errorRetryStrategy: ErrorRetryStrategy.manual,
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           attempt++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           if (attempt == 2) {
@@ -217,7 +217,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           if (req.page == 1) return List<int>.generate(10, (i) => i);
           return <int>[];
@@ -241,7 +241,7 @@ void main() {
     test('T08: short page (< pageSize) sets hasReachedEnd', () async {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) return List<int>.generate(10, (i) => i);
           return [10, 11, 12]; // short page
         }),
@@ -265,7 +265,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           return <int>[];
@@ -298,7 +298,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           return <int>[];
@@ -327,7 +327,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           if (queryParam == 'a' && req.page == 1) return [0, 1, 2, 3, 4];
           if (queryParam == 'a') return <int>[];
@@ -363,7 +363,7 @@ void main() {
       var attempt = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) {
           attempt++;
           final c = Completer<List<int>>();
           completers[attempt] = c;
@@ -396,7 +396,7 @@ void main() {
       var loadMoreAttempt = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           if (req.page == 1) return [0, 1, 2, 3, 4];
           loadMoreAttempt++;
           final c = Completer<List<int>>();

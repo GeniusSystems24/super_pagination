@@ -19,7 +19,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 10),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           return List<int>.generate(10, (i) => (req.page - 1) * 10 + i);
         }),
@@ -46,7 +46,7 @@ void main() {
       var providerCalls = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           providerCalls++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           return <int>[];
@@ -76,7 +76,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         errorRetryStrategy: ErrorRetryStrategy.automatic,
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           attempt++;
           if (req.page == 1) return [0, 1, 2, 3, 4];
           if (attempt == 2) {

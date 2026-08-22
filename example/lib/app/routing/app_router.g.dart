@@ -102,6 +102,16 @@ RouteBase get $homeShellRouteData => ShellRouteData.$route(
               factory: $CursorPaginationRoute._fromState,
             ),
             GoRouteData.$route(
+              path: 'keep-alive',
+              parentNavigatorKey: KeepAliveRoute.$parentNavigatorKey,
+              factory: $KeepAliveRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'provider-context',
+              parentNavigatorKey: ProviderContextRoute.$parentNavigatorKey,
+              factory: $ProviderContextRoute._fromState,
+            ),
+            GoRouteData.$route(
               path: 'horizontal',
               parentNavigatorKey: HorizontalScrollRoute.$parentNavigatorKey,
               factory: $HorizontalScrollRoute._fromState,
@@ -634,6 +644,53 @@ mixin $CursorPaginationRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/advanced/cursor',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+
+mixin $KeepAliveRoute on GoRouteData {
+  static KeepAliveRoute _fromState(GoRouterState state) =>
+      const KeepAliveRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/advanced/keep-alive',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ProviderContextRoute on GoRouteData {
+  static ProviderContextRoute _fromState(GoRouterState state) =>
+      const ProviderContextRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/advanced/provider-context',
       );
 
   @override

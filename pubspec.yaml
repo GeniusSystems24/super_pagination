@@ -7,7 +7,7 @@ description: >
   real-time stream support, automatic retry with exponential backoff, SuperSearchBox with auto-positioning overlay dropdown, keyboard navigation, and production-ready UI components..
 
 # package version
-version: 5.0.1
+version: 5.1.0
 
 # package homepage, repository and issue tracker urls
 homepage: https://github.com/GeniusSystems24/super_pagination
@@ -30,11 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^9.1.1
-  flutter_staggered_grid_view: ^0.7.0
-  logger: ^2.6.2
-  provider: ^6.1.5+1
-  scrollview_observer: ^1.26.2
+  flutter_bloc: ">=9.1.1 <10.0.0"
+  flutter_staggered_grid_view: ">=0.7.0 <1.0.0"
+  logger: ">=2.0.0 <3.0.0"
+  provider: ">=6.1.5 <7.0.0"
+  scrollview_observer: ">=1.0.0 <2.0.0"
   super_core: ">=3.3.0 <4.0.0"
 
 dev_dependencies:

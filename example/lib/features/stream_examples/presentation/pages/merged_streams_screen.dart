@@ -39,7 +39,7 @@ class MergedStreamsScreen extends StatelessWidget {
                 SuperPaginationRequest>.listViewWithProvider(
               request: const SuperPaginationRequest(page: 1, pageSize: 15),
               provider: SuperPaginationProvider.mergeStreams(
-                (request) => [
+                (context, request) => [
                   ExampleDependencies.catalog.regularProductsStream(request),
                   ExampleDependencies.catalog.featuredProductsStream(request),
                   ExampleDependencies.catalog.saleProductsStream(request),

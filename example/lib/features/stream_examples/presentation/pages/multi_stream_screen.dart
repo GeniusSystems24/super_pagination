@@ -132,7 +132,7 @@ class _MultiStreamScreenState extends State<MultiStreamScreen> {
       key: ValueKey(_selectedTabIndex), // Force rebuild when tab changes
       request: const SuperPaginationRequest(page: 1, pageSize: 15),
       provider: SuperPaginationProvider.listStream(
-        (request) => _getStreamProvider(request),
+        (context, request) => _getStreamProvider(request),
       ),
       itemBuilder: (context, items, index) {
         final product = items[index];

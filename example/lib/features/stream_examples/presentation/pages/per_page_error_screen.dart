@@ -30,7 +30,7 @@ class _PerPageErrorScreenState extends State<PerPageErrorScreen> {
       SuperPaginationCubit<Product, SuperPaginationRequest>(
         request: const SuperPaginationRequest(page: 1, pageSize: 8),
         provider:
-            SuperPaginationProvider.listStream(ExampleDependencies.catalog.unreliablePageStream),
+            SuperPaginationProvider.listStream((context, request) => ExampleDependencies.catalog.unreliablePageStream(request)),
       );
 
   @override

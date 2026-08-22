@@ -5,6 +5,8 @@ import 'package:super_pagination_example/features/pagination_examples/presentati
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/v5_result_data_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/v5_set_request_screen.dart';
 import 'package:super_pagination_example/features/pagination_examples/presentation/pages/v5_custom_requests_screen.dart';
+import 'package:super_pagination_example/features/pagination_examples/presentation/pages/keep_alive_screen.dart';
+import 'package:super_pagination_example/features/pagination_examples/presentation/pages/provider_context_screen.dart';
 
 /// v5 cursor pagination example using CursorPaginationResult.
 class CursorPaginationScreen extends StatelessWidget {
@@ -22,12 +24,15 @@ class CursorPaginationScreen extends StatelessWidget {
             onSetRequest: () => _open(context, const V5SetRequestScreen()),
             onCustomRequests: () =>
                 _open(context, const V5CustomRequestsScreen()),
+            onKeepAlive: () => _open(context, const KeepAliveScreen()),
+            onProviderContext: () =>
+                _open(context, const ProviderContextScreen()),
           ),
           const Divider(height: 1),
           Expanded(
             child: SuperPagination<int, SuperCursorPaginationRequest>.withProvider(
               request: const SuperCursorPaginationRequest(pageSize: 15),
-              provider: SuperPaginationProvider.cursorFuture((request) async {
+              provider: SuperPaginationProvider.cursorFuture((context, request) async {
                 await Future<void>.delayed(const Duration(milliseconds: 250));
                 const totalItems = 73;
                 final start = request.lastCursorNo ?? 0;
@@ -70,12 +75,16 @@ class _V5Navigation extends StatelessWidget {
     required this.onResults,
     required this.onSetRequest,
     required this.onCustomRequests,
+    required this.onKeepAlive,
+    required this.onProviderContext,
   });
 
   final VoidCallback onDataSources;
   final VoidCallback onResults;
   final VoidCallback onSetRequest;
   final VoidCallback onCustomRequests;
+  final VoidCallback onKeepAlive;
+  final VoidCallback onProviderContext;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +113,16 @@ class _V5Navigation extends StatelessWidget {
             onPressed: onCustomRequests,
             icon: const Icon(Icons.tune_rounded),
             label: const Text('Custom requests'),
+          ),
+          OutlinedButton.icon(
+            onPressed: onKeepAlive,
+            icon: const Icon(Icons.layers_outlined),
+            label: const Text('keepAlive'),
+          ),
+          OutlinedButton.icon(
+            onPressed: onProviderContext,
+            icon: const Icon(Icons.account_tree_outlined),
+            label: const Text('Provider context'),
           ),
         ],
       ),

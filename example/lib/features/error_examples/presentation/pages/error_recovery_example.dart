@@ -197,7 +197,7 @@ class _CachedDataTabState extends State<_CachedDataTab> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: ValueKey('cached_data_$_shouldFail'),
       request: SuperPaginationRequest(page: 1, pageSize: 20),
-      provider: SuperPaginationProvider.listFuture(_fetchProducts),
+      provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(
@@ -328,7 +328,7 @@ class _PartialDataTabState extends State<_PartialDataTab> {
     return SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
       key: const Key('partial_data_loading'),
       request: SuperPaginationRequest(page: 1, pageSize: 20),
-      provider: SuperPaginationProvider.listFuture(_fetchProducts),
+      provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
       itemBuilder: (context, products, index) {
         final product = products[index];
         return ListTile(title: Text(product.name));
@@ -348,12 +348,12 @@ class _AlternativeSourceTab extends StatefulWidget {
 class _AlternativeSourceTabState extends State<_AlternativeSourceTab> {
   bool _usePrimarySource = true;
 
-  Future<List<Product>> _fetchFromPrimary(SuperPaginationRequest request) async {
+  Future<List<Product>> _fetchFromPrimary(BuildContext context, SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 800));
     throw Exception('Primary server is unavailable');
   }
 
-  Future<List<Product>> _fetchFromBackup(SuperPaginationRequest request) async {
+  Future<List<Product>> _fetchFromBackup(BuildContext context, SuperPaginationRequest request) async {
     await Future.delayed(const Duration(milliseconds: 1000));
 
     return List.generate(15, (index) {
@@ -515,7 +515,7 @@ class _UserRecoveryTabState extends State<_UserRecoveryTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('user_recovery_$_requiresLogin'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(

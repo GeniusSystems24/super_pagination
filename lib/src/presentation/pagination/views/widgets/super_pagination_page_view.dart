@@ -9,7 +9,7 @@ part of '../../pagination_feature.dart';
 /// ```dart
 /// SuperPaginationPageView.withProvider(
 ///   request: SuperPaginationRequest(page: 1, pageSize: 10),
-///   provider: SuperPaginationProvider.future((request) => fetchStories(request)),
+///   provider: SuperPaginationProvider.future((context, request) => fetchStories(request)),
 ///   itemBuilder: (context, items, index) {
 ///     return StoryCard(story: items[index]);
 ///   },
@@ -63,6 +63,7 @@ class SuperPaginationPageView<T, R extends SuperPaginationRequest> extends Super
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
     super.onInsertionCallback,
@@ -119,6 +120,7 @@ class SuperPaginationPageView<T, R extends SuperPaginationRequest> extends Super
     super.removeItemAnimationBuilder,
     super.animationDuration,
     super.preserveScrollAnchorOnAppend,
+    super.keepAlive,
     super.refreshListener,
     super.filterListeners,
   }) : super.pageViewWithCubit();

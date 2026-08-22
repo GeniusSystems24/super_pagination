@@ -17,6 +17,7 @@ class SuperPaginationController<T, R extends SuperPaginationRequest>
   factory SuperPaginationController.of({
     required R request,
     required SuperPaginationProvider<T, R> provider,
+    BuildContext? providerContext,
     ListBuilder<T>? listBuilder,
     OnInsertionCallback<T>? onInsertionCallback,
     VoidCallback? onClear,
@@ -32,6 +33,7 @@ class SuperPaginationController<T, R extends SuperPaginationRequest>
     final cubit = SuperPaginationCubit<T, R>(
       request: request,
       provider: provider,
+      providerContext: providerContext,
       listBuilder: listBuilder,
       onInsertionCallback: onInsertionCallback,
       onClear: onClear,

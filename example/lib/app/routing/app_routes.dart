@@ -11,6 +11,8 @@ abstract final class AppRoutes {
   static const String chat = '/advanced/chat';
   static const String columnLayout = '/basic/column';
   static const String cursorPagination = '/advanced/cursor';
+  static const String keepAlive = '/advanced/keep-alive';
+  static const String providerContext = '/advanced/provider-context';
   static const String customErrorWidgets = '/errors/custom-widgets';
   static const String customStates = '/advanced/custom-states';
   static const String customViewBuilder = '/advanced/custom-builder';

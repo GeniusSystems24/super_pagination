@@ -17,7 +17,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-          (req) async => List<int>.generate(5, (i) => req.page * 10 + i),
+          (context, req) async => List<int>.generate(5, (i) => req.page * 10 + i),
         ),
       );
 
@@ -38,7 +38,7 @@ void main() {
       final completers = <int, Completer<List<int>>>{};
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) {
           final c = Completer<List<int>>();
           // Map each call by attempt order: 1 = first refresh, 2 = second.
           completers[completers.length + 1] = c;
@@ -74,7 +74,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-          (req) => completer.future,
+          (context, req) => completer.future,
         ),
       );
 
@@ -95,7 +95,7 @@ void main() {
       var attempt = 0;
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
-        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((req) async {
+        provider: SuperPaginationProvider<int, SuperPaginationRequest>.future((context, req) async {
           attempt++;
           if (attempt == 1) return [1, 2, 3, 4, 5];
           throw Exception('load-more failed');
@@ -127,7 +127,7 @@ void main() {
       final cubit = SuperPaginationCubit<int, SuperPaginationRequest>(
         request: SuperPaginationRequest(page: 1, pageSize: 5),
         provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-          (req) async => throw Exception('first page failed'),
+          (context, req) async => throw Exception('first page failed'),
         ),
       );
 

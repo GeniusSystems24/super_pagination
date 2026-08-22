@@ -32,7 +32,7 @@ class _DataOperationsScreenState extends State<DataOperationsScreen> {
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 10),
       provider: SuperPaginationProvider.listFuture(
-        (request) => ExampleDependencies.catalog.fetchProducts(
+        (context, request) => ExampleDependencies.catalog.fetchProducts(
           SuperPaginationRequest(
             page: request.page,
             pageSize: request.pageSize ?? 10,

@@ -98,7 +98,7 @@ class _ManualRetryTabState extends State<_ManualRetryTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('manual_retry_$_attemptCount'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));
@@ -198,7 +198,7 @@ class _AutoRetryTabState extends State<_AutoRetryTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('auto_retry_$_attemptCount'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(
@@ -326,7 +326,7 @@ class _ExponentialBackoffTabState extends State<_ExponentialBackoffTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('exponential_backoff_$_attemptCount'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
             retryConfig: const RetryConfig(
               maxAttempts: 4,
               initialDelay: Duration(seconds: 1),
@@ -395,7 +395,7 @@ class _LimitedAttemptsTabState extends State<_LimitedAttemptsTab> {
               SuperPagination<Product, SuperPaginationRequest>.listViewWithProvider(
             key: ValueKey('limited_attempts_$_attemptCount'),
             request: SuperPaginationRequest(page: 1, pageSize: 20),
-            provider: SuperPaginationProvider.listFuture(_fetchProducts),
+            provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
             itemBuilder: (context, products, index) {
               final product = products[index];
               return ListTile(title: Text(product.name));

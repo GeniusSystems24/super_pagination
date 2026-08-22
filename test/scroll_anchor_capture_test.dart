@@ -44,7 +44,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: 20),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     // Always return a full page so hasReachedEnd stays false
                     return List<int>.generate(
@@ -118,7 +118,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -193,7 +193,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -275,7 +275,7 @@ void main() {
                         SuperPaginationRequest>.withProvider(
                   request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                   provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                    (req) async {
+                    (context, req) async {
                       providerCallCount++;
                       return List<int>.generate(
                         _pageSize,
@@ -366,7 +366,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -458,7 +458,7 @@ void main() {
                       SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -520,7 +520,7 @@ void main() {
                       SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -598,7 +598,7 @@ void main() {
                       SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,
@@ -679,7 +679,7 @@ void main() {
               body: SuperPaginationListView<int, SuperPaginationRequest>.withProvider(
                 request: SuperPaginationRequest(page: 1, pageSize: _pageSize),
                 provider: SuperPaginationProvider<int, SuperPaginationRequest>.future(
-                  (req) async {
+                  (context, req) async {
                     providerCallCount++;
                     return List<int>.generate(
                       _pageSize,

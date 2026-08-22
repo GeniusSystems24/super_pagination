@@ -71,7 +71,7 @@ class _SortingScreenState extends State<SortingScreen> {
     _cubit = SuperPaginationCubit<Product, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 15),
       provider: SuperPaginationProvider.listFuture(
-        (request) => ExampleDependencies.catalog.fetchProducts(
+        (context, request) => ExampleDependencies.catalog.fetchProducts(
           SuperPaginationRequest(
             page: request.page,
             pageSize: request.pageSize ?? 15,

@@ -84,7 +84,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             key: const Key('material_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
             provider: SuperPaginationProvider.listFuture(
-              (request) => _apiService.fetchProductsWithError(request),
+              (context, request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
               final product = products[index];
@@ -136,7 +136,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             key: const Key('compact_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
             provider: SuperPaginationProvider.listFuture(
-              (request) => _apiService.fetchProductsWithError(request),
+              (context, request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
               final product = products[index];
@@ -188,7 +188,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             key: const Key('card_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
             provider: SuperPaginationProvider.listFuture(
-              (request) => _apiService.fetchProductsWithError(request),
+              (context, request) => _apiService.fetchProductsWithError(request),
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -260,7 +260,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             key: const Key('minimal_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
             provider: SuperPaginationProvider.listFuture(
-              (request) => _apiService.fetchProductsWithError(request),
+              (context, request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
               final product = products[index];
@@ -314,7 +314,7 @@ class _CustomErrorHandlingScreenState extends State<CustomErrorHandlingScreen>
             key: const Key('custom_error'),
             request: SuperPaginationRequest(page: 1, pageSize: 10),
             provider: SuperPaginationProvider.listFuture(
-              (request) => _apiService.fetchProductsWithError(request),
+              (context, request) => _apiService.fetchProductsWithError(request),
             ),
             itemBuilder: (context, products, index) {
               final product = products[index];

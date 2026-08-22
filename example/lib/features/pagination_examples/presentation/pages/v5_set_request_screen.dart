@@ -18,7 +18,7 @@ class _V5SetRequestScreenState extends State<V5SetRequestScreen> {
   var _showEven = false;
 
   late final SuperPaginationProvider<int, SuperPaginationRequest> _source =
-      SuperPaginationProvider.pageFuture((request) async {
+      SuperPaginationProvider.pageFuture((context, request) async {
     await Future<void>.delayed(const Duration(milliseconds: 180));
 
     final showEven = request.filters?['parity'] == 'even';

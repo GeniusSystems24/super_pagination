@@ -94,7 +94,7 @@ class _ChatScreenController {
     // SuperPagination will automatically attach it to the cubit.
     cubit = SuperPaginationCubit<Message, SuperPaginationRequest>(
       request: const SuperPaginationRequest(page: 1, pageSize: 30),
-      provider: SuperPaginationProvider.listFuture(_fetchMessages),
+      provider: SuperPaginationProvider.listFuture((context, request) => _fetchMessages(request)),
     );
 
     // Simulate typing indicator

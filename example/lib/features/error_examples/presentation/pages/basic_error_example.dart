@@ -115,7 +115,7 @@ class _BasicErrorExampleState extends State<BasicErrorExample> {
                 SuperPaginationRequest>.listViewWithProvider(
               key: ValueKey('basic_error_$_retryCount'),
               request: SuperPaginationRequest(page: 1, pageSize: 20),
-              provider: SuperPaginationProvider.listFuture(_fetchProducts),
+              provider: SuperPaginationProvider.listFuture((context, request) => _fetchProducts(request)),
               itemBuilder: (context, products, index) {
                 final product = products[index];
                 return ListTile(
